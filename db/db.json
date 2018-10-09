@@ -1,0 +1,45 @@
+{
+  "companyInfo": { "name": "CompanyName", "phones": ["5-435-835-3453", "5-645-645-6489"], "emails": ["example1@examp.com", "example1@examp.com"] },
+  "users": [
+    { "id": 1, "email": "user@example.com", "groupId": 1, "password": "typicode1" },
+    { "id": 2, "email": "user@example.com", "groupId": 2, "password": "typicode2" },
+    { "id": 3, "email": "user@example.com", "groupId": 3, "password": "typicode3" }
+  ],
+  "groups": [
+    { "id": 1, "name": "administrators" },
+    { "id": 2, "name": "supervisors" },
+    { "id": 1, "name": "users" }
+  ],
+  "products": [
+    { "id": 1, "name": "name1", "description": "string", "price": 100, "stock": 100, "imageUrl": "some URL", "categoryId": 1 },
+    { "id": 2, "name": "name2", "description": "string", "price": 1000, "stock": 100, "imageUrl": "some URL", "categoryId": 2 },
+    { "id": 3, "name": "name3", "description": "string", "price": 2000, "stock": 100, "imageUrl": "some URL", "categoryId": 3 },
+    { "id": 4, "name": "name4", "description": "string", "price": 3000, "stock": 100, "imageUrl": "some URL", "categoryId": 1 },
+    { "id": 5, "name": "name5", "description": "string", "price": 20000, "stock": 100, "imageUrl": "some URL", "categoryId": 2 },
+    { "id": 6, "name": "name6", "description": "string", "price": 4000, "stock": 100, "imageUrl": "some URL", "categoryId": 3 },
+    { "id": 7, "name": "name7", "description": "string", "price": 200, "stock": 100, "imageUrl": "some URL", "categoryId": 1 }   
+  ],
+  "orders": [
+    { "id": 1, "userId": 1, "address": "London", "phone": "242432342444" },
+    { "id": 2, "userId": 2, "address": "Moscow", "phone": "242432342444" },
+    { "id": 3, "userId": 3, "address": "Paris",  "phone": "242432342444" },
+    { "id": 4, "userId": 1, "address": "London", "phone": "242432342444" },
+    { "id": 5, "userId": 2, "address": "Moscow", "phone": "242432342444" },
+    { "id": 6, "userId": 3, "address": "Paris",  "phone": "242432342444" },
+    { "id": 7, "userId": 1, "address": "London", "phone": "242432342444" }   
+  ],
+  "lines": [
+    { "orderId": 1, "productId": 7, "count": 10 },
+    { "orderId": 2, "productId": 6, "count": 25 },
+    { "orderId": 3, "productId": 5, "count": 30 },
+    { "orderId": 4, "productId": 4, "count": 12 },
+    { "orderId": 5, "productId": 3, "count": 2 },
+    { "orderId": 6, "productId": 2, "count": 3 },
+    { "orderId": 7, "productId": 1, "count": 1 }   
+  ],
+  "categories": [
+    { "id": 1, "name": "category1", "parentId": 0 },
+    { "id": 1, "name": "category2", "parentId": 1 },
+    { "id": 1, "name": "category3", "parentId": 1 }
+  ]
+}

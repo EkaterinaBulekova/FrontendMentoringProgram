@@ -9,204 +9,61 @@
     </head>
     <body>
         <div class="wrapper">
-            <div class="header">
-                <div class="headerContent">
-                    <div class="left">
-                        <h1>
-                            <a href="" >SuperSite</a></h1>
-                        <p>Site small description</p>
-                    </div>
-                    <div class="right">
-                        <form class="search" action="" method="post">
-                            <input type="text" placeholder="search..." name="" id="">
-                            <input type="image" src="images/search.png" alt="">
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="slider">
-                <div class="itemSlider">
-                    <div class="bgSlide">
-                        <img src="images/bg-slide.png" alt="" srcset="">
-                    </div>
-                    <div class="descSlide">
-                        <h1>You see the first Slide</h1>
-                        <p> and continue folow</p>
-                        <span> this is what you look for...</span>
-                        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi consequatur unde dolorum voluptates quisquam natus ea, rerum temporibus neque quo tempore eligendi ut, quasi maiores.</p>
-                    </div>
-                </div>
-            </div>
             <div class="nav">
                 <ul class="menu">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Work</a></li>
-                    <li><a href="#">News</a></li>
-                    <li><a href="#">Contacts</a></li>
-                </ul>
+                    <li><a href="#">Settings</a></li>
+                 </ul>
             </div>
             <div class="main">
-                <div class="leftCol">
-                    <form action="" method="post">
-                        <h2>Order product</h2>
-                        <input type="text" placeholder="Your name">
-                        <input type="text" placeholder="Your address">
-                        <input type="text" disabled="disabled" placeholder="Disabled">
-                        <input type="text" placeholder="Count">
-                        <select id="ProductsSelect">
-                            <option value="1">product1</option>
-                            <option value="2">product2</option>
-                            <option value="3">product3</option>
-                            <option value="4">product4</option>
-                            <option value="5">product5</option>
-                        </select>
-                        <div class="row">
-                            <h4>Payment method</h4>
-                            <div class="clear"></div>
-                            <input type="radio" name="" id="">
-                            <label for="">Cash</label>
-                            <div class="clear"></div>
-                            <input type="radio" name="" id="">
-                            <label for="">Card</label>
-                            <div class="clear"></div>
-                        </div>
-                        <div class="row">
-                            <h4>Delivery conditions</h4>
-                            <input type="checkbox" name="" id="">
-                            <label for="">Home delivery</label>
-                            <div class="clear"></div>
-                            <input type="checkbox" name="" id="">
-                            <label for="">Accelerated delivery</label>
-                            <div class="clear"></div>
-                        </div> 
-                        <button type="submit" class="minWidth">Order</button>
-                        <button type="reset" class="minWidth">Reset</button>                  
-                    </form>
-                    <div class="row">
-                        <h2>Some info</h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab maxime repellat suscipit accusantium neque deserunt nulla dolorem nam. Debitis nemo asperiores at veniam quo? Similique id culpa ad eius adipisci.</p>
-                        <p><a href="">read more...</a></p>
-                    </div>                    
+                <div class="orderDetailPage" style="display: none;">
                 </div>
-                <div class="rightCol">
-                    <h1>What we do...</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab, ipsa accusantium maiores modi officiis, aut praesentium qui distinctio vitae pariatur, numquam laudantium alias a. Minima omnis libero vero at molestias id ad? Quo quos itaque temporibus provident eos nemo a sapiente tempora fugit unde officiis, dolorem corrupti reiciendis illum enim!</p>
-                    <ul class="img">
-                        <li><a href="#"><img src="images/img1.png" alt="" srcset=""></a></li>
-                        <li><a href="#"><img src="images/img2.png" alt="" srcset=""></a></li>
-                        <li><a href="#"><img src="images/img3.png" alt="" srcset=""></a></li>
-                    </ul>
-                    <h1>Our service overview</h1>
-                    <div class="row">
-                        <div class="span">
-                            <h4>What you need...</h4>
-                            <ul>
-                                <li>Choose products</li>
-                                <li>Paid as convinient</li>
-                                <li>Get order in shortest time</li>
-                            </ul>                            
+                <div class="SettingsPage" style="display: none">
+                </div>
+                <div class="OrderListPage">
+                   <h1>Your orders</h1>
+                   <div class="qFiler">
+                        <form>
+                            <h2>Quick filters</h2>
+                            <select id="OrderId">
+                                <option>OrderId</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                            <select>
+                                <option>UserId</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </select>
+                            <button type="submit" class="minWidth">Search</button>
+                            <button type="reset" class="minWidth">Reset</button>
+                        </form>                    
+                    </div>                   
+                    <div class="aFilter">
+                        <div class="filterHeader">
+                            <h2 class="title">Advanced filters</h2><button id="aFilterButton">></button>
+                        </div>    
+                        <div id="aFilterPanel" style="display: none;">
+                            Advanced filters
                         </div>
-                        <div class="span">
-                            <h4>What we provide...</h4>
-                            <ol>
-                                <li>High quolity</li>                               
-                                <li>Concarency costs</li>
-                                <li>Fastest service</li>
-                            </ol>                            
-                        </div>
-                        <div class="span">
-                                <h4>Our suppliers...</h4>
-                                <ul class="unstyled">
-                                    <li>Supplier1</li>
-                                    <li>Supplier2</li>
-                                    <li>Supplier3</li>
-                                </ul>                            
-                            </div>
-                        </div>
-                    <h1>Your orders</h1>
-                    <div class="row">
-                        <table>
-                            <thead>
-                                <th>#</th>
-                                <th>OrderID</th>
-                                <th>Product</th>
-                                <th>Count</th>
-                                <th>Price</th>
+                    </div>
+                     <div class="row">
+                        <table >
+                            <thead id="OrderTableHead">
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                            <tbody id="OrderTableBody">
                             </tbody>
                         </table>
-
                     </div>
                 </div>
-
-            </div>
 			<div class="footer">
-                    <div class="footerContent">
-                        <div class="span1">
-                            <h1>Schedual</h1>
-                            <div class="borderBottom"></div>
-                            <p>Our schedual</p>
-                            <ul class="clock">
-                                <li>Nights! Only online</li>
-                                <li>Weekends! 10:00-19:00</li>
-                                <li>Holidays! 10:00-15:00</li>
-                            </ul>
-                            <div class="social">
-                                <div>Our social: </div>
-                                <ul>
-                                    <li><a target="newtab" href="http://www.facebook.com/?sk=app_2309869772"><img src="images/facebook.png"></a></li>
-                                    <li><a target="newtab" href="https://twitter.com/"><img src="images/twitter.png" /></a></li>
-                                    <li><img src="images/vk.png" /></li></ul>
-                            </div>
-                        </div>
-                        <div class="span1">
-                            <h1>Our contacts</h1>
-                            <div class="borderBottom"></div>
-                            <p>Our locations</p>
-                            <ul>
-                                <li>Almaty (727) 296-2664</li>
-                                <li>Astana (717) 202-5428</li>
-                                <li>Karaganda (721) 221-1107</li>
-                            </ul>
-                            <p><strong>Be free to call us</strong></p>
-                        </div>
-                        <div class="span1">
-                            <h1>Head office</h1>
-                            <div class="borderBottom"></div>
-                            <p>Our head office location</p>
-                            <ul class="unstyled">
-                                <li>Hi-Tech Super Company</li>
-                                <li><a href="mailto:infosuper@mail.ru">infosuper@gmail.com</a></li>
-                                <li>Abay street, 45</li>
-                                <li>Almaty, 00016 Kazakhstan</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="footerContent">
+
                 </div>
+            </div>
+            </div>
         </div>
         <script src="js/jquery-3.3.1.js"></script>
         <script src="js/scripts.js"></script>
