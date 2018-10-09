@@ -57,7 +57,7 @@ function LoadTable(data){
 
 $(document).ready(function() {
     url = "http://localhost:3000/orders?";
-    var options = [{Name:"_page", Value:"2"},{Name :"_limit", Value:"5"}];
+    var options = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}];
     AjaxLoad(url, options, LoadTable)
  //   AjaxLoad(url, [{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}], LoadTable)
  });
