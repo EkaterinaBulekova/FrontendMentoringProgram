@@ -1,0 +1,23 @@
+.qFilter form {
+	width: 100%;
+	background-color: #f3f3f3;
+	border: 1px solid #d8dbde;
+	padding: 10px;
+	color: #757575;
+}
+
+.qFilter input {
+	width: 183px;
+}
+
+.qFilter select {
+	width: 193px;
+}
+
+.qFilter select:focus {
+	outline: none;
+}
+
+.filterHeader>.title{
+	display: inline-block;
+}
