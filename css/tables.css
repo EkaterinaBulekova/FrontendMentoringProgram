@@ -62,3 +62,7 @@ table tbody tr:hover {
     background-color: #622833;
 	color: #d8dbde;
 }
+
+#pageButtons{
+    float: right;
+}
