@@ -1,8 +1,9 @@
 table {
     width: 100%;
-    margin: 15px 0;
+    margin: 5px 0;
     padding: 0;
-    font-size: 12px;
+    font-size: 14px;
+    font-stretch: expanded;
     border-spacing: 0;
     border-collapse: separate;
     border-radius: 5px;
@@ -11,8 +12,8 @@ table {
 }
 
 table thead td, table td {
-    padding: 7px 12px 6px;
-    line-height: 18px;
+    padding: 5px 7px;
+    line-height: 20px;
     text-align: left;
 }
 

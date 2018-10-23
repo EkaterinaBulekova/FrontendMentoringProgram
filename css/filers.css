@@ -1,23 +1,46 @@
-.qFilter form {
+.filter{
+	margin: 0 auto;
+	width: 800px;	
+}
+
+.filter table{
+	margin: 0;
 	width: 100%;
-	background-color: #f3f3f3;
-	border: 1px solid #d8dbde;
-	padding: 10px;
-	color: #757575;
 }
 
-.qFilter input {
-	width: 183px;
+.filter .buttons-panel{
+	float: right;
 }
 
-.qFilter select {
-	width: 193px;
+#filterPanel{
+	margin: 0 auto;
+	width: 400px;
 }
 
-.qFilter select:focus {
-	outline: none;
+#advancedFilterPanel{
+	width: 800px;
 }
 
-.filterHeader>.title{
-	display: inline-block;
+.property-name{
+	color: white;
+	font-stretch: expanded;
+	font-weight: bold;
+	font-size: 14px;	
+	background-color: #9c4757;
+	background-image: linear-gradient(#b44b52, #b84b59 25%, #532427);
+	padding-left: 15px;
+/* 
+	background: #8a3c41; */
+	width: 200px;
+}
+
+.property-value{	
+	background: #ad4e56;
+	height: 18px;
+	width: 175px;
+}
+
+.property-value input{
+	height: 15px;
+	width: 175px;
 }

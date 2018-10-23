@@ -1,22 +1,74 @@
-let advFiltersButton = document.getElementById("aFilterButton");
-advFiltersButton.addEventListener('click', function(){
-    let advFiltersPanel = document.getElementById("aFilterPanel");
-    advFiltersPanel.style =  (advFiltersPanel.style["display"] == "block")
-        ? "display: none" 
-        : "display: block";
-}); 
+$(document).ready(function() {
+    OrderList.load();
+});
+
+let Filter = {
+    init: function(){
+    
+    },
+    
+    toggleAdvansedPanel: function(){
+        $('#advancedFilterPanel').toggle();
+    }
+}
+
+let OrderList = {
+    load: function(){
+        url = "http://localhost:3000/orders?";
+        var options = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}];
+        
+        AjaxLoad(url, options, LoadTable)
+    }
+}
+
+
+let Ajax = {
+    get: function(url){
+        var requestresult = $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: fullurl,
+            success: function (result) { 
+                callback(result, requestresult.getResponseHeader('link'));
+            },
+            error: function () {
+                alert("Извините произошла непредвиденная ошибка обратитись пожалуйста к администратору сайта.");
+            }
+        });
+    },
+    post: function(url, data){
+
+    },
+    update: function(url, data){
+
+    },
+    delete: function(url, data){
+
+    }
+}
+
+let UrlBuilder = {
+    fullUrl: function(url, options){
+        let fullurl = url
+        if(options != null) {
+            for(let i=0; i<options.length; i++){
+                fullurl = (i > 0) ? fullurl + '&' : fullurl
+                fullurl += options[i].Name + "=" + options[i].Value;
+            }
+        }
+    }
+
+}
 
 function AjaxLoad(LoadUrl, options, callback) {
     var fullurl = LoadUrl
-    console.log(options)
- 
     if(options != null) {
         for(let i=0; i<options.length; i++){
             fullurl = (i>0) ? fullurl+'&': fullurl
             fullurl += options[i].Name + "=" + options[i].Value;
         }
     }
-    console.log(fullurl)
  
     var requestresult = $.ajax({
         type: "GET",
@@ -24,7 +76,7 @@ function AjaxLoad(LoadUrl, options, callback) {
         dataType: "json",
         url: fullurl,
         success: function (result) { 
-            callback(result, requestresult.getResponseHeader('x-total-count'), requestresult.getResponseHeader('link'));
+            callback(result, requestresult.getResponseHeader('link'));
         },
         error: function () {
             alert("Извините произошла непредвиденная ошибка обратитись пожалуйста к администратору сайта.");
@@ -32,15 +84,15 @@ function AjaxLoad(LoadUrl, options, callback) {
     });
 }
 
-function LoadTable(data, count, linkstr){
+function LoadTable(data, linkstr){
    var tableHead = document.getElementById('OrderTableHead');
-   tableHead.innerHTML = "";    
+   tableHead.innerHTML = "";
     let newRow = tableHead.insertRow(0);
     let j =0;
     for(let propertyName in data[0]) {
         
-        let newCell  = newRow.insertCell(j);
-        let newText  = document.createTextNode(propertyName);
+        let newCell = newRow.insertCell(j);
+        let newText = document.createTextNode(propertyName);
         newCell.appendChild(newText);
         j++;
     }
@@ -49,14 +101,14 @@ function LoadTable(data, count, linkstr){
     tableRef.innerHTML = "";
      for(let i = 0; i < data.length; i++){
         let item = data[i]
-        let newRow   = tableRef.insertRow(i);          
+        let newRow   = tableRef.insertRow(i);
         let j =0;
         for(let propertyName in item) {
             let newCell  = newRow.insertCell(j);
             let newText  = document.createTextNode(item[propertyName]);
             newCell.appendChild(newText);
             j++;
-        }       
+        }
     }
  
     var pageButtons = document.getElementById('pageButtons');
@@ -71,14 +123,10 @@ function LoadTable(data, count, linkstr){
         button.onclick = function(){
             AjaxLoad(buttonUrl, null, LoadTable);
         }; 
-        pageButtons.appendChild(button);        
-    } 
+        pageButtons.appendChild(button);
+    }
 }
 
-$(document).ready(function() {
-    url = "http://localhost:3000/orders?";
-    var options = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}];
-    AjaxLoad(url, options, LoadTable)
-});
+
  
 
