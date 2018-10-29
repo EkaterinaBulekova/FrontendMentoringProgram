@@ -12,28 +12,28 @@
     <body>
         <header>
             <nav>
-                <div class="menuContent">
-                    <a href="">
+                <div class="menu-content">
+                    <div class="nav-button">
                         <div class="view-3d">
-                            <div class="button-3d">
+                            <div class="button-3d" name="orderListPage" onclick="home.togglePage(this)">
                                 <div class="pane front"><figure>Home<figure></div>
                                 <div class="pane bottom"><figure>Home</figure></div>
                             </div>
                         </div> 
-                    </a>
-                    <a href="">
+                    </div>
+                    <div class="nav-button">
                         <div class="view-3d">
-                            <div class="button-3d">
+                            <div class="button-3d" name="settingsPage" onclick="settings.toggleSettingsPage(this)">
                                 <div class="pane front"><figure>Settings<figure></div>
                                 <div class="pane bottom"><figure>Settings</figure></div>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </nav>
         </header>
         <main>
-            <section id="pictures-panel">
+            <!-- <section id="pictures-panel">
                 <div class="view-3d">
                     <div class="picture-3d">
                         <div class="pane front">
@@ -64,36 +64,49 @@
                         </div>
                     </div>
                 </div>
+            </section> -->
+            <section id="orderDetailPage">
             </section>
-            <section id="orderDetailPage" style="display: none;">
+            <section id="settingsPage">
+                <!-- <h1>Settings</h1> -->
+                <ul class="tabs">
+                    <li name='div1' class="active" onclick="selectTab(this)">Products</li>
+                    <li name='div2' onclick="selectTab(this)">Categories</li>
+                    <li name='div3' onclick="selectTab(this)">Users</li>
+                </ul>
+                <div class="tab-panel">
+                    <div id='div1' class="active">
+                        <table id="productsTable"></table>
+                    </div>
+                    <div id='div2'>
+                        <table id="categoriesTable"></table>
+                    </div>
+                    <div id='div3'>
+                        <table id="usersTable"></table>
+                    </div>
+                </div>
             </section>
-            <section id="SettingsPage" style="display: none">
-            </section>
-            <section id="OrderListPage">
-               <h1>Your orders</h1>
+            <section id="orderListPage" class="active">
                 <form class="filter">
+                    <div class="buttons-panel">
+                        <button type="button" class="minWidth">Search</button>
+                        <button type="reset" class="minWidth">Reset</button>
+                        <button type="button" onclick="filter.toggleAdvansedPanel()">Add Filter</button>
+                    </div>
                     <div id="filterPanel">
-                        <div class="buttons-panel">
-                            <button type="submit" class="minWidth">Search</button>
-                            <button type="reset" class="minWidth">Reset</button>
-                            <button type="button" onclick="Filter.toggleAdvansedPanel()">Add Filter</button>
-                        </div>
                         <table>
                             <tr>
                                 <td class="property-name">Id</td>
                                 <td class="property-value">
-                                    <input type="text" name="" id="">
+                                    <select id="users">
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="property-name">User Id</td>
                                 <td class="property-value">
-                                    <input list="Orders"/>
-                                    <datalist id="Orders">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    </datalist>
+                                    <select id="statuses">
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -117,21 +130,13 @@
                             <tr>
                                 <td class="property-name">Product</td>
                                 <td class="property-value">
-                                    <input list="Products"/>
-                                    <datalist id="Products">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    </datalist>
+                                    <select id="products">                                    
+                                    </select>
                                 </td>
                                 <td class="property-name">Category</td>
-                                <td class="property-value">
-                                    <input list="Categoryies"/>
-                                    <datalist id="Categoryies">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    </datalist>
+                                <td class="property-value">                                    
+                                    <select id="categories">                                    
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -143,18 +148,13 @@
                         </table>
                     </div>
                 </form>
-                <table>
-                    <thead id="OrderTableHead">
-                    </thead>
-                    <tbody id="OrderTableBody">
-                    </tbody>
+                <table id="ordersTable">
                 </table>
-                <div id="pageButtons">
                 </div>
             </section>
         </main>
         <footer>
-            <div class="footerContent">
+            <div class="footer-content">
                 <h1>Contact us:</h1>
                 <a href=""><img src="images/facebook.png" alt=""></a>
                 <a href=""> <img src="images/twitter.png" alt=""></a>

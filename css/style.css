@@ -1,7 +1,7 @@
 @import url("../css/common.css");
 @import url("../css/3dfeatures.css");
 @import url("../css/tables.css");
-@import url("../css/filers.css");
+@import url("../css/filters.css");
 @import url("../css/formElements.css");
 
 nav {
@@ -16,7 +16,7 @@ nav {
 	z-index: 3;
 }
 
-nav>.menuContent{
+nav>.menu-content{
 	width: 1200px;
 	overflow: hidden;
 	padding: 2px;
@@ -25,13 +25,14 @@ nav>.menuContent{
 	height: 100%;
 }
 
-nav>.menuContent a:hover {
+nav>.menu-content .nav-button:hover {
 	text-shadow: 0 0 15px rgba(255,255,255, 0.8);
 } 
 
-nav a {
+nav .nav-button {
+	display: inline-block;
     line-height: 44px;
-    margin: 20px 20px;
+    margin: 0px 20px;
     outline: none;
     color: #fff;
     text-decoration: none;
@@ -51,13 +52,6 @@ main {
 	height: 100%;
 }
 
-.row {
-	display: block;
-	clear: both;
-	overflow: hidden;
-	margin: 15px 0;
-}
-
 footer {
 	width: 100%;
 	background: #e7e4e4 url("../images/bg-footer.png") repeat;
@@ -68,7 +62,7 @@ footer {
 	position: fixed;
 }
 
-footer>.footerContent{
+footer>.footer-content{
 	width: 1200px;
 	overflow: hidden;
 	padding: 2px;
@@ -93,4 +87,46 @@ footer img:hover{
 	-ms-transform:  scale(1.5,1.5) rotate(360deg);
 	-o-transform:  scale(1.5,1.5) rotate(360deg);
 	transform: scale(1.5,1.5) rotate(360deg);
+}
+
+section {
+	display: none;
+	margin: 20px 0;
+}
+
+section.active{
+	display: block;
+}
+
+.tabs{
+	list-style: none;
+	margin-left: 20px;	
+}
+.tabs li{
+	color: white;
+	display: inline-block;
+	margin-left: 2px;
+	border: 1px #883c41 solid;
+	border-radius: 5px 5px 0 0;
+	padding: 5px;
+	background-color: #883c41;
+}
+.tabs .active{
+	color: #883c41;
+	font-weight: bold;
+	background-color: #fff;
+	border-bottom-color: #fff;
+}
+
+.tab-panel{
+	margin: -1px 10px 10px;
+	padding: 10px;
+	border: 1px #883c41 solid;
+	border-radius: 5px 5px 5px 5px;
+}
+.tab-panel div{
+	display: none;
+}
+.tab-panel .active{
+	display: block;
 }

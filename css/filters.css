@@ -1,0 +1,68 @@
+.filter{
+	margin: 0 auto;
+	width: 1200px;	
+}
+
+.filter table{	
+	width: 100%;
+	line-height: 14px;
+}
+
+.filter .buttons-panel{
+	margin: 0 auto;
+	width: 400px;
+	/* float: right; */
+}
+
+.filter .buttons-panel button{
+	float: right;
+}
+
+
+#filterPanel{
+	clear: both;
+	padding: 2px 0;
+	margin: 0 auto;
+	width: 400px;
+}
+
+#advancedFilterPanel{
+	width: 800px;
+	float: left;
+	margin-top: 3px;
+}
+
+.property-name{
+	color: white;
+	font-weight: bold;
+	font-size: 14px;	
+	/* background-color: #9c4757;
+	background-image: linear-gradient(#b44b52, #b84b59 25%, #532427); */
+	padding-left: 15px;
+	height: 16px;
+
+	background: #8a3c41;
+	width: 150px;
+}
+
+.property-value{
+	padding: 2px;
+	background: #ad4e56;
+	height: 16px;
+	width: 250px;
+}
+
+.property-value input, .property-value select{
+	padding: 2px;
+	font-size: 14px;
+	margin: 2px;
+	width: 246px;
+}
+
+.property-value input[type=date]{
+	height: 18px;
+}
+
+.property-value select{
+	width: 252px;
+}
