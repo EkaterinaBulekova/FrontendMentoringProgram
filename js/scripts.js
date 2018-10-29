@@ -66,7 +66,7 @@ let filter = new function Filter(){
     function validate(){
     };
 
-    this.toggleAdvansedPanel = function(){
+    this.toggleAdvansedPanel = function(eventSource){
         let advPanel = $(advFilterPanelId);
         let panel = $(filterPanelId);
         let butPanel =$(".filter .buttons-panel")
@@ -74,11 +74,13 @@ let filter = new function Filter(){
         if (hasAdvanced){
             butPanel.css("width", "400");
             panel.css( "float", "" );
+            eventSource.innerHTML = 'More Filters'
             hasAdvanced = false;
         }else{
             butPanel.css("width", "1200");
             panel.css( "float", "left" );
             hasAdvanced = true;
+            eventSource.innerHTML = 'Less Filters'
         }
     }
 }
