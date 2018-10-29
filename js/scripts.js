@@ -58,7 +58,7 @@ let filter = new function Filter(){
     this.init = function(){
         listsIds.forEach(element => {
                 ajaxRequest.get(serverUrl+element,function(response){
-                DataList.load(element, response);
+                dataList.load(element, response);
             });
         });
     };
@@ -83,23 +83,23 @@ let filter = new function Filter(){
     }
 }
 
-let DataList = {
-    load: function(id, response){
+let dataList = new function DataList(){
+    this.load = function(id, response){
         let data = response.responseJSON;
         let dataList = document.getElementById(id);
         dataList.innerHTML = '';
-        dataList.appendChild(this.getOption(0 ,'All'));
+        dataList.appendChild(getOption(0 ,'All'));
         for(let i = 0; i < data.length; i++){
             let item = data[i];
-            dataList.appendChild(this.getOption(item['id'] ,item['name']));
+            dataList.appendChild(getOption(item['id'] ,item['name']));
         }
-    },
-    getOption: function(id, name){
+    };
+    function getOption(id, name){
         let newOption = document.createElement('option');
         newOption.text = name;
         newOption.value = id;
         return newOption;
-    }
+    };
 }
 
 let ajaxRequest = new function Ajax(){
