@@ -2,15 +2,6 @@ $(document).ready(function() {
     home.init();
 });
 
-function selectTab(eventSource){
-    $(".tabs .active").removeClass("active");
-    $(eventSource).addClass("active");
-    let name = $(eventSource).attr("name");
-
-    $(".tab-panel .active").removeClass("active");
-    $("#" + name).addClass("active");
-}
-
 let extention = new function Extention(){
     this.inherit = function(parent, child){
         child.__proto__.__proto__ = parent;
@@ -39,6 +30,14 @@ let settings = extention.inherit(page, new function Settings(){
         this.togglePage(eventSource);
         this.init();
     }
+    this.selectTab = function(eventSource){
+    $(".tabs .active").removeClass("active");
+    $(eventSource).addClass("active");
+    let name = $(eventSource).attr("name");
+
+    $(".tab-panel .active").removeClass("active");
+    $("#" + name).addClass("active");
+    }
     this.init = function(){
         if (isLoaded) return;
         productTable.load();
@@ -47,6 +46,19 @@ let settings = extention.inherit(page, new function Settings(){
         isLoaded = true;
     }
 });
+
+let flexPage = extention.inherit(page, new function FlexPage(){
+    this.init = function(){
+    }
+});
+
+let gridPage = extention.inherit(page, new function GridPage(){
+    this.init = function(){
+    }
+});
+
+
+
 
 let filter = new function Filter(){
     let hasAdvanced = false;
@@ -71,16 +83,14 @@ let filter = new function Filter(){
         let panel = $(filterPanelId);
         let butPanel =$(".filter .buttons-panel")
         advPanel.toggle();
-        if (hasAdvanced){
-            butPanel.css("width", "400");
+        if (hasAdvanced){            
             panel.css( "float", "" );
-            eventSource.innerHTML = 'More Filters'
+            eventSource.innerHTML = 'Filters >'
             hasAdvanced = false;
-        }else{
-            butPanel.css("width", "1200");
+        }else{            
             panel.css( "float", "left" );
             hasAdvanced = true;
-            eventSource.innerHTML = 'Less Filters'
+            eventSource.innerHTML = '< Filters'
         }
     }
 }
@@ -131,7 +141,8 @@ let ajaxRequest = new function Ajax(){
    // return Object.freeze({get})
 }
 
-let urlBuilder = function UrlBuilder(url, options){
+let urlBuilder = new function Builder(){ 
+    this.getUrl = function(url, options){
         let fullurl = url
         if(options != null) {
             fullurl += "?"
@@ -141,27 +152,27 @@ let urlBuilder = function UrlBuilder(url, options){
             }
         }
         return fullurl;
+    }
 }
 
-function EntityTable(name, pageSetting){
-    let serverUrl = 'http://localhost:3000/';
-    let baseUrl = serverUrl + name;
-    let pagination = pageSetting;
-    let tableIds = name + 'Table';
-
-    function load(){
-       ajaxRequest.get(urlBuilder(baseUrl, pagination), loadTable);
+let commonDictionary = new function CommonDictionary(){
+    
+    this.load =  function(){
+        let tableId = this.name + 'Table';
+        let url = 'http://localhost:3000/' + this.name;
+        let paginate =  this.pagination
+        ajaxRequest.get(urlBuilder.getUrl(url, paginate), (response)=>{loadTable(response, tableId)});
     };
 
-    function loadTable(response){
+    function loadTable(response, id){
         let data = response.responseJSON;
         let links = response.getResponseHeader('link');
-        let table = document.getElementById(tableIds);
+        let table = document.getElementById(id);
         if(table && data){
             loadTbody(data, table);
             loadThead(data, table);
             if (links){
-                loadPageButtons(links, table);
+                loadPageButtons(links, table, id);
             }
         }
     };
@@ -197,7 +208,7 @@ function EntityTable(name, pageSetting){
         }
     };
 
-    function loadPageButtons(linkstr, table){
+    function loadPageButtons(linkstr, table, id){
         if(table && linkstr){
             let links = linkstr.split(', ')
             let newCell = table.createTFoot().insertRow(0).insertCell(0);
@@ -207,16 +218,29 @@ function EntityTable(name, pageSetting){
                 let linkParam = element.split('; ');                
                 button.innerHTML = linkParam[1].slice(5, linkParam[1].length-1);
                 button.onclick = function(){
-                    ajaxRequest.get(linkParam[0].slice(1, linkParam[0].length-1), loadTable);
+                    ajaxRequest.get(linkParam[0].slice(1, linkParam[0].length-1), (response)=>{loadTable(response, id)});
                 }; 
                 newCell.appendChild(button);
             });
         }
     };
-    return Object.freeze({load})
 }
+let productTable = extention.inherit(commonDictionary, new function ProductTable(){
+    this.name = "products";
+    this.pagination = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"3"}];
+});
 
-let productTable = new EntityTable("products",[{Name:"_page", Value:"1"},{Name :"_limit", Value:"3"}]);
-let categoryTable = new EntityTable("categories",[{Name:"_page", Value:"1"},{Name :"_limit", Value:"3"}]);
-let userTable = new EntityTable("users",[{Name:"_page", Value:"1"},{Name :"_limit", Value:"2"}]);
-let orderTable = new EntityTable("orders",[{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}]);
+let categoryTable = extention.inherit(commonDictionary, new function CategoryTable(){
+    this.name = "categories";
+    this.pagination = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"3"}];
+});
+
+let userTable = extention.inherit(commonDictionary, new function UserTable(){
+    this.name = "users";
+    this.pagination = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"3"}];
+});
+
+let orderTable = extention.inherit(commonDictionary, new function OrderTable(){
+    this.name = "orders";
+    this.pagination = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}];
+});

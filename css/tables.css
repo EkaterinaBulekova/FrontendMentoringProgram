@@ -6,8 +6,8 @@ table {
     border-spacing: 0;
     border-collapse: separate;
     border-radius: 5px;
-	background-color: #282d33;
-	color: #9da4af;
+	background-color: #383f47;
+	color: #b3b9c4;
 }
 
 table thead td, table td{
@@ -59,8 +59,8 @@ table tbody tr:last-child td:last-child {
 }
 
 table tbody tr:hover {
-    background-color: #622833;
-	color: #d8dbde;
+    background-color: #a5474e;
+	color: #f6f7f8;
 }
 
 table tfoot td{

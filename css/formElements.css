@@ -26,15 +26,6 @@ input:focus,textarea:focus {
 	background-color: #d6d6d6;
 	outline: none;
 }
-/* 
-select {
-	width: 100%;
-	border: 1px solid  white;
-}
-
-textarea {
-    height: auto;
-} */
 
 button {
     cursor: pointer;

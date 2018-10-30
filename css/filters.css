@@ -10,24 +10,18 @@
 
 .filter .buttons-panel{
 	margin: 0 auto;
-	width: 400px;
-	/* float: right; */
+	width: 278px;	
 }
-
-.filter .buttons-panel button{
-	float: right;
-}
-
 
 #filterPanel{
 	clear: both;
 	padding: 2px 0;
 	margin: 0 auto;
-	width: 400px;
+	width: 395px;
 }
 
 #advancedFilterPanel{
-	width: 800px;
+	width: 795px;
 	float: left;
 	margin-top: 3px;
 }
@@ -35,19 +29,16 @@
 .property-name{
 	color: white;
 	font-weight: bold;
-	font-size: 14px;	
-	/* background-color: #9c4757;
-	background-image: linear-gradient(#b44b52, #b84b59 25%, #532427); */
+	font-size: 14px;
 	padding-left: 15px;
 	height: 16px;
-
-	background: #8a3c41;
 	width: 150px;
+	background: #a5474e;
 }
 
 .property-value{
 	padding: 2px;
-	background: #ad4e56;
+	background: #cc888e;
 	height: 16px;
 	width: 250px;
 }

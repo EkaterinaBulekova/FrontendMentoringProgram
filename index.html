@@ -29,6 +29,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="nav-button">
+                        <div class="view-3d">
+                            <div class="button-3d" name="gridPage" onclick="gridPage.togglePage(this)">
+                                <div class="pane front"><figure>GridPage<figure></div>
+                                <div class="pane bottom"><figure>GridPage</figure></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-button">
+                        <div class="view-3d">
+                            <div class="button-3d" name="flexPage" onclick="flexPage.togglePage(this)">
+                                <div class="pane front"><figure>FlexPage<figure></div>
+                                <div class="pane bottom"><figure>FlexPage</figure></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </header>
@@ -70,9 +86,9 @@
             <section id="settingsPage">
                 <!-- <h1>Settings</h1> -->
                 <ul class="tabs">
-                    <li name='div1' class="active" onclick="selectTab(this)">Products</li>
-                    <li name='div2' onclick="selectTab(this)">Categories</li>
-                    <li name='div3' onclick="selectTab(this)">Users</li>
+                    <li name='div1' class="active" onclick="settings.selectTab(this)">Products</li>
+                    <li name='div2' onclick="settings.selectTab(this)">Categories</li>
+                    <li name='div3' onclick="settings.selectTab(this)">Users</li>
                 </ul>
                 <div class="tab-panel">
                     <div id='div1' class="active">
@@ -88,11 +104,11 @@
             </section>
             <section id="orderListPage" class="active">
                 <form class="filter">
-                    <div class="buttons-panel">
+                    <!-- <div class="buttons-panel">
                         <button type="button" class="minWidth">Search</button>
                         <button type="reset" class="minWidth">Reset</button>
                         <button type="button" onclick="filter.toggleAdvansedPanel(this)">More Filters</button>
-                    </div>
+                    </div> -->
                     <div id="filterPanel">
                         <table>
                             <tr>
@@ -147,10 +163,21 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="buttons-panel">
+                        <button type="button" class="minWidth">Search</button>
+                        <button type="reset" class="minWidth">Reset</button>
+                        <button type="button" class="minWidth" onclick="filter.toggleAdvansedPanel(this)">Filters ></button>
+                    </div>
                 </form>
                 <table id="ordersTable">
                 </table>
                 </div>
+            </section>
+            <section id="flexPage">
+                FlexPage
+            </section>
+            <section id="gridPage">
+                GridPage
             </section>
         </main>
         <footer>
