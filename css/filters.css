@@ -17,11 +17,11 @@
 	clear: both;
 	padding: 2px 0;
 	margin: 0 auto;
-	width: 395px;
+	width: 390px;
 }
 
 #advancedFilterPanel{
-	width: 795px;
+	width: 780px;
 	float: left;
 	margin-top: 3px;
 }
@@ -32,7 +32,7 @@
 	font-size: 14px;
 	padding-left: 15px;
 	height: 16px;
-	width: 150px;
+	width: 145px;
 	background: #a5474e;
 }
 
@@ -40,14 +40,14 @@
 	padding: 2px;
 	background: #cc888e;
 	height: 16px;
-	width: 250px;
+	width: 245px;
 }
 
 .property-value input, .property-value select{
 	padding: 2px;
 	font-size: 14px;
 	margin: 2px;
-	width: 246px;
+	width: 243px;
 }
 
 .property-value input[type=date]{
@@ -55,5 +55,5 @@
 }
 
 .property-value select{
-	width: 252px;
+	width: 249px;
 }
