@@ -153,7 +153,7 @@ let translator = new function Translator(){
         var userLang = navigator.language || navigator.userLanguage; 
         for(let propertyName in languages){
             if (arrayContains(userLang, languages[propertyName])){
-                currLang = propertyName;
+                this.currLang = propertyName;
             }
         }
     }
@@ -164,7 +164,7 @@ let translator = new function Translator(){
             for (let i=0; i<listForTranslate.length; i++){
                 let element =listForTranslate[i];
                 let nm = element.getAttribute("name");
-                let value = langDictionary.get(nm, currLang);
+                let value = langDictionary.get(nm, this.currLang);
                 if (value){
                     element.innerHTML = value;
                 }
@@ -174,9 +174,9 @@ let translator = new function Translator(){
 
     this.translate = function(eventSource){
         let lang = $(eventSource).attr("name");
-            if (lang && languages[lang] && currLang != lang){
-                currLang = lang;
-                fullTranslate();
+            if (lang && languages[lang] && this.currLang != lang){
+                this.currLang = lang;
+                this.fullTranslate();
             }
 
     }
