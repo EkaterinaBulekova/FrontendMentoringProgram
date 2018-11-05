@@ -1,5 +1,6 @@
 $(document).ready(function() {
     home.init();
+    translator.setCurrLang();
 });
 
 let extention = new function Extention(){
@@ -34,9 +35,7 @@ let formPage = extention.inherit(page, new function FormPage(){
     this.init = function(){
         order.load();
     }
-});
-
- 
+}); 
 
 let settings = extention.inherit(page, new function Settings(){
     let isLoaded = false;
@@ -58,6 +57,7 @@ let settings = extention.inherit(page, new function Settings(){
         categoryTable.load();
         userTable.load();
         isLoaded = true;
+        translator.fullTranslate();
     }
 });
 
@@ -109,32 +109,76 @@ let langDictionary = new function Dictionary(){
         email: {english: "Email", russian: "Почта"},
         groupid: {english: "Group Id", russian: "Группа"},
         password: {english: "Password", russian: "Пароль"},
-        
+        user1: {english: "User1", russian: "Пользователь1"},
+        user2: {english: "User2", russian: "Пользователь2"},
+        user3: {english: "User3", russian: "Пользователь3"},
+        category1: {english: "Category1", russian: "Категория1"},
+        category2: {english: "Category2", russian: "Категория2"},
+        category3: {english: "Category3", russian: "Категория3"},
+        name1: {english: "Product1", russian: "Товар1"},
+        name2: {english: "Product2", russian: "Товар2"},
+        name3: {english: "Product3", russian: "Товар3"},
+        name4: {english: "Product4", russian: "Товар4"},
+        name5: {english: "Product5", russian: "Товар5"},
+        name6: {english: "Product6", russian: "Товар6"},
+        name7: {english: "Product7", russian: "Товар7"},
+        inwork: {english: "Inwork", russian: "В работе"},
+        canceled: {english: "Canceled", russian: "Отменен"},
+        delivered: {english: "Delivered", russian: "Доставлен"},
+        all: {english: "All", russian: "Все"},
+        first: {english: "First", russian: "Перв."},
+        next: {english: "Next", russian: "След."},
+        prev: {english: "Prev", russian: "Пред."},
+        last: {english: "Last", russian: "Посл."}
+
     }
     this.get = function(key,lang){
+        let transElement = "";
         let dictElement = dictionary[key];
-        return dictElement[lang];
+        if(dictElement){
+            transElement = dictElement[lang];
+        }
+        return transElement;
     }
 }
 
 let translator = new function Translator(){
+    let languages = {
+        english: ["en-US", "en-EN"],
+        russian: ["ru-RU"]
+    }
     this.currLang = "english";
-    this.translate = function(eventSource){
-        let lang = $(eventSource).attr("name");
-        if (lang){
-            let listForTranslate = $(".translate")
-            if (listForTranslate){
-                this.currLang = lang;
-                for (let i=0; i<listForTranslate.length; i++){
-                    let element =listForTranslate[i];
-                    let nm = element.getAttribute("name");
-                    let value = langDictionary.get(nm, lang);
-                    if (value){
-                        element.innerHTML = value;
-                    }
+
+    this.setCurrLang = function(){
+        var userLang = navigator.language || navigator.userLanguage; 
+        for(let propertyName in languages){
+            if (arrayContains(userLang, languages[propertyName])){
+                currLang = propertyName;
+            }
+        }
+    }
+
+    this.fullTranslate = function(){
+        let listForTranslate = $(".translate")
+        if (listForTranslate){            
+            for (let i=0; i<listForTranslate.length; i++){
+                let element =listForTranslate[i];
+                let nm = element.getAttribute("name");
+                let value = langDictionary.get(nm, currLang);
+                if (value){
+                    element.innerHTML = value;
                 }
             }
         }
+    }
+
+    this.translate = function(eventSource){
+        let lang = $(eventSource).attr("name");
+            if (lang && languages[lang] && currLang != lang){
+                currLang = lang;
+                fullTranslate();
+            }
+
     }
 }
 
@@ -185,6 +229,8 @@ let dataList = new function DataList(){
         let newOption = document.createElement('option');
         newOption.text = name;
         newOption.value = id;
+        newOption.className = "translate";
+        newOption.setAttribute("name", name.toLowerCase())
         return newOption;
     };
 }
@@ -250,6 +296,7 @@ let commonDictionary = new function CommonDictionary(){
                 loadPageButtons(links, table, id);
             }
         }
+        translator.fullTranslate();
     };
 
     function loadThead(data, table) {
@@ -294,6 +341,8 @@ let commonDictionary = new function CommonDictionary(){
                 let button = document.createElement('button');
                 let linkParam = element.split('; ');                
                 button.innerHTML = linkParam[1].slice(5, linkParam[1].length-1);
+                button.className = "translate";
+                button.setAttribute("name", button.innerHTML);
                 button.onclick = function(){
                     ajaxRequest.get(linkParam[0].slice(1, linkParam[0].length-1), (response)=>{loadTable(response, id)});
                 }; 
@@ -329,6 +378,14 @@ let orderTable = extention.inherit(commonDictionary, new function OrderTable(){
     };
 });
 
-Window.prototype.isInteger=function(value){
-    return true;
+Window.prototype.genDictionaryName=function(value){
+    let listNames = value.toLowerCase().split(" ");
+    let result = "";
+    listNames.forEach(element => result += element);
+    return listNames;
+}
+
+Window.prototype.arrayContains = function arrayContains(needle, arrhaystack)
+{
+    return (arrhaystack.indexOf(needle) > -1);
 }

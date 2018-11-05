@@ -133,7 +133,7 @@ section.active{
 
 .tab-panel{
 	background-color: #fff;
-	overflow: hidden;
+	overflow-wrap: break-word;
 	margin: -1px 10px 10px;
 	padding: 10px;
 	border: 1px #a5474e solid;
@@ -141,11 +141,11 @@ section.active{
 }
 
 .tab-panel div{
-	display: none;
+	display: none;	
 }
 
 .tab-panel .active{
-	display: block;
+	display: flex;
 }
 
 .flex-container{
@@ -226,12 +226,12 @@ section.active{
 		"bigtop bigbottom"
 		"bigleft bigleft"
 		"smallcenter ."
-		}
+	}
 }
 
 @media screen and (max-width: 55em) {
 	.tab-panel{
-		overflow-x: scroll;
+		overflow-x: scroll; 
 	}
 	.flex-container{
 		padding-left: calc((100% - 27.5em)/2);
