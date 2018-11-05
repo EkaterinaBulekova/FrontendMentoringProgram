@@ -13,42 +13,54 @@
         <header>
             <nav>
                 <div class="menu-content">
+                    <div class="lang-button">
+                        <img name="russian" src="images/cropped-russia-flag-button-1.png" alt="" onclick="translator.translate(this)">
+                        <img name="english" src="images/icon-usa.png" alt=""  onclick="translator.translate(this)">
+                    </div>
                     <div class="nav-button">
                         <div class="view-3d">
                             <div class="button-3d" name="orderListPage" onclick="home.togglePage(this)">
-                                <div class="pane front"><figure>Home<figure></div>
-                                <div class="pane bottom"><figure>Home</figure></div>
+                                <div class="pane front"><figure class="translate" name="home">Home<figure></div>
+                                <div class="pane bottom"><figure class="translate" name="home">Home</figure></div>
                             </div>
                         </div> 
                     </div>
                     <div class="nav-button">
                         <div class="view-3d">
                             <div class="button-3d" name="settingsPage" onclick="settings.toggleSettingsPage(this)">
-                                <div class="pane front"><figure>Settings<figure></div>
-                                <div class="pane bottom"><figure>Settings</figure></div>
+                                <div class="pane front"><figure class="translate" name="settings">Settings<figure></div>
+                                <div class="pane bottom"><figure class="translate" name="settings">Settings</figure></div>
                             </div>
                         </div>
                     </div>
                     <div class="nav-button">
                         <div class="view-3d">
                             <div class="button-3d" name="gridPage" onclick="gridPage.togglePage(this)">
-                                <div class="pane front"><figure>GridPage<figure></div>
-                                <div class="pane bottom"><figure>GridPage</figure></div>
+                                <div class="pane front"><figure class="translate" name="grid">GridPage<figure></div>
+                                <div class="pane bottom"><figure  class="translate" name="grid">GridPage</figure></div>
                             </div>
                         </div>
                     </div>
                     <div class="nav-button">
                         <div class="view-3d">
                             <div class="button-3d" name="flexPage" onclick="flexPage.togglePage(this)">
-                                <div class="pane front"><figure>FlexPage<figure></div>
-                                <div class="pane bottom"><figure>FlexPage</figure></div>
+                                <div class="pane front"><figure class="translate" name="flex">FlexPage<figure></div>
+                                <div class="pane bottom"><figure class="translate" name="flex">FlexPage</figure></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-button">
+                        <div class="view-3d">
+                            <div class="button-3d" name="shapePage" onclick="shapePage.togglePage(this)">
+                                <div class="pane front"><figure class="translate" name="shape">ShapePage<figure></div>
+                                <div class="pane bottom"><figure class="translate" name="shape">ShapePage</figure></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </nav>
         </header>
-        <main>
+        <!-- <main> -->
             <!-- <section id="pictures-panel">
                 <div class="view-3d">
                     <div class="picture-3d">
@@ -86,132 +98,106 @@
             <section id="settingsPage">
                 <!-- <h1>Settings</h1> -->
                 <ul class="tabs">
-                    <li name='div1' class="active" onclick="settings.selectTab(this)">Products</li>
-                    <li name='div2' onclick="settings.selectTab(this)">Categories</li>
-                    <li name='div3' onclick="settings.selectTab(this)">Users</li>
+                    <li name='products' class="active translate" onclick="settings.selectTab(this)">Products</li>
+                    <li name='categories'class="translate" onclick="settings.selectTab(this)">Categories</li>
+                    <li name='users' class="translate" onclick="settings.selectTab(this)">Users</li>
                 </ul>
                 <div class="tab-panel">
-                    <div id='div1' class="active">
+                    <div id='products' class="active">
                         <table id="productsTable"></table>
                     </div>
-                    <div id='div2'>
+                    <div id='categories'>
                         <table id="categoriesTable"></table>
                     </div>
-                    <div id='div3'>
+                    <div id='users'>
                         <table id="usersTable"></table>
                     </div>
                 </div>
             </section>
             <section id="orderListPage" class="active">
-                <form class="filter">
+                <form> 
+                    <div class="filter">
                     <!-- <div class="buttons-panel">
                         <button type="button" class="minWidth">Search</button>
                         <button type="reset" class="minWidth">Reset</button>
                         <button type="button" onclick="filter.toggleAdvansedPanel(this)">More Filters</button>
                     </div> -->
-                    <div id="filterPanel">
+                    <div class="quick-filter">
                         <table>
                             <tr>
-                                <td class="property-name">User Id</td>
+                                <td name="userid" class="property-name translate">User Id</td>
                                 <td class="property-value">
-                                    <select id="users">
+                                    <select id="usersFilter">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="property-name">Status</td>
+                                <td name="status" class="property-name translate">Status</td>
                                 <td class="property-value">
-                                    <select id="statuses">
+                                    <select id="statusesFilter">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="property-name">Date</td>
+                                <td name="date" class="property-name translate">Date</td>
                                 <td class="property-value"><input type="date" name="ShippedDate" id="ShippedDate"></td>
                             </tr>
                         </table>
                     </div>
-                    <div id="advancedFilterPanel" style="display: none">
+                    <div class="advanced-filter" style="display: none">
                         <table>
                             <tr>
-                                <td class="property-name">Address</td>
+                                <td name="address" class="property-name translate">Address</td>
                                 <td class="property-value">
                                     <input type="text" name="" id="">
                                 </td>
-                                <td class="property-name">Phone</td>
-                                <td class="property-value">
-                                    <input type="tel" name="" id="">
-                                </td>
-                            </tr>
+                           </tr>
                             <tr>
-                                <td class="property-name">Product</td>
+                                <td name="product" class="property-name translate">Product</td>
                                 <td class="property-value">
-                                    <select id="products">                                    
-                                    </select>
-                                </td>
-                                <td class="property-name">Category</td>
-                                <td class="property-value">                                    
-                                    <select id="categories">                                    
+                                    <select id="productsFilter">                                    
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="property-name">Order Date</td>
+                                <td name="orderdate" class="property-name translate">Order Date</td>
                                 <td class="property-value"><input type="date" name="OrderedDate" id="OrderedDate"></td>
-                                <td class="property-name">Required Date</td>
-                                <td class="property-value"><input type="date" name="RequiredDate" id="RequiredDate"></td>
                             </tr>
                         </table>
                     </div>
+                    <div class="advanced-filter" style="display: none">
+                            <table>
+                                <tr>
+                                    <td name="phone" class="property-name translate">Phone</td>
+                                    <td class="property-value">
+                                        <input type="tel" name="" id="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td name="category" class="property-name translate">Category</td>
+                                    <td class="property-value">                                    
+                                        <select id="categoriesFilter">                                    
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td name="requireddate" class="property-name translate">Required Date</td>
+                                    <td class="property-value"><input type="date" name="RequiredDate" id="RequiredDate"></td>
+                                </tr>
+                            </table>
+                        </div>
+                </div>
                     <div class="buttons-panel">
-                        <button type="button" class="minWidth">Search</button>
-                        <button type="reset" class="minWidth">Reset</button>
-                        <button type="button" class="minWidth" onclick="filter.toggleAdvansedPanel(this)">Filters ></button>
+                        <button name="search" type="button" class="minWidth translate">Search</button>
+                        <button name="reset" type="reset" class="minWidth translate">Reset</button>
+                        <button name="filters" type="button" class="minWidth translate" onclick="filter.toggleAdvansedPanel(this)">Filters ></button>
                     </div>
                 </form>
                 <table id="ordersTable">
                 </table>
                 </div>
             </section>
-            <section id="flexPage">
-                <div class="flex-container">
-                    <figure class="flex-item big">
-                        <picture>
-                            <img src="images/3_1.jpg">
-                        </picture>
-                    </figure>
-                    <figure class="flex-item small">
-                        <picture>
-                            <img src="images/ard-licsoft.jpg">
-                        </picture>
-                    </figure>
-                    <figure class="flex-item small">
-                        <picture>
-                            <img src="images/board-large-6.jpg">
-                        </picture>
-                    </figure>
-                     <figure class="flex-item small">
-                        <picture>
-                            <img src="images/ard-licsoft.jpg">
-                        </picture>
-                    </figure>
-                    <figure class="flex-item small">
-                        <picture>
-                            <img src="images/board-large-6.jpg">
-                        </picture>
-                    </figure>
-                    <figure class="flex-item small">
-                        <picture>
-                            <img src="images/ard-licsoft.jpg">
-                        </picture>
-                    </figure>
-                    <figure class="flex-item big">
-                        <picture>
-                            <img src="images/3_1.jpg">
-                        </picture>
-                    </figure>
-                </div>
-            </section>
+        <!-- </main> -->
             <section id="gridPage">
                 <div class="grid-container">
                     <figure class="grid-item big-top">
@@ -233,7 +219,7 @@
                         <picture>
                             <img src="images/cool-image.png">
                         </picture>
-                    </figure>                    
+                    </figure>
                     <figure class="grid-item big-left">
                         <picture>
                             <img src="images/3_1.jpg">
@@ -241,7 +227,62 @@
                     </figure>
                 </div>
             </section>
-        </main>
+            <section id="flexPage">
+            <div class="flex-container">
+                <figure class="flex-item big">
+                    <picture>
+                        <img src="images/3_1.jpg">
+                    </picture>
+                </figure>
+                <figure class="flex-item small">
+                    <picture>
+                        <img src="images/ard-licsoft.jpg">
+                    </picture>
+                </figure>
+                <figure class="flex-item small">
+                    <picture>
+                        <img src="images/board-large-6.jpg">
+                    </picture>
+                </figure>
+                 <figure class="flex-item small">
+                    <picture>
+                        <img src="images/ard-licsoft.jpg">
+                    </picture>
+                </figure>
+                <figure class="flex-item small">
+                    <picture>
+                        <img src="images/board-large-6.jpg">
+                    </picture>
+                </figure>
+                <figure class="flex-item small">
+                    <picture>
+                        <img src="images/ard-licsoft.jpg">
+                    </picture>
+                </figure>
+                <figure class="flex-item big">
+                    <picture>
+                        <img src="images/3_1.jpg">
+                    </picture>
+                </figure>
+            </div>
+        </section>
+        <section id="shapePage">
+            <div class="shape cherry"></div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                Quia, similique! Quis maxime harum maiores, odit recusandae 
+                incidunt illo vitae eveniet vero praesentium, consectetur qui, 
+                fuga corrupti atque iste ratione laborum reiciendis a voluptates?
+                 Voluptate corrupti praesentium eaque quaerat placeat ipsam!
+                  Laborum, placeat cum ab sapiente itaque repudiandae tempore
+                   repellendus quidem voluptatum commodi consectetur fuga magni
+                    similique dignissimos incidunt quod dolores delectus quos 
+                    voluptates dolor magnam maxime! Laboriosam obcaecati est et?
+                     Adipisci quos ipsa dolore nobis cumque voluptatem voluptate, 
+                     vero obcaecati unde, quo, voluptatibus molestiae incidunt 
+                     tenetur eos excepturi! Nemo, quasi. Ipsa, inventore mollitia.
+                      Tempore dicta ipsam reprehenderit minus. Quos maiores optio 
+                      totam, hic, perspiciatis praesentium veniam eum consectetur et harum, commodi dolorum temporibus natus doloremque sit consequuntur modi aliquid unde eligendi accusamus nesciunt? Ipsum perferendis rem eum illo dolores quas delectus vero quisquam soluta. Et, totam! Consequuntur obcaecati iure reiciendis enim autem sunt incidunt ipsam non molestiae doloremque. Minus, fuga impedit dignissimos rerum sequi distinctio saepe? Optio omnis iusto eos aliquid deleniti, et sunt corporis rem adipisci quis unde vel eum deserunt nostrum? Libero, in modi a rerum tempore exercitationem? Nulla, quis sequi dolor consequatur reprehenderit earum, sapiente doloribus fuga, doloremque unde repudiandae expedita minus facere nisi magni nostrum dignissimos rerum neque at vero. Repudiandae hic sit aliquam iusto quod inventore, facere in harum quae, possimus doloribus nam. Modi eius ea praesentium consequuntur culpa maxime sint a voluptates sequi ipsa quibusdam quia numquam, magnam in architecto doloribus! Dignissimos praesentium labore inventore ex veritatis optio quam consequuntur soluta tempore sunt officiis perspiciatis dolores nobis minus in, vitae natus aspernatur, architecto culpa obcaecati quia impedit veniam dolor excepturi! Beatae vel quod laboriosam nisi minus natus quos magnam nam obcaecati, at tempore aspernatur ratione optio consectetur sapiente iure in fugiat expedita eligendi, atque est, voluptatibus cumque! Aut, ipsam rem soluta amet officia qui?</p>
+        </section>
         <footer>
             <div class="footer-content">
                 <h1>Contact us:</h1>

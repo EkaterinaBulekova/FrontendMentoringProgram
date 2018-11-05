@@ -17,12 +17,26 @@ let page = new function Page(){
     }
 }
 
+//page.constructor.prototype
+
 let home = extention.inherit(page, new function Home(){
     this.init = function(){
         filter.init();
         orderTable.load();
     }
 });
+
+let formPage = extention.inherit(page, new function FormPage(){
+    this.toggleFormPage = function(eventSource){
+        this.togglePage(eventSource);
+        this.init();
+    }
+    this.init = function(){
+        order.load();
+    }
+});
+
+ 
 
 let settings = extention.inherit(page, new function Settings(){
     let isLoaded = false;
@@ -57,13 +71,76 @@ let gridPage = extention.inherit(page, new function GridPage(){
     }
 });
 
+let shapePage = extention.inherit(page, new function ShapePage(){
+    this.init = function(){
+    }
+});
 
+let langDictionary = new function Dictionary(){
+    let dictionary = {
+        home: {english: "Home", russian: "Главная"},
+        settings: {english: "Settings", russian: "Настройки"},
+        grid: {english: "GridPage", russian: "Гриды"},
+        flex: {english: "FlexPage", russian: "Флексы"},
+        shape: {english: "ShapePage", russian: "Шейпы"},
+        userid: {english: "User Id", russian: "Пользователь"},
+        status: {english: "Status", russian: "Статус"},
+        date: {english: "Date", russian: "Дата"},
+        orderdate: {english: "Order date", russian: "Дата доставки"},
+        requireddate: {english: "Required date", russian: "Дата ож-ния"},
+        address: {english: "Address", russian: "Адрес"},
+        phone: {english: "Phone", russian: "Телефон"},
+        product: {english: "Product", russian: "Продукт"},
+        category: {english: "Category", russian: "Категория"},
+        search: {english: "Search", russian: "Искать"},
+        reset: {english: "Reset", russian: "Сбросить"},
+        filters: {english: "Filters >", russian: "Фильтры >"},
+        filtersback: {english: "> Filters", russian: "> Фильтры"},
+        products: {english: "Products", russian: "Продукты"},
+        categories: {english: "Categories", russian: "Категории"},
+        users: {english: "Users", russian: "Пользователи"},
+        id: {english: "Id", russian: "Номер"},
+        name: {english: "Name", russian: "Наименование"},
+        description: {english: "Description", russian: "Описание"},
+        price: {english: "Price", russian: "Цена"},
+        stock: {english: "Stock", russian: "Склад"},
+        imageurl: {english: "Image URL", russian: "URL фото"},
+        categoryid: {english: "Category Id", russian: "Категория"},
+        email: {english: "Email", russian: "Почта"},
+        groupid: {english: "Group Id", russian: "Группа"},
+        password: {english: "Password", russian: "Пароль"},
+        
+    }
+    this.get = function(key,lang){
+        let dictElement = dictionary[key];
+        return dictElement[lang];
+    }
+}
 
+let translator = new function Translator(){
+    this.currLang = "english";
+    this.translate = function(eventSource){
+        let lang = $(eventSource).attr("name");
+        if (lang){
+            let listForTranslate = $(".translate")
+            if (listForTranslate){
+                this.currLang = lang;
+                for (let i=0; i<listForTranslate.length; i++){
+                    let element =listForTranslate[i];
+                    let nm = element.getAttribute("name");
+                    let value = langDictionary.get(nm, lang);
+                    if (value){
+                        element.innerHTML = value;
+                    }
+                }
+            }
+        }
+    }
+}
 
 let filter = new function Filter(){
     let hasAdvanced = false;
-    let filterPanelId ='#filterPanel';
-    let advFilterPanelId = '#advancedFilterPanel';
+    let advFilterPanelId = '.advanced-filter';
     let serverUrl = 'http://localhost:3000/';
     let listsIds = ['products', 'statuses', 'categories', 'users'];
 
@@ -80,17 +157,15 @@ let filter = new function Filter(){
 
     this.toggleAdvansedPanel = function(eventSource){
         let advPanel = $(advFilterPanelId);
-        let panel = $(filterPanelId);
-        let butPanel =$(".filter .buttons-panel")
         advPanel.toggle();
-        if (hasAdvanced){            
-            panel.css( "float", "" );
-            eventSource.innerHTML = 'Filters >'
+        if (hasAdvanced){
+            eventSource.setAttribute("name", "filters");
+            eventSource.innerHTML = langDictionary.get("filters", translator.currLang);
             hasAdvanced = false;
-        }else{            
-            panel.css( "float", "left" );
+        }else{
+            eventSource.setAttribute("name", "filtersback");
+            eventSource.innerHTML = langDictionary.get("filtersback", translator.currLang);
             hasAdvanced = true;
-            eventSource.innerHTML = '< Filters'
         }
     }
 }
@@ -98,7 +173,7 @@ let filter = new function Filter(){
 let dataList = new function DataList(){
     this.load = function(id, response){
         let data = response.responseJSON;
-        let dataList = document.getElementById(id);
+        let dataList = document.getElementById(id+"Filter");
         dataList.innerHTML = '';
         dataList.appendChild(getOption(0 ,'All'));
         for(let i = 0; i < data.length; i++){
@@ -160,7 +235,7 @@ let commonDictionary = new function CommonDictionary(){
     this.load =  function(){
         let tableId = this.name + 'Table';
         let url = 'http://localhost:3000/' + this.name;
-        let paginate =  this.pagination
+        let paginate = this.pagination
         ajaxRequest.get(urlBuilder.getUrl(url, paginate), (response)=>{loadTable(response, tableId)});
     };
 
@@ -186,6 +261,8 @@ let commonDictionary = new function CommonDictionary(){
                 let newCell = newRow.insertCell(j);
                 let newText = document.createTextNode(propertyName);
                 newCell.appendChild(newText);
+                newCell.className = "translate";
+                newCell.setAttribute("name", propertyName.toLowerCase());
                 j++;
             }
         }
@@ -243,4 +320,15 @@ let userTable = extention.inherit(commonDictionary, new function UserTable(){
 let orderTable = extention.inherit(commonDictionary, new function OrderTable(){
     this.name = "orders";
     this.pagination = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}];
+    this.orderById = [{Name:"id", Value:"1"},{Name :"_limit", Value:"5"}];
+    this.loadById =  function(){
+        let tableId = this.name + 'Table';
+        let url = 'http://localhost:3000/' + this.name;
+        let paginate = this.orderById
+        ajaxRequest.get(urlBuilder.getUrl(url, paginate), (response)=>{loadForm(response, formId)});
+    };
 });
+
+Window.prototype.isInteger=function(value){
+    return true;
+}

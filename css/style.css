@@ -6,21 +6,21 @@
 
 nav {
 	width: 100%;
-	height: 50px;
+	height: 100%;
 	background-color: #b84b59;
 	background-image: linear-gradient(#b44b52, #b84b59 25%, #532427);
 	margin: 0;
-	padding-top: 2px;
+	padding-top: 5px;
 	top:0;
-	position: fixed;
+	position: relative;
 	z-index: 3;
 }
 
 nav>.menu-content{
-	width: 1200px;
+	display: flex;
+	flex-wrap: wrap;
 	overflow: hidden;
-	padding: 2px;
-	margin: 0 auto;
+	padding-left: calc((100% - 82em)/2);
 	bottom:0;
 	height: 100%;
 }
@@ -41,6 +41,15 @@ nav .nav-button {
     font-weight: 400;
     text-shadow: 0 0 1px rgba(255,255,255,0.3);
     font-size: 1.35em;
+}
+
+nav img{
+	height: 40px;
+	width: 40px;
+}
+
+nav .lang-button{
+	float: right;
 }
 
 main {
@@ -91,7 +100,7 @@ footer img:hover{
 
 section {
 	display: none;
-	margin: 20px 5px;
+	margin: 70px auto;
 }
 
 section.active{
@@ -123,6 +132,8 @@ section.active{
 }
 
 .tab-panel{
+	background-color: #fff;
+	overflow: hidden;
 	margin: -1px 10px 10px;
 	padding: 10px;
 	border: 1px #a5474e solid;
@@ -138,7 +149,7 @@ section.active{
 }
 
 .flex-container{
-	padding: 0 0.6em;
+	padding-left: calc((100% - 82em)/2);
 	display: flex;
 	flex-wrap: wrap;
 	flex-grow: unset;
@@ -155,32 +166,110 @@ section.active{
 }
 
 .grid-container{
-	padding: 0 0.65em;
+	padding-left: calc((100% - 82em)/2);
 	display: grid;
-	grid: 27.5em 27.5em 27.5em / 27.5em 27.5em 27.5em;	
+	grid-template-rows: 25em 25em 25em;
+	grid-template-columns: 27.5em 27.5em 27.5em;
+	grid-template-areas: 
+	"bigtop bigright bigright"
+	"bigtop smallcenter bigbottom"
+	"bigleft bigleft bigbottom"
 }
 
 .grid-item.big-left{
-	grid-column: 1 /span 2;
+	grid-area: bigleft;
+	margin-bottom: -4px;
 }
 
 .grid-item.big-right{
-	grid-column: 2 /span 2;
+	grid-area: bigright;
+	margin-bottom: -4px;
 }
 
 .grid-item.big-top{
-	grid-row: 1 / span 2;
+	grid-area: bigtop;
 }
 
 .grid-item.big-bottom{
-	grid-row: 2 / span 2;
+	grid-area: bigbottom;
 }
 
 .grid-item.small-center{
-	grid-area: 2 / 2 / 2 / 2;
+	grid-area: smallcenter;
+}
+
+#orderListPage, #settingsPage{
+	padding: 0 calc((100% - 82.5em)/2);
+}
+#shapePage{
+	padding: 0 calc((100% - 82.5em)/2 + 6.75em);
+}
+
+@media screen and (max-width: 82em) {
+	#orderListPage, #settingsPage{
+		padding: 0 5px;
+	}
+	#shapePage{
+		padding: 0 6.75em;
+	}
+
+	.flex-container{
+		padding-left: calc((100% - 55em)/2);
+	}
+	.grid-container{
+		padding-left: calc((100% - 55em)/2);
+		grid-template-rows: 25em 25em 25em 25em 25em;
+		grid-template-columns: 27.5em 27.5em;
+		grid-template-areas:
+		"bigright bigright"
+		"bigtop bigbottom"
+		"bigtop bigbottom"
+		"bigleft bigleft"
+		"smallcenter ."
+		}
+}
+
+@media screen and (max-width: 55em) {
+	.tab-panel{
+		overflow-x: scroll;
+	}
+	.flex-container{
+		padding-left: calc((100% - 27.5em)/2);
+	}
+	.grid-container{
+		padding-left: calc((100% - 27.5em)/2);
+		grid-template-rows: 25em 25em 25em 25em 25em 25em 25em;
+		grid-template-columns: 27.5em;
+		grid-template-areas:
+		"bigright"
+		"bigtop"
+		"bigtop"
+		"smallcenter"
+		"bigbottom"
+		"bigbottom"
+		"bigleft"
+	}
 }
 
 .flex-container img, .grid-container img{
  width: 100%;
  height: 100%;
 }
+
+.shape.cherry{
+    background: url("../images/cherry.png");
+    background-size: cover;
+    float: left;
+    height: 17.9375em;
+    margin: 0 1em 1em -6.75em;
+    width: 18.9625em;
+    transition: all ease 1s;
+    shape-margin: 0.9em;
+	shape-outside:polygon(-34.6% 11.25%, 0.6% 4.75%, 27.6% 24.75%, 67.6% 38.75%, 82.2% 61.95%, 79.1% 63.25%, 44.5% 70.85%, -21.2% 78.35%, -50.2% 0%)
+}
+
+.shape.cherry:hover {
+    background-image: url("../images/Gluecksklee.png");
+	shape-outside: polygon(-95.7% 95.95%, -24.45% -10.45%, 98.95% 31%, 89.15% 46.85%, 53.4% 52.8%, 67.05% 6.1%, 73.75% 69.3%, 8.55% 93.15%)
+}
+

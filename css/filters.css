@@ -1,6 +1,7 @@
 .filter{
-	margin: 0 auto;
-	width: 1200px;	
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .filter table{	
@@ -8,22 +9,19 @@
 	line-height: 14px;
 }
 
-.filter .buttons-panel{
-	margin: 0 auto;
-	width: 278px;	
+.buttons-panel{
+	margin: 10px auto;
+	width: 350px;	
 }
 
 #filterPanel{
-	clear: both;
-	padding: 2px 0;
-	margin: 0 auto;
-	width: 390px;
+	flex: 0 1 27.5em;
+	height: 7em;
 }
 
-#advancedFilterPanel{
-	width: 780px;
-	float: left;
-	margin-top: 3px;
+.advanced-filter, .quick-filter{
+	flex: 0 1 27.5em;
+	height: 7em;
 }
 
 .property-name{
