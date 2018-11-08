@@ -1,6 +1,6 @@
 $(document).ready(function() {
     home.init();
-    translator.setCurrLang();
+    translator.init();
 });
 
 let extention = new function Extention(){
@@ -57,128 +57,102 @@ let settings = extention.inherit(page, new function Settings(){
         categoryTable.load();
         userTable.load();
         isLoaded = true;
-        translator.fullTranslate();
     }
 });
 
-let flexPage = extention.inherit(page, new function FlexPage(){
+let documents = extention.inherit(page, new function DocPage(){
     this.init = function(){
     }
 });
-
-let gridPage = extention.inherit(page, new function GridPage(){
-    this.init = function(){
-    }
-});
-
-let shapePage = extention.inherit(page, new function ShapePage(){
-    this.init = function(){
-    }
-});
-
-let langDictionary = new function Dictionary(){
-    let dictionary = {
-        home: {english: "Home", russian: "Главная"},
-        settings: {english: "Settings", russian: "Настройки"},
-        grid: {english: "GridPage", russian: "Гриды"},
-        flex: {english: "FlexPage", russian: "Флексы"},
-        shape: {english: "ShapePage", russian: "Шейпы"},
-        userid: {english: "User Id", russian: "Пользователь"},
-        status: {english: "Status", russian: "Статус"},
-        date: {english: "Date", russian: "Дата"},
-        orderdate: {english: "Order date", russian: "Дата доставки"},
-        requireddate: {english: "Required date", russian: "Дата ож-ния"},
-        address: {english: "Address", russian: "Адрес"},
-        phone: {english: "Phone", russian: "Телефон"},
-        product: {english: "Product", russian: "Продукт"},
-        category: {english: "Category", russian: "Категория"},
-        search: {english: "Search", russian: "Искать"},
-        reset: {english: "Reset", russian: "Сбросить"},
-        filters: {english: "Filters >", russian: "Фильтры >"},
-        filtersback: {english: "> Filters", russian: "> Фильтры"},
-        products: {english: "Products", russian: "Продукты"},
-        categories: {english: "Categories", russian: "Категории"},
-        users: {english: "Users", russian: "Пользователи"},
-        id: {english: "Id", russian: "Номер"},
-        name: {english: "Name", russian: "Наименование"},
-        description: {english: "Description", russian: "Описание"},
-        price: {english: "Price", russian: "Цена"},
-        stock: {english: "Stock", russian: "Склад"},
-        imageurl: {english: "Image URL", russian: "URL фото"},
-        categoryid: {english: "Category Id", russian: "Категория"},
-        email: {english: "Email", russian: "Почта"},
-        groupid: {english: "Group Id", russian: "Группа"},
-        password: {english: "Password", russian: "Пароль"},
-        user1: {english: "User1", russian: "Пользователь1"},
-        user2: {english: "User2", russian: "Пользователь2"},
-        user3: {english: "User3", russian: "Пользователь3"},
-        category1: {english: "Category1", russian: "Категория1"},
-        category2: {english: "Category2", russian: "Категория2"},
-        category3: {english: "Category3", russian: "Категория3"},
-        name1: {english: "Product1", russian: "Товар1"},
-        name2: {english: "Product2", russian: "Товар2"},
-        name3: {english: "Product3", russian: "Товар3"},
-        name4: {english: "Product4", russian: "Товар4"},
-        name5: {english: "Product5", russian: "Товар5"},
-        name6: {english: "Product6", russian: "Товар6"},
-        name7: {english: "Product7", russian: "Товар7"},
-        inwork: {english: "Inwork", russian: "В работе"},
-        canceled: {english: "Canceled", russian: "Отменен"},
-        delivered: {english: "Delivered", russian: "Доставлен"},
-        all: {english: "All", russian: "Все"},
-        first: {english: "First", russian: "Перв."},
-        next: {english: "Next", russian: "След."},
-        prev: {english: "Prev", russian: "Пред."},
-        last: {english: "Last", russian: "Посл."}
-
-    }
-    this.get = function(key,lang){
-        let transElement = "";
-        let dictElement = dictionary[key];
-        if(dictElement){
-            transElement = dictElement[lang];
-        }
-        return transElement;
-    }
-}
 
 let translator = new function Translator(){
-    let languages = {
-        english: ["en-US", "en-EN"],
-        russian: ["ru-RU"]
+    let dictionary = {
+        home: {en: "Home", ru: "Главная"},
+        settings: {en: "Settings", ru: "Настройки"},
+        documents: {en: "Documents", ru: "Документы"},
+        userid: {en: "User Id", ru: "Пользователь"},
+        status: {en: "Status", ru: "Статус"},
+        date: {en: "Date", ru: "Дата"},
+        orderdate: {en: "Order date", ru: "Дата доставки"},
+        requireddate: {en: "Required date", ru: "Дата ож-ния"},
+        address: {en: "Address", ru: "Адрес"},
+        phone: {en: "Phone", ru: "Телефон"},
+        product: {en: "Product", ru: "Продукт"},
+        category: {en: "Category", ru: "Категория"},
+        search: {en: "Search", ru: "Искать"},
+        reset: {en: "Reset", ru: "Сбросить"},
+        filters: {en: "Filters >", ru: "Фильтры >"},
+        filtersback: {en: "> Filters", ru: "> Фильтры"},
+        products: {en: "Products", ru: "Продукты"},
+        categories: {en: "Categories", ru: "Категории"},
+        users: {en: "Users", ru: "Пользователи"},
+        id: {en: "Id", ru: "Номер"},
+        name: {en: "Name", ru: "Наименование"},
+        description: {en: "Description", ru: "Описание"},
+        price: {en: "Price", ru: "Цена"},
+        stock: {en: "Stock", ru: "Склад"},
+        imageurl: {en: "Image URL", ru: "URL фото"},
+        categoryid: {en: "Category Id", ru: "Категория"},
+        email: {en: "Email", ru: "Почта"},
+        groupid: {en: "Group Id", ru: "Группа"},
+        password: {en: "Password", ru: "Пароль"},
+        user1: {en: "User1", ru: "Пользователь1"},
+        user2: {en: "User2", ru: "Пользователь2"},
+        user3: {en: "User3", ru: "Пользователь3"},
+        category1: {en: "Category1", ru: "Категория1"},
+        category2: {en: "Category2", ru: "Категория2"},
+        category3: {en: "Category3", ru: "Категория3"},
+        name1: {en: "Product1", ru: "Товар1"},
+        name2: {en: "Product2", ru: "Товар2"},
+        name3: {en: "Product3", ru: "Товар3"},
+        name4: {en: "Product4", ru: "Товар4"},
+        name5: {en: "Product5", ru: "Товар5"},
+        name6: {en: "Product6", ru: "Товар6"},
+        name7: {en: "Product7", ru: "Товар7"},
+        inwork: {en: "Inwork", ru: "В работе"},
+        canceled: {en: "Canceled", ru: "Отменен"},
+        delivered: {en: "Delivered", ru: "Доставлен"},
+        all: {en: "All", ru: "Все"},
+        first: {en: "First", ru: "Перв."},
+        next: {en: "Next", ru: "След."},
+        prev: {en: "Prev", ru: "Пред."},
+        last: {en: "Last", ru: "Посл."},
+        productName: {en:"Product Name", ru: "Наименование товара"},
+        videoblock: {en:"Video block", ru: "Видео блок"}
     }
-    this.currLang = "english";
 
-    this.setCurrLang = function(){
-        var userLang = navigator.language || navigator.userLanguage; 
-        for(let propertyName in languages){
-            if (arrayContains(userLang, languages[propertyName])){
-                this.currLang = propertyName;
-            }
-        }
+    let currLang = "en";
+
+    this.init = function(){
+        let sysLang = navigator.language || navigator.userLanguage;
+        this.currLang = sysLang.substring(0, 2);
+        this.translateFull(this.currLang);
     }
 
-    this.fullTranslate = function(){
-        let listForTranslate = $(".translate")
-        if (listForTranslate){            
-            for (let i=0; i<listForTranslate.length; i++){
-                let element =listForTranslate[i];
-                let nm = element.getAttribute("name");
-                let value = langDictionary.get(nm, this.currLang);
-                if (value){
-                    element.innerHTML = value;
+    this.translateFull = function(lang){
+        let dict = dictionary;
+        if(lang){
+            currLang = (lang) ? lang : currLang;
+            $(".lang-button img").each(function() {
+                if($(this).attr("name") === lang){
+                    $(this).css("display", "none")
+                }else{
+                    $(this).css("display", "inline-block")
                 }
-            }
+            });
         }
+        $(".translate").each(function() {
+            let name = $(this).attr("name");
+            name && $(this).text(dict[name][currLang]);
+        });
     }
 
-    this.translate = function(eventSource){
-        let lang = $(eventSource).attr("name");
-            if (lang && languages[lang] && this.currLang != lang){
-                this.currLang = lang;
-                this.fullTranslate();
-            }
-
+    this.translateElement = function(element, name){
+        element.className = (element.classList.contains("translate"))
+            ? element.className
+            : element.className + " translate";
+        element.setAttribute("name", name);
+        element.innerHTML = dictionary[name][currLang];
     }
 }
 
@@ -203,12 +177,10 @@ let filter = new function Filter(){
         let advPanel = $(advFilterPanelId);
         advPanel.toggle();
         if (hasAdvanced){
-            eventSource.setAttribute("name", "filters");
-            eventSource.innerHTML = langDictionary.get("filters", translator.currLang);
+            translator.translateElement(eventSource, "filters");
             hasAdvanced = false;
         }else{
-            eventSource.setAttribute("name", "filtersback");
-            eventSource.innerHTML = langDictionary.get("filtersback", translator.currLang);
+            translator.translateElement(eventSource, "filtersback");
             hasAdvanced = true;
         }
     }
@@ -296,7 +268,6 @@ let commonDictionary = new function CommonDictionary(){
                 loadPageButtons(links, table, id);
             }
         }
-        translator.fullTranslate();
     };
 
     function loadThead(data, table) {
@@ -306,10 +277,7 @@ let commonDictionary = new function CommonDictionary(){
             let j = 0;
             for(let propertyName in data[0]) {
                 let newCell = newRow.insertCell(j);
-                let newText = document.createTextNode(propertyName);
-                newCell.appendChild(newText);
-                newCell.className = "translate";
-                newCell.setAttribute("name", propertyName.toLowerCase());
+                translator.translateElement(newCell, propertyName.toLowerCase());
                 j++;
             }
         }
@@ -339,10 +307,9 @@ let commonDictionary = new function CommonDictionary(){
             newCell.setAttribute("colspan", "10");
             links.forEach(element => {
                 let button = document.createElement('button');
-                let linkParam = element.split('; ');                
-                button.innerHTML = linkParam[1].slice(5, linkParam[1].length-1);
-                button.className = "translate";
-                button.setAttribute("name", button.innerHTML);
+                let linkParam = element.split('; ');
+                let name = linkParam[1].slice(5, linkParam[1].length-1);
+                translator.translateElement(button, name);
                 button.onclick = function(){
                     ajaxRequest.get(linkParam[0].slice(1, linkParam[0].length-1), (response)=>{loadTable(response, id)});
                 }; 
@@ -378,14 +345,11 @@ let orderTable = extention.inherit(commonDictionary, new function OrderTable(){
     };
 });
 
-Window.prototype.genDictionaryName=function(value){
-    let listNames = value.toLowerCase().split(" ");
-    let result = "";
-    listNames.forEach(element => result += element);
-    return listNames;
+Window.prototype.genDictionaryName=function(value){    
+    return value.toLowerCase().split(' ').join('');
 }
 
 Window.prototype.arrayContains = function arrayContains(needle, arrhaystack)
 {
-    return (arrhaystack.indexOf(needle) > -1);
+    return (arraystack.indexOf(needle) > -1);
 }

@@ -14,8 +14,8 @@
             <nav>
                 <div class="menu-content">
                     <div class="lang-button">
-                        <img name="russian" src="images/cropped-russia-flag-button-1.png" alt="" onclick="translator.translate(this)">
-                        <img name="english" src="images/icon-usa.png" alt=""  onclick="translator.translate(this)">
+                        <img name="ru" src="images/cropped-russia-flag-button-1.png" alt="" onclick="translator.translateFull('ru')">
+                        <img name="en" src="images/icon-usa.png" alt="" onclick="translator.translateFull('en')">
                     </div>
                     <div class="nav-button">
                         <div class="view-3d">
@@ -35,74 +35,25 @@
                     </div>
                     <div class="nav-button">
                         <div class="view-3d">
-                            <div class="button-3d" name="gridPage" onclick="gridPage.togglePage(this)">
-                                <div class="pane front"><figure class="translate" name="grid">GridPage<figure></div>
-                                <div class="pane bottom"><figure  class="translate" name="grid">GridPage</figure></div>
+                            <div class="button-3d" name="documentsPage" onclick="documents.togglePage(this)">
+                                <div class="pane front"><figure class="translate" name="documents">Documents<figure></div>
+                                <div class="pane bottom"><figure  class="translate" name="documents">Documents</figure></div>
                             </div>
                         </div>
                     </div>
-                    <div class="nav-button">
-                        <div class="view-3d">
-                            <div class="button-3d" name="flexPage" onclick="flexPage.togglePage(this)">
-                                <div class="pane front"><figure class="translate" name="flex">FlexPage<figure></div>
-                                <div class="pane bottom"><figure class="translate" name="flex">FlexPage</figure></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nav-button">
-                        <div class="view-3d">
-                            <div class="button-3d" name="shapePage" onclick="shapePage.togglePage(this)">
-                                <div class="pane front"><figure class="translate" name="shape">ShapePage<figure></div>
-                                <div class="pane bottom"><figure class="translate" name="shape">ShapePage</figure></div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </nav>
         </header>
-        <!-- <main> -->
-            <!-- <section id="pictures-panel">
-                <div class="view-3d">
-                    <div class="picture-3d">
-                        <div class="pane front">
-                            <h1 class="image-title">What you want to know about something...</h1>
-                            <img src="images/bg-slide.png" alt="">
-                        </div>
-                        <div class="pane back">
-                            <figure>
-                                <h1>Some text</h1>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatum quis officiis iusto animi, error amet odit natus doloribus. Iste accusantium asperiores voluptates inventore dicta cupiditate perspiciatis alias, quo illum deserunt.</p>
-                                <a href="">learn more...</a>
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-                <div class="view-3d">
-                    <div class="picture-3d">
-                        <div class="pane front">
-                            <h1 class="image-title">What you want to know about another...</h1>
-                            <img src="images/bg-slide.png" alt="">
-                        </div>
-                        <div class="pane back">
-                            <figure>
-                                <h1>Other text</h1>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores laboriosam corrupti quos rerum veniam officia non earum quae fugit, quibusdam ipsa eligendi neque velit dolore itaque fuga, perferendis assumenda alias.</p> 
-                                <a href="">learn more...</a>
-                            </figure>
-                        </div>
-                    </div>
-                </div>
-            </section> -->
-            <section id="orderDetailPage">
-            </section>
-            <section id="settingsPage">
-                <!-- <h1>Settings</h1> -->
-                <ul class="tabs">
+        <section id="orderDetailPage">
+        </section>
+        <section id="settingsPage">
+            <ul class="tabs">
                     <li name='products' class="active translate" onclick="settings.selectTab(this)">Products</li>
-                    <li name='categories'class="translate" onclick="settings.selectTab(this)">Categories</li>
+                    <li name='categories' class="translate" onclick="settings.selectTab(this)">Categories</li>
                     <li name='users' class="translate" onclick="settings.selectTab(this)">Users</li>
-                </ul>
-                <div class="tab-panel">
+            </ul>
+            <div class="tab-panel">
                     <div id='products' class="active">
                         <table id="productsTable"></table>
                     </div>
@@ -112,10 +63,10 @@
                     <div id='users'>
                         <table id="usersTable"></table>
                     </div>
-                </div>
-            </section>
-            <section id="orderListPage" class="active">
-                <form> 
+            </div>
+        </section>
+        <section id="orderListPage" class="active">
+            <form> 
                     <div class="filter">
                     <!-- <div class="buttons-panel">
                         <button type="button" class="minWidth">Search</button>
@@ -192,96 +143,110 @@
                         <button name="reset" type="reset" class="minWidth translate">Reset</button>
                         <button name="filters" type="button" class="minWidth translate" onclick="filter.toggleAdvansedPanel(this)">Filters ></button>
                     </div>
-                </form>
-                <table id="ordersTable">
-                </table>
-                </div>
-            </section>
-        <!-- </main> -->
-            <section id="gridPage">
-                <div class="grid-container">
-                    <figure class="grid-item big-top">
-                        <picture>
-                            <img src="images/cool-image.png">
-                        </picture>
-                    </figure>
-                    <figure class="grid-item big-right">
-                        <picture>
-                            <img src="images/3_1.jpg">
-                        </picture>
-                    </figure>
-                    <figure class="grid-item small-center">
-                        <picture>
-                            <img src="images/ard-licsoft.jpg">
-                        </picture>
-                    </figure>
-                    <figure class="grid-item big-bottom">
-                        <picture>
-                            <img src="images/cool-image.png">
-                        </picture>
-                    </figure>
-                    <figure class="grid-item big-left">
-                        <picture>
-                            <img src="images/3_1.jpg">
-                        </picture>
-                    </figure>
-                </div>
-            </section>
-            <section id="flexPage">
-            <div class="flex-container">
-                <figure class="flex-item big">
-                    <picture>
-                        <img src="images/3_1.jpg">
-                    </picture>
-                </figure>
-                <figure class="flex-item small">
-                    <picture>
-                        <img src="images/ard-licsoft.jpg">
-                    </picture>
-                </figure>
-                <figure class="flex-item small">
-                    <picture>
-                        <img src="images/board-large-6.jpg">
-                    </picture>
-                </figure>
-                 <figure class="flex-item small">
-                    <picture>
-                        <img src="images/ard-licsoft.jpg">
-                    </picture>
-                </figure>
-                <figure class="flex-item small">
-                    <picture>
-                        <img src="images/board-large-6.jpg">
-                    </picture>
-                </figure>
-                <figure class="flex-item small">
-                    <picture>
-                        <img src="images/ard-licsoft.jpg">
-                    </picture>
-                </figure>
-                <figure class="flex-item big">
-                    <picture>
-                        <img src="images/3_1.jpg">
-                    </picture>
-                </figure>
+            </form>
+            <table id="ordersTable">
+            </table>
             </div>
         </section>
-        <section id="shapePage">
-            <div class="shape cherry"></div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                Quia, similique! Quis maxime harum maiores, odit recusandae 
-                incidunt illo vitae eveniet vero praesentium, consectetur qui, 
-                fuga corrupti atque iste ratione laborum reiciendis a voluptates?
-                 Voluptate corrupti praesentium eaque quaerat placeat ipsam!
-                  Laborum, placeat cum ab sapiente itaque repudiandae tempore
-                   repellendus quidem voluptatum commodi consectetur fuga magni
-                    similique dignissimos incidunt quod dolores delectus quos 
-                    voluptates dolor magnam maxime! Laboriosam obcaecati est et?
-                     Adipisci quos ipsa dolore nobis cumque voluptatem voluptate, 
-                     vero obcaecati unde, quo, voluptatibus molestiae incidunt 
-                     tenetur eos excepturi! Nemo, quasi. Ipsa, inventore mollitia.
-                      Tempore dicta ipsam reprehenderit minus. Quos maiores optio 
-                      totam, hic, perspiciatis praesentium veniam eum consectetur et harum, commodi dolorum temporibus natus doloremque sit consequuntur modi aliquid unde eligendi accusamus nesciunt? Ipsum perferendis rem eum illo dolores quas delectus vero quisquam soluta. Et, totam! Consequuntur obcaecati iure reiciendis enim autem sunt incidunt ipsam non molestiae doloremque. Minus, fuga impedit dignissimos rerum sequi distinctio saepe? Optio omnis iusto eos aliquid deleniti, et sunt corporis rem adipisci quis unde vel eum deserunt nostrum? Libero, in modi a rerum tempore exercitationem? Nulla, quis sequi dolor consequatur reprehenderit earum, sapiente doloribus fuga, doloremque unde repudiandae expedita minus facere nisi magni nostrum dignissimos rerum neque at vero. Repudiandae hic sit aliquam iusto quod inventore, facere in harum quae, possimus doloribus nam. Modi eius ea praesentium consequuntur culpa maxime sint a voluptates sequi ipsa quibusdam quia numquam, magnam in architecto doloribus! Dignissimos praesentium labore inventore ex veritatis optio quam consequuntur soluta tempore sunt officiis perspiciatis dolores nobis minus in, vitae natus aspernatur, architecto culpa obcaecati quia impedit veniam dolor excepturi! Beatae vel quod laboriosam nisi minus natus quos magnam nam obcaecati, at tempore aspernatur ratione optio consectetur sapiente iure in fugiat expedita eligendi, atque est, voluptatibus cumque! Aut, ipsam rem soluta amet officia qui?</p>
+        <section id="documentsPage">
+            <div class="grid-container">
+                <figure class="grid-item main">
+                    <div id="shapePage">
+                        <div class="shape cherry"></div>
+                        <div class="shape video">
+                            <p name="videoblock" class="translate"> Video block </p>
+                            <img src="images/ard-licsoft.jpg" alt="">
+                        </div>
+                        <h1 name='productName' class="translate"> Product name</h1>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            Quia, similique! Quis maxime harum maiores, odit recusandae 
+                            incidunt illo vitae eveniet vero praesentium, consectetur qui, 
+                            fuga corrupti atque iste ratione laborum reiciendis a voluptates?
+                            Voluptate corrupti praesentium eaque quaerat placeat ipsam!
+                            Laborum, placeat cum ab sapiente itaque repudiandae tempore
+                            repellendus quidem voluptatum commodi consectetur fuga magni
+                            similique dignissimos incidunt quod dolores delectus quos 
+                            voluptates dolor magnam maxime! Laboriosam obcaecati est et?
+                            Adipisci quos ipsa dolore nobis cumque voluptatem voluptate, 
+                            vero obcaecati unde, quo, voluptatibus molestiae incidunt 
+                            tenetur eos excepturi! Nemo, quasi. Ipsa, inventore mollitia.
+                            Tempore dicta ipsam reprehenderit minus. Quos maiores optio 
+                            totam, hic, perspiciatis praesentium veniam eum consectetur et harum,
+                            commodi dolorum temporibus natus doloremque sit consequuntur modi
+                            aliquid unde eligendi accusamus nesciunt? Ipsum perferendis rem eum 
+                            illo dolores quas delectus vero quisquam soluta. Et, totam! Consequuntur 
+                            obcaecati iure reiciendis enim autem sunt incidunt ipsam non molestiae doloremque.
+                            Tempore dicta ipsam reprehenderit minus. Quos maiores optio 
+                            totam, hic, perspiciatis praesentium veniam eum consectetur et harum,
+                            commodi dolorum temporibus natus doloremque sit consequuntur modi
+                            aliquid unde eligendi accusamus nesciunt? Ipsum perferendis rem eum 
+                            illo dolores quas delectus vero quisquam soluta. Et, totam! Consequuntur 
+                            obcaecati iure reiciendis enim autem sunt incidunt ipsam non molestiae doloremque.
+                            tenetur eos excepturi! Nemo, quasi. Ipsa, inventore mollitia.
+                            Tempore dicta ipsam reprehenderit minus. Quos maiores optio 
+                            totam, hic, perspiciatis praesentium veniam eum consectetur et harum,
+                            commodi dolorum temporibus natus doloremque sit consequuntur modi
+                            aliquid unde eligendi accusamus nesciunt? Ipsum perferendis rem eum 
+                            illo dolores quas delectus vero quisquam soluta. Et, totam! Consequuntur 
+                            obcaecati iure reiciendis enim autem sunt incidunt ipsam non molestiae doloremque.
+                            Tempore dicta ipsam reprehenderit minus. Quos maiores optio 
+                            totam, hic, perspiciatis praesentium veniam eum consectetur et harum,
+                            commodi dolorum temporibus natus doloremque sit consequuntur modi
+                            aliquid unde eligendi accusamus nesciunt? Ipsum perferendis rem eum 
+                            illo dolores quas delectus vero quisquam soluta. Et, totam! Consequuntur 
+                            obcaecati iure reiciendis enim autem sunt incidunt ipsam non molestiae doloremque.
+                        </p>
+                    </div>
+                </figure>
+                <figure class="grid-item side">
+                    <div class="flex-container">
+                        <figure class="flex-item small right active">
+                            <picture>
+                                <img src="images/ard-licsoft.jpg">
+                            </picture>
+                        </figure>
+                        <figure class="flex-item small right">
+                            <picture>
+                                <img src="images/board-large-6.jpg">
+                            </picture>
+                        </figure>
+                        <figure class="flex-item small right">
+                            <picture>
+                                <img src="images/ard-licsoft.jpg">
+                            </picture>
+                        </figure>
+                        <figure class="flex-item small right">
+                            <picture>
+                                <img src="images/board-large-6.jpg">
+                            </picture>
+                        </figure>
+                    </div>
+                </figure>
+                <figure class="grid-item foot">
+                    <div class="flex-container">
+                        <figure class="flex-item small">
+                            <picture>
+                                <img src="images/ard-licsoft.jpg">
+                            </picture>
+                        </figure>
+                        <figure class="flex-item small">
+                            <picture>
+                                <img src="images/board-large-6.jpg">
+                            </picture>
+                        </figure>
+                        <figure class="flex-item small">
+                            <picture>
+                                <img src="images/ard-licsoft.jpg">
+                            </picture>
+                        </figure>
+                        <figure class="flex-item small">
+                            <picture>
+                                <img src="images/board-large-6.jpg">
+                            </picture>
+                        </figure>
+                    </div>
+                </figure>
+            </div>
         </section>
         <footer>
             <div class="footer-content">

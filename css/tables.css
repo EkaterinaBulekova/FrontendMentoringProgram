@@ -16,19 +16,15 @@ table thead td, table td{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    /* text-overflow: clip; */
-    /* text-overflow: ellipsis; */
     padding: 5px 7px;
     line-height: 20px;
     text-align: left;
-    /* overflow-wrap: break-word; */
 }
 
 table thead tr{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    /* word-wrap: break-word; */
     color: white;
 	font-weight: bold;
     vertical-align: middle;
@@ -91,5 +87,4 @@ table tfoot button{
 .table-button{
     display: block;
     width: 100px;
-    /* text-align: left; */
 }
