@@ -14,34 +14,39 @@
             <nav>
                 <div class="menu-content">
                     <div class="lang-button">
-                        <img name="ru" src="images/cropped-russia-flag-button-1.png" alt="" onclick="translator.translateFull('ru')">
-                        <img name="en" src="images/icon-usa.png" alt="" onclick="translator.translateFull('en')">
+                        <img class="lang-button" name="ru" src="images/cropped-russia-flag-button-1.png" alt="RU" >
+                        <img class="lang-button" name="en" src="images/icon-usa.png" alt="EN">
                     </div>
-                    <div class="nav-button">
-                        <div class="view-3d">
-                            <div class="button-3d" name="orderListPage" onclick="home.togglePage(this)">
-                                <div class="pane front"><figure class="translate" name="home">Home<figure></div>
-                                <div class="pane bottom"><figure class="translate" name="home">Home</figure></div>
-                            </div>
-                        </div> 
-                    </div>
-                    <div class="nav-button">
-                        <div class="view-3d">
-                            <div class="button-3d" name="settingsPage" onclick="settings.toggleSettingsPage(this)">
-                                <div class="pane front"><figure class="translate" name="settings">Settings<figure></div>
-                                <div class="pane bottom"><figure class="translate" name="settings">Settings</figure></div>
+                    <a href="#orderListPage">
+                        <div class="nav-button">
+                            <div class="view-3d">
+                                <div class="button-3d" name="orderListPage">
+                                    <div class="pane front"><figure class="translate" name="home">Home<figure></div>
+                                    <div class="pane bottom"><figure class="translate" name="home">Home</figure></div>
+                                </div>
+                            </div> 
+                        </div>
+                    </a>
+                    <a href="#settingsPage">
+                        <div class="nav-button">
+                            <div class="view-3d">
+                                <div class="button-3d" name="settingsPage">
+                                    <div class="pane front"><figure class="translate" name="settings">Settings<figure></div>
+                                    <div class="pane bottom"><figure class="translate" name="settings">Settings</figure></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="nav-button">
-                        <div class="view-3d">
-                            <div class="button-3d" name="documentsPage" onclick="documents.togglePage(this)">
+                    </a>
+                    <a href="#documentsPage">
+                        <div class="nav-button">
+                            <div class="view-3d">
+                                <div class="button-3d" name="documentsPage">
                                 <div class="pane front"><figure class="translate" name="documents">Documents<figure></div>
                                 <div class="pane bottom"><figure  class="translate" name="documents">Documents</figure></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
+                    </a>
                 </div>
             </nav>
         </header>
@@ -49,9 +54,9 @@
         </section>
         <section id="settingsPage">
             <ul class="tabs">
-                    <li name='products' class="active translate" onclick="settings.selectTab(this)">Products</li>
-                    <li name='categories' class="translate" onclick="settings.selectTab(this)">Categories</li>
-                    <li name='users' class="translate" onclick="settings.selectTab(this)">Users</li>
+                    <li name='products' class="active translate">Products</li>
+                    <li name='categories' class="translate">Categories</li>
+                    <li name='users' class="translate">Users</li>
             </ul>
             <div class="tab-panel">
                     <div id='products' class="active">
@@ -141,7 +146,7 @@
                     <div class="buttons-panel">
                         <button name="search" type="button" class="minWidth translate">Search</button>
                         <button name="reset" type="reset" class="minWidth translate">Reset</button>
-                        <button name="filters" type="button" class="minWidth translate" onclick="filter.toggleAdvansedPanel(this)">Filters ></button>
+                        <button name="filters" type="button" class="minWidth translate addvanced-filter-button">Filters ></button>
                     </div>
             </form>
             <table id="ordersTable">
@@ -154,11 +159,15 @@
                     <div id="shapePage">
                         <div class="shape cherry"></div>
                         <div class="shape video">
-                            <p name="videoblock" class="translate"> Video block </p>
-                            <img src="images/ard-licsoft.jpg" alt="">
+                            <video controls width=100% height=100% autoplay>
+                                <source src="media/video1.mp4" type="video/mp4">
+                              Your browser does not support the video tag.
+                            </video>
+                        <!-- <p name="videoblock" class="translate"> Video block </p>
+                        <img src="images/ard-licsoft.jpg" alt=""> -->
                         </div>
                         <h1 name='productName' class="translate"> Product name</h1>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        <p name=''>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
                             Quia, similique! Quis maxime harum maiores, odit recusandae 
                             incidunt illo vitae eveniet vero praesentium, consectetur qui, 
                             fuga corrupti atque iste ratione laborum reiciendis a voluptates?
@@ -200,22 +209,22 @@
                 </figure>
                 <figure class="grid-item side">
                     <div class="flex-container">
-                        <figure class="flex-item small right active">
+                        <figure class="flex-item small right active video-source" data-video="media/kitchen.mp4">
                             <picture>
                                 <img src="images/ard-licsoft.jpg">
                             </picture>
                         </figure>
-                        <figure class="flex-item small right">
+                        <figure class="flex-item small right video-source" data-video="media/big_buck_bunny.mp4">
                             <picture>
                                 <img src="images/board-large-6.jpg">
                             </picture>
                         </figure>
-                        <figure class="flex-item small right">
+                        <figure class="flex-item small right video-source" data-video="media/kitchen.mp4">
                             <picture>
                                 <img src="images/ard-licsoft.jpg">
                             </picture>
                         </figure>
-                        <figure class="flex-item small right">
+                        <figure class="flex-item small right video-source" data-video="media/big_buck_bunny.mp4">
                             <picture>
                                 <img src="images/board-large-6.jpg">
                             </picture>
