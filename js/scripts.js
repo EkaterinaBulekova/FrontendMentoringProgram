@@ -10,10 +10,11 @@ var siteManager = (function($,root){
     }
 
     let page = new function Page(){
-        this.togglePage = function(eventSource){
-            let name = $(eventSource).attr("name");
-            $("section.active").removeClass("active");
-            $("#" + name).addClass("active");
+        this.togglePage = function(pageId){
+            $('section').each(function(){
+                var that = $(this);
+                that[ that.attr( 'id' ) === pageId ? 'addClass' : 'removeClass' ]( 'active' );
+            });
         }
     }
 
@@ -21,9 +22,14 @@ var siteManager = (function($,root){
 
     let home = extention.inherit(page, new function Home(){
         this.init = function(){
-            filter.init();
-            orderTable.load();
-            isLoaded = true;
+            $.when(filter.init())
+            .then(orderTable.load())
+            .then(function(){
+                isLoaded = true; 
+            })
+            .fail(function(){
+                console.log('Error loading Home page')
+            })
         }
     });
 
@@ -39,10 +45,7 @@ var siteManager = (function($,root){
 
     let settings = extention.inherit(page, new function Settings(){
         let isLoaded = false;
-         this.toggleSettingsPage = function(eventSource){
-             this.togglePage(eventSource);
-             this.init();
-        }
+
         this.selectTab = function(eventSource){
             $(".tabs .active").removeClass("active");
             $(eventSource).addClass("active");
@@ -51,22 +54,30 @@ var siteManager = (function($,root){
             $(".tab-panel .active").removeClass("active");
             $("#" + name).addClass("active");
         }
+        
         this.init = function(){
-            if (isLoaded) return;    
+            if (isLoaded) return; 
             if($("#settingsPage").length){
                 $(".tabs li").click(function() {
                     settings.selectTab(this);
                 });
             }
-            productTable.load();
-            categoryTable.load();
-            userTable.load();
-            isLoaded = true;
+            dialogue.close();
+            dialogue.create('wait',translator.translateText('load'), translator.translateText('loading'));
+            $.when(productTable.load())
+            .then(categoryTable.load())
+            .then(userTable.load())
+            .then(function(){isLoaded = true;})
+            .fail(function(){console.log("Settings load error");})
+            setTimeout(function(){dialogue.close();}, 1000);
         }
     });
 
     let documents = extention.inherit(page, new function DocPage(){
         this.videoSwap = function videoSwap(eventSource) {
+            // let source = $(eventSource).attr("data-video");
+            // let videoFrame = $('iframe');
+            // videoFrame.attr('src', source);
             var myVideo = document.getElementsByTagName('video')[0];
             myVideo.src = $(eventSource).attr("data-video");
             myVideo.load();
@@ -82,18 +93,36 @@ var siteManager = (function($,root){
         }
     });
 
-    let pageButtons = new function PageButtons(){
-        this.init = function(){
+    let navigation = new function Navigation(){
+        function pageButtonsInit(){
             if($(".nav-button").length){
                 let buttons = $(".nav-button .button-3d");
                 buttons.click(function() {
-                    if ($(this).attr("name") ==="settingsPage"){
-                        settings.toggleSettingsPage(this)
-                    }else{
-                        page.togglePage(this);
-                    }
+                    let name = $(this).attr("name");
+                    dialogue.create('confirmYN',translator.translateText('confirmation'), translator.translateText('wouldYouLikeToGoTo')+name+'?',
+                    function(){
+                        window.location.hash = name;
+                        dialogue.close();
+                    });
                 });
             }
+        }
+
+        function locationOnChangeInit(){
+            window.onhashchange = function(){
+                var hash = location.hash;
+                pageId = hash.replace( /^#/, '' ) || 'orderListPage';
+                page.togglePage(pageId);
+                if (pageId === "settingsPage"){
+                    settings.init();
+                }
+            };
+        }
+
+        this.init = function(){
+            locationOnChangeInit();
+            pageButtonsInit();
+            window.onhashchange();
         }
     }
 
@@ -150,7 +179,14 @@ var siteManager = (function($,root){
             prev: {en: "Prev", ru: "Пред."},
             last: {en: "Last", ru: "Посл."},
             productName: {en:"Product Name", ru: "Наименование товара"},
-            videoblock: {en:"Video block", ru: "Видео блок"}
+            videoblock: {en:"Video block", ru: "Видео блок"},
+            ok: {en: "Ok", ru: "Ок"},
+            yes: {en: "Yes", ru: "Да"},
+            no: {en: "No", ru: "Нет"},
+            confirmation: {en: "Confirmation", ru: "Подтверждение"},
+            load: {en: "Loading", ru: "Загрузка"},
+            wouldYouLikeToGoTo: {en: "Would you like to go to ", ru: "Хотите перейти на "},
+            loading: {en: "Loading...", ru: "Идет загрузка..."}
         }
 
         let currLang = "en";
@@ -184,6 +220,11 @@ var siteManager = (function($,root){
             }
         }
 
+        this.translateText = function(name){
+            let result = (dictionary[name])?dictionary[name][currLang]:name;
+            return result;
+        }
+
         this.translateElement = function(element, name){
             element.className = (element.classList.contains("translate"))
                 ? element.className
@@ -201,8 +242,12 @@ var siteManager = (function($,root){
 
         this.init = function(){
             listsIds.forEach(element => {
-                    ajaxRequest.get(serverUrl+element,function(response){
-                    dataList.load(element, response);
+                $.when(ajaxRequest.get(serverUrl+element))
+                .done(function(data, textStatus, jqXHR) {
+                    dataList.load(element, jqXHR);
+                    })
+                .fail(function(jqXHR) {
+                    console.log('error', jqXHR);
                 });
             });
             if($(".filter").length){
@@ -250,19 +295,13 @@ var siteManager = (function($,root){
     }
 
     let ajaxRequest = new function Ajax(){
-        this.get = function(url, callback){
-                let fullResult = $.ajax({
+        this.get = function(url){
+                return $.ajax({
                 type: "GET",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 url: url
             })
-            .done(function() {
-            callback(fullResult);
-            })
-            .fail(function() {
-            console.log('error', fullResult);
-            });
         };
         // post: function(url, data){
 
@@ -291,26 +330,104 @@ var siteManager = (function($,root){
     }
 
     let commonDictionary = new function CommonDictionary(){
-        
-        this.load =  function(){
-            let tableId = this.name + 'Table';
-            let url = 'http://localhost:3000/' + this.name;
-            let paginate = this.pagination
-            ajaxRequest.get(urlBuilder.getUrl(url, paginate), (response)=>{loadTable(response, tableId)});
+
+        this.loadById = function(id){
+            let formId = this.name + 'Form';
+            let orderById = [{Name:"id", Value:id}];
+            let url = 'http://localhost:3000/' + this.name;            
+            $.when(ajaxRequest.get(urlBuilder.getUrl(url, orderById)))
+            .done(function(data, textStatus, jqXHR){
+                formBuilder.load(jqXHR, formId);
+            })
+            .fail(function(jqXHR){
+                console.log('error', jqXHR);
+            });
         };
 
-        function loadTable(response, id){
-            let data = response.responseJSON;
-            let links = response.getResponseHeader('link');
-            let table = document.getElementById(id);
-            if(table && data){
-                loadTbody(data, table);
-                loadThead(data, table);
-                if (links){
-                    loadPageButtons(links, table, id);
-                }
+        this.load = function(){
+            let tableId = this.name + 'Table';
+            let url = 'http://localhost:3000/' + this.name;
+            let paginate = this.pagination;
+            $.when(ajaxRequest.get(urlBuilder.getUrl(url, paginate)))
+            .fail(function(jqXHR) {console.log(jqXHR);})
+            .done(function(data, textStatus, jqXHR) {
+                $.when(
+                    tableBuilder.clickFunc = function(id){orderTable.loadById(id)},
+                    tableBuilder.load(jqXHR, tableId))
+                .then($.when())
+            })
+        };
+    }
+
+    let formBuilder = new function FormBilder(){
+
+        this.load = function(response, id){
+            $("#"+id).text(response.responseJSON[0]["id"]);
+        }
+    }
+
+    let dialogue = new function Dialogue(){
+        let dialogueTypes = {
+            wait: {
+                buttons: [], 
+                class: "wait-dialogue",
+                img: "file:///C:/MentoringProgram/src/images/giphy.gif"
+            },
+            info: {
+                buttons: ["ok"], 
+                class: "info-dialogue",
+                img: ""
+            },
+            error: {
+                buttons: ["ok"], 
+                class: "error-dialogue",
+                img: ""
+            },
+            confirmYN: {
+                buttons: ["yes", "no"],
+                class: "yes-no-dialogue",
+                img: ""
             }
         };
+
+        let activeButtons = ["ok", "yes"]
+
+        this.create = function(typeName, title, text, action){
+            let dialogueType = dialogueTypes[typeName];
+            $('body').append($('<div>', {class: "overlay-box"}));
+            $('body').append($('<div>', {class: "dialogue"}));
+            let dlg = $('.dialogue');
+            dlg.append($('<div>', {class: "dialogue-title"}));
+            dlg.append($('<img>', {class: "dialogue-img"}));
+            dlg.append($('<div>', {class: "dialogue-text"}));
+            dlg.append($('<div>', {class: "dialogue-buttons"}));
+            $('.dialogue-title').text(title);
+            $('.dialogue-text').text(text);
+            let btns = $('.dialogue-buttons');
+            dialogueType.buttons.forEach(function(value){
+                btns.append($('<button>', {class: value}));
+                let btn = $('.dialogue-buttons button.'+value);
+                btn.on("click", function(){
+                    dialogue.close();
+                    if (activeButtons.includes(value)){
+                        action();
+                    }
+                });
+                translator.translateElement(btn[0], value);
+            })
+            $('.dialogue-img').attr('src',dialogueType.img);
+            dlg.addClass(dialogueType.class);
+        }
+
+        this.close = function(){
+            $('.overlay-box').remove();
+            $('.dialogue').remove();
+        }
+    }
+
+    let tableBuilder = new function TableBilder(){
+
+        this.clickFunc;
 
         function loadThead(data, table) {
             if (data && table){
@@ -325,12 +442,13 @@ var siteManager = (function($,root){
             }
         };
 
-        function loadTbody(data, table){
+        function loadTbody(data, table, id){
             if (data && table){
                 table.innerHTML = "";
                 for(let i = 0; i < data.length; i++){
                     let item = data[i];
                     let newRow = table.insertRow(i);
+                    newRow.setAttribute("id",data[i]["id"]);
                     let j = 0;
                     for(let propertyName in item) {
                         let newCell = newRow.insertCell(j);
@@ -353,13 +471,40 @@ var siteManager = (function($,root){
                     let name = linkParam[1].slice(5, linkParam[1].length-1);
                     translator.translateElement(button, name);
                     button.onclick = function(){
-                        ajaxRequest.get(linkParam[0].slice(1, linkParam[0].length-1), (response)=>{loadTable(response, id)});
-                    }; 
+                        $.when(ajaxRequest.get(linkParam[0].slice(1, linkParam[0].length-1)))
+                        .done(function(data, textStatus, jqXHR){
+                            tableBuilder.load(jqXHR, id);
+                        })
+                        .fail(function(){
+                            console.log('error', jqXHR);
+                        });
+                     }; 
                     newCell.appendChild(button);
                 });
             }
         };
+
+        this.load = function(response, id){
+            let data = response.responseJSON;
+            let links = response.getResponseHeader('link');
+            let table = document.getElementById(id);
+            if(table && data){
+                $.when(loadTbody(data, table, id))
+                .then(loadThead(data, table))
+                .then(function(){
+                    if (links){
+                        loadPageButtons(links, table, id);
+                    }
+                })
+                .then(function(){
+                    $("#"+id +" tr").click(function(){
+                        if(id==="ordersTable") tableBuilder.clickFunc($(this).attr("id"));
+                    })
+                });
+            }
+        };
     }
+
     let productTable = extention.inherit(commonDictionary, new function ProductTable(){
         this.name = "products";
         this.pagination = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"3"}];
@@ -378,13 +523,6 @@ var siteManager = (function($,root){
     let orderTable = extention.inherit(commonDictionary, new function OrderTable(){
         this.name = "orders";
         this.pagination = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}];
-        this.orderById = [{Name:"id", Value:"1"},{Name :"_limit", Value:"5"}];
-        this.loadById =  function(){
-            let tableId = this.name + 'Table';
-            let url = 'http://localhost:3000/' + this.name;
-            let paginate = this.orderById
-            ajaxRequest.get(urlBuilder.getUrl(url, paginate), (response)=>{loadForm(response, formId)});
-        };
     });
 
     // Window.prototype.genDictionaryName=function(value){    
@@ -396,17 +534,20 @@ var siteManager = (function($,root){
     //     return (arraystack.indexOf(needle) > -1);
     // }
 
-
     let PublicAPI={
         init: function(){
-            home.init(); 
-            translator.init(); 
-            pageButtons.init();
-            documents.init();
+            dialogue.create('wait',translator.translateText('load'), translator.translateText('loading'));
+            $.when(home.init())
+            .then(translator.init())
+            .then(navigation.init()) 
+            .then(documents.init())
+            .fail(console.log('Error application start'));
+            setTimeout(function(){dialogue.close();}, 1000);
         },
     };
     return PublicAPI;
 })(jQuery, this);
+
 
 $(document).ready(function() {
     siteManager.init();

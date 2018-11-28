@@ -3,6 +3,7 @@
 @import url("../css/tables.css");
 @import url("../css/filters.css");
 @import url("../css/formElements.css");
+@import url("../css/dialogues.css");
 
 nav {
 	width: 100%;
@@ -308,7 +309,7 @@ section.active {
 }
 
 .shape.cherry {
-    background: url("../images/cherry.png");
+    background: url("../images/laptops.png");
     background-size: cover;
     float: left;
     height: 17.9375em;
@@ -340,7 +341,7 @@ section.active {
 
 .shape.cherry:hover {
 	margin-top: 20em;
-	background-image: url("../images/Gluecksklee.png");
+	background-image: url("../images/laptop1.png");
 	shape-outside: polygon(-95.7% 105.95%, -54.45% 40.45%, 128.95% 71%, 29.15% 96.85%, -53.4% -22.8%, -97.05% 56.1%, 73.75% 69.3%, 8.55% 93.15%);
 }
 
