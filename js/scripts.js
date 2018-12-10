@@ -1,6 +1,4 @@
-
 var siteManager = (function($,root){
-
 
     let extention = new function Extention(){
         this.inherit = function(parent, child){
@@ -10,6 +8,7 @@ var siteManager = (function($,root){
     }
 
     let page = new function Page(){
+        this.isLoaded = false;
         this.togglePage = function(pageId){
             $('section').each(function(){
                 var that = $(this);
@@ -18,80 +17,98 @@ var siteManager = (function($,root){
         }
     }
 
-    //page.constructor.prototype
-
-    let home = extention.inherit(page, new function Home(){
-        this.init = function(){
-            $.when(filter.init())
-            .then(orderTable.load())
-            .then(function(){
-                isLoaded = true; 
-            })
-            .fail(function(){
-                console.log('Error loading Home page')
-            })
-        }
-    });
-
-    let formPage = extention.inherit(page, new function FormPage(){
-        this.toggleFormPage = function(eventSource){
-            this.togglePage(eventSource);
-            this.init();
-        }
-        this.init = function(){
-            order.load();
-        }
-    }); 
-
-    let settings = extention.inherit(page, new function Settings(){
-        let isLoaded = false;
-
-        this.selectTab = function(eventSource){
-            $(".tabs .active").removeClass("active");
-            $(eventSource).addClass("active");
-            let name = $(eventSource).attr("name");
-
-            $(".tab-panel .active").removeClass("active");
-            $("#" + name).addClass("active");
-        }
-        
-        this.init = function(){
-            if (isLoaded) return; 
-            if($("#settingsPage").length){
-                $(".tabs li").click(function() {
-                    settings.selectTab(this);
-                });
+    let pages = {
+        orderListPage : extention.inherit(page, new function Home(){
+            this.init = function(){
+                if (orderListPage.isLoaded) return $.when()
+                dialogue.create(loadDialogue);
+                dialogue.open();
+                return filterBlock.init()
+                .then(result => {orderTable.load()})
+                .then(result => {
+                    orderListPage.isLoaded = true;
+                    dialogue.close();
+                    return $.when();
+                })
+                .fail(function(){
+                    console.log('Error loading Home page')
+                })
             }
-            dialogue.close();
-            dialogue.create('wait',translator.translateText('load'), translator.translateText('loading'));
-            $.when(productTable.load())
-            .then(categoryTable.load())
-            .then(userTable.load())
-            .then(function(){isLoaded = true;})
-            .fail(function(){console.log("Settings load error");})
-            setTimeout(function(){dialogue.close();}, 1000);
-        }
-    });
+        }),
+    
+        formPage : extention.inherit(page, new function FormPage(){
+            this.toggleFormPage = function(eventSource){
+                this.togglePage(eventSource);
+                this.init();
+            }
+            this.init = function(){
+                order.load();
+            }
+        }), 
+    
+        settingsPage : extention.inherit(page, new function Settings(){
 
-    let documents = extention.inherit(page, new function DocPage(){
-        this.videoSwap = function videoSwap(eventSource) {
-            // let source = $(eventSource).attr("data-video");
-            // let videoFrame = $('iframe');
-            // videoFrame.attr('src', source);
-            var myVideo = document.getElementsByTagName('video')[0];
-            myVideo.src = $(eventSource).attr("data-video");
-            myVideo.load();
-            myVideo.play();
-        }        
-        this.init = function(){
-            if ($(".video-source").length){
+            this.selectTab = function(eventSource){
+                $(".tabs .active").removeClass("active");
+                $(eventSource).addClass("active");
+                let name = $(eventSource).attr("name");
+    
+                $(".tab-panel .active").removeClass("active");
+                $("#" + name).addClass("active");
+            }
+            
+            this.init = function(){
+                if (settingsPage.isLoaded) return $.when(); 
+                if($("#settingsPage").length){
+                    $(".tabs li").click(function() {
+                        pages.settingsPage.selectTab(this);
+                    });
+                }
+                dialogue.create(loadDialogue);
+                dialogue.open();
+                return productTable.load()
+                .then(result => {categoryTable.load()})
+                .then(result => {userTable.load()})
+                .then(result => {
+                    settingsPage.isLoaded = true;
+                    // $('.tab-panel').toggle();
+                    // $('.tabs').toggle();
+                    dialogue.close();
+                    return $.when();
+                })
+                .fail(error => {
+                    console.log('Error loading Settings page');
+                })
+            }
+        }),
+    
+        documentsPage : extention.inherit(page, new function DocPage(){
+
+            function videoSwap(eventSource) {
+                $(eventSource).addClass("active");
+                videoBlock.start($(eventSource).attr("data-video"));
+            }
+
+            function videoButtonsInit() {
                 let buttons = $(".video-source");
-                buttons.click(function() {
-                    documents.videoSwap(this);
-                });
+                if (buttons.length){
+                    buttons.click(function() {
+                        buttons.removeClass("active")
+                        videoSwap(this);
+                    });
+                }
             }
-        }
-    });
+
+            this.init = function(){
+                videoBlock.init();
+                if (documentsPage.isLoaded) return $.when();
+                videoButtonsInit();
+                documentsPage.isLoaded = true;
+                window.onscroll = function(){videoBlock.swap();};
+                return $.when();
+            }
+        })
+    }
 
     let navigation = new function Navigation(){
         function pageButtonsInit(){
@@ -99,11 +116,10 @@ var siteManager = (function($,root){
                 let buttons = $(".nav-button .button-3d");
                 buttons.click(function() {
                     let name = $(this).attr("name");
-                    dialogue.create('confirmYN',translator.translateText('confirmation'), translator.translateText('wouldYouLikeToGoTo')+name+'?',
-                    function(){
+                    dialogue.create(confirmNavigationDialogue(name, function(){
                         window.location.hash = name;
-                        dialogue.close();
-                    });
+                    }));
+                    dialogue.open();
                 });
             }
         }
@@ -112,11 +128,20 @@ var siteManager = (function($,root){
             window.onhashchange = function(){
                 var hash = location.hash;
                 pageId = hash.replace( /^#/, '' ) || 'orderListPage';
-                page.togglePage(pageId);
-                if (pageId === "settingsPage"){
-                    settings.init();
-                }
-            };
+                pageInit(pages[pageId])
+                .then(result => {
+                    page.togglePage(pageId);
+                    videoBlock.pause();
+                })
+                .fail(error => {
+                    dialogue.create(errorDialogue("Sorry, can't loading " + pageId + " page"));
+                    dialogue.open();
+                });
+           };
+        }
+
+        function pageInit(page){
+            return page.init();
         }
 
         this.init = function(){
@@ -234,55 +259,121 @@ var siteManager = (function($,root){
         }
     }
 
-    let filter = new function Filter(){
-        let hasAdvanced = false;
-        let advFilterPanelId = '.advanced-filter';
-        let serverUrl = 'http://localhost:3000/';
-        let listsIds = ['products', 'statuses', 'categories', 'users'];
+    var videoBlock = new function VideoBlock(){
+        var $bigBlock;
+        var $smallBlock;
+        var video;
+        var $activeBlock;
+    
+        function isOffset(){
+            var bodyBlock = document.body.getBoundingClientRect();
+            return bodyBlock.top < -200;
+        };
+    
+        this.init = function(){
+            $bigBlock = $('#videoBigBlock');
+            $smallBlock = $('#videoSmallBolock');
+            video = document.getElementsByTagName('video')['currentVideo'];
+            $activeBlock = null;
+        };
+    
+        this.start = function(videoLink){
+            if (!$activeBlock){
+                $activeBlock = (isOffset()) ? $smallBlock : $bigBlock;
+                $activeBlock.addClass('show');
+            }
+            $activeBlock.append(video);
+            video.setAttribute('src', videoLink);
+            video.load();
+            video.play();
+        };
+    
+        this.pause = function(){
+            if($activeBlock){
+                video.pause();
+            }
+        }
+    
+        this.swap = function(){
+            if($activeBlock){
+                if(isOffset() && $activeBlock.id === $bigBlock.id){
+                    $bigBlock.removeClass('show');
+                    $smallBlock.append(video);
+                    $smallBlock.addClass('show');
+                    $activeBlock = $smallBlock;
+                }
+    
+                if(!isOffset() && $activeBlock.id === $smallBlock.id){
+                    $smallBlock.removeClass('show');
+                    $bigBlock.append(video);
+                    $bigBlock.addClass('show');
+                    $activeBlock = $bigBlock;
+                }
+            }
+    
+        }
+    }
+    
+
+    let filterBlock = new function FilterBlock(){
+        let serverURL = 'http://localhost:3000/';
+        var isAdvancedShow = false;
+        var $advFilterPanel;
+        var $advFilterButton;
+
+        function initFilterStaticElement(){
+            var defer = new $.Deferred();
+            if ($('.filter').length){
+                $advFilterPanel = $('.advanced-filter');
+                $advFilterButton = $('.addvanced-filter-button');
+                $advFilterButton.click(function() {
+                    filterBlock.toggleAdvansedPanel(this);
+                });
+                // $('.filter').toggle();
+                // $('.buttons-panel').toggle();
+                defer.resolve();
+            }else{
+                defer.reject(new Error ("Element Filter doesn't exists!"));
+            }
+            return defer;
+        }
+        function loadList(id){
+            return ajaxRequest.get(serverURL+ id)
+            .then(result => {dataListObject.load(id, result)});
+        }
 
         this.init = function(){
-            listsIds.forEach(element => {
-                $.when(ajaxRequest.get(serverUrl+element))
-                .done(function(data, textStatus, jqXHR) {
-                    dataList.load(element, jqXHR);
-                    })
-                .fail(function(jqXHR) {
-                    console.log('error', jqXHR);
-                });
-            });
-            if($(".filter").length){
-                $(".addvanced-filter-button").click(function() {
-                    filter.toggleAdvansedPanel(this);
-                });
-            }
-        };
+            return loadList('products')
+                .then(result=>{loadList('users')})
+                .then(result=>{loadList('statuses')})
+                .then(result=>{loadList('categories')})
+                .then(result => {
+                    initFilterStaticElement();
+                    return $.when();
+                })
+                .fail(error => {console.log(error)});
+        }
 
-        function validate(){
-        };
-
-        this.toggleAdvansedPanel = function(eventSource){
-            let advPanel = $(advFilterPanelId);
-            advPanel.toggle();
-            if (hasAdvanced){
-                translator.translateElement(eventSource, "filters");
-                hasAdvanced = false;
+        this.toggleAdvansedPanel = function(button){
+            $advFilterPanel.toggle();
+            if (isAdvancedShow){
+                translator.translateElement(button, "filters");
+                isAdvancedShow = false;
             }else{
-                translator.translateElement(eventSource, "filtersback");
-                hasAdvanced = true;
+                translator.translateElement(button, "filtersback");
+                isAdvancedShow = true;
             }
         }
     }
 
-    let dataList = new function DataList(){
-        this.load = function(id, response){
-            let data = response.responseJSON;
+    let dataListObject = new function DataListObj(){
+        this.load = function(id, data){
             let dataList = document.getElementById(id+"Filter");
             dataList.innerHTML = '';
             dataList.appendChild(getOption(0 ,'All'));
-            for(let i = 0; i < data.length; i++){
-                let item = data[i];
-                dataList.appendChild(getOption(item['id'] ,item['name']));
-            }
+            data.map((value) => {
+                dataList.appendChild(getOption(value['id'] ,value['name']));
+            })
         };
         function getOption(id, name){
             let newOption = document.createElement('option');
@@ -334,28 +425,25 @@ var siteManager = (function($,root){
         this.loadById = function(id){
             let formId = this.name + 'Form';
             let orderById = [{Name:"id", Value:id}];
-            let url = 'http://localhost:3000/' + this.name;            
-            $.when(ajaxRequest.get(urlBuilder.getUrl(url, orderById)))
-            .done(function(data, textStatus, jqXHR){
-                formBuilder.load(jqXHR, formId);
-            })
-            .fail(function(jqXHR){
-                console.log('error', jqXHR);
-            });
+            let url = 'http://localhost:3000/' + this.name;
+            return ajaxRequest.get(urlBuilder.getUrl(url, orderById))
+                .then(function(data, textStatus, jqXHR){
+                    return $.when(formBuilder.load(jqXHR, formId));
+                })
+                .fail(console.log("Can't load data from " + urlBuilder.getUrl(url, orderById)))
         };
 
         this.load = function(){
             let tableId = this.name + 'Table';
             let url = 'http://localhost:3000/' + this.name;
             let paginate = this.pagination;
-            $.when(ajaxRequest.get(urlBuilder.getUrl(url, paginate)))
-            .fail(function(jqXHR) {console.log(jqXHR);})
-            .done(function(data, textStatus, jqXHR) {
-                $.when(
+            return ajaxRequest.get(urlBuilder.getUrl(url, paginate))
+            .then(function(data, textStatus, jqXHR) {
+                return $.when(
                     tableBuilder.clickFunc = function(id){orderTable.loadById(id)},
-                    tableBuilder.load(jqXHR, tableId))
-                .then($.when())
+                    tableBuilder.load(jqXHR, tableId));
             })
+            .fail(console.log("Can't load data from " + urlBuilder.getUrl(url, paginate)));
         };
     }
 
@@ -366,57 +454,104 @@ var siteManager = (function($,root){
         }
     }
 
+    let dialogueButtons = {
+        ok: {
+            name: "ok",
+            type: "inactive"
+        },
+
+        yes: {
+            name: "Yes",
+            type: "active"
+        },
+
+        no: {
+            name: "no",
+            type: "inactive"
+        }
+    }
+
+    let dialogueTypes = {
+        wait: {
+            buttons: [],
+            class: "wait-dialogue",
+            img: "images/giphy.gif"
+        },
+        info: {
+            buttons: [dialogueButtons.ok],
+            class: "info-dialogue",
+            img: ""
+        },
+        error: {
+            buttons: [dialogueButtons.ok],
+            class: "error-dialogue",
+            img: ""
+        },
+        confirmYN: {
+            buttons: [dialogueButtons.yes, dialogueButtons.no],
+            class: "yes-no-dialogue",
+            img: ""
+        }
+    };
+
+    let loadDialogue = {
+        type: dialogueTypes.wait,
+        title: translator.translateText('load'),
+        text: translator.translateText('loading')
+    }
+
+    let confirmNavigationDialogue = function(name, action){
+        type = dialogueTypes.confirmYN;
+        title = translator.translateText('confirmation');
+        text = translator.translateText('wouldYouLikeToGoTo') + name + '?';
+        return {type, title, text, action};
+    }
+
+    let errorDialogue = function(error){
+        type = dialogueTypes.error;
+        title = translator.translateText('error');
+        text = translator.translateText('error') + ': '+ error + '.';
+        return {type, title, text}
+    }
+    
     let dialogue = new function Dialogue(){
-        let dialogueTypes = {
-            wait: {
-                buttons: [], 
-                class: "wait-dialogue",
-                img: "file:///C:/MentoringProgram/src/images/giphy.gif"
-            },
-            info: {
-                buttons: ["ok"], 
-                class: "info-dialogue",
-                img: ""
-            },
-            error: {
-                buttons: ["ok"], 
-                class: "error-dialogue",
-                img: ""
-            },
-            confirmYN: {
-                buttons: ["yes", "no"],
-                class: "yes-no-dialogue",
-                img: ""
-            }
-        };
+        let dlg;
 
-        let activeButtons = ["ok", "yes"]
+        this.create = function(dlgType){
+            dlg = dlgType;
+        }
 
-        this.create = function(typeName, title, text, action){
-            let dialogueType = dialogueTypes[typeName];
-            $('body').append($('<div>', {class: "overlay-box"}));
-            $('body').append($('<div>', {class: "dialogue"}));
-            let dlg = $('.dialogue');
-            dlg.append($('<div>', {class: "dialogue-title"}));
-            dlg.append($('<img>', {class: "dialogue-img"}));
-            dlg.append($('<div>', {class: "dialogue-text"}));
-            dlg.append($('<div>', {class: "dialogue-buttons"}));
-            $('.dialogue-title').text(title);
-            $('.dialogue-text').text(text);
-            let btns = $('.dialogue-buttons');
-            dialogueType.buttons.forEach(function(value){
-                btns.append($('<button>', {class: value}));
-                let btn = $('.dialogue-buttons button.'+value);
-                btn.on("click", function(){
-                    dialogue.close();
-                    if (activeButtons.includes(value)){
-                        action();
-                    }
+        this.open = function(){
+            let overlay = $('<div>', {class: "overlay-box"});
+            let dlgBox = $('<div>', {class: "dialogue"});
+            contentCreate(dlgBox)
+            buttonsCreate(dlgBox);
+            $('body').append(overlay, dlgBox);
+            dlgBox.addClass(dlg.type.class);
+        }
+
+        function contentCreate(dlgBox){
+            dlgBox.append($('<div>', {class: "dialogue-title", html: dlg.title}));
+            dlgBox.append($('<img>', {class: "dialogue-img", src: dlg.type.img}));
+            dlgBox.append($('<div>', {class: "dialogue-text", html: dlg.text}));
+        }
+
+        function buttonsCreate(dlgBox){
+            let btns =$('<div>', {class: "dialogue-buttons"});
+            dlg.type.buttons.forEach(function(value){
+                let btn = $('<button>', {
+                    class: value.name, 
+                    html: translator.translateText(value.name)
                 });
-                translator.translateElement(btn[0], value);
+                btn.on("click", function(){
+                        dialogue.close();
+                        if (value.type === 'active'){
+                            dlg.action();
+                        }
+                    })
+                btns.append(btn);
             })
-            $('.dialogue-img').attr('src',dialogueType.img);
-            dlg.addClass(dialogueType.class);
+            dlgBox.append(btns);
         }
 
         this.close = function(){
@@ -442,7 +577,7 @@ var siteManager = (function($,root){
             }
         };
 
-        function loadTbody(data, table, id){
+        function loadTbody(data, table){
             if (data && table){
                 table.innerHTML = "";
                 for(let i = 0; i < data.length; i++){
@@ -525,26 +660,23 @@ var siteManager = (function($,root){
         this.pagination = [{Name:"_page", Value:"1"},{Name :"_limit", Value:"5"}];
     });
 
-    // Window.prototype.genDictionaryName=function(value){    
-    //     return value.toLowerCase().split(' ').join('');
-    // }
-
-    // Window.prototype.arrayContains = function arrayContains(needle, arrhaystack)
-    // {
-    //     return (arraystack.indexOf(needle) > -1);
-    // }
+    function initSite(){
+            dialogue.create({
+                type: dialogueTypes.wait,
+                title: translator.translateText('load'),
+                text: translator.translateText('loading')});
+            dialogue.open();
+            $.when(translator.init(), navigation.init())
+            .then(dialogue.close())
+            .fail(function(error){console.log('Error application start'+error)})
+    }
 
     let PublicAPI={
         init: function(){
-            dialogue.create('wait',translator.translateText('load'), translator.translateText('loading'));
-            $.when(home.init())
-            .then(translator.init())
-            .then(navigation.init()) 
-            .then(documents.init())
-            .fail(console.log('Error application start'));
-            setTimeout(function(){dialogue.close();}, 1000);
-        },
-    };
+            initSite();
+        }
+    }
+    
     return PublicAPI;
 })(jQuery, this);
 
