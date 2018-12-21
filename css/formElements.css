@@ -1,14 +1,18 @@
-form {
-    display: block;
+#ordersForm{
+	padding-top: 100px;
 }
 
-label {
+/* form {
+    display: block;
+} */
+
+label.custom {
     line-height: 24px;
 	margin-left: 3px;
 	float: none;
 }
 
-input,select,textarea {
+input.custom, select.custom, textarea.custom {
 	/* display: inline-block;
 	width: auto;
 	height: 14px;
@@ -22,12 +26,12 @@ input,select,textarea {
 	font-size: 14px; */
 }
 
-input:focus,textarea:focus {
+input.custom:focus, textarea.custom:focus {
 	background-color: #d6d6d6;
 	outline: none;
 }
 
-button {
+button.custom {
     cursor: pointer;
 	display: inline-block;
 	background-color: #532427;
@@ -38,12 +42,12 @@ button {
 	font-size: 14px;
 	line-height: 20px;
 	font-weight: bold;
-	border: 2px solid rgb(252, 252, 252);
+	border: 0px solid rgb(252, 252, 252);  
 	border-radius: 5px 5px 5px 5px;
-	margin-bottom: 5px;
+	margin: 5px 1px;
 }
 
-button[type=reset] {
+button.custom[type=reset] {
 	background-color: #3b3636;
 	background-repeat: no-repeat;
 	background-image: linear-gradient(#f5f5f5, #f5f5f5 25%, #3b3636);
@@ -51,7 +55,7 @@ button[type=reset] {
 	color: #666;
 }
 
-button:hover,button[type=reset]:hover {
+button.custom:hover,button[type=reset]:hover {
 	color: #ffffff;
     background-position: 0 -15px;
 }

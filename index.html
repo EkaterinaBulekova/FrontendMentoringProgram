@@ -17,80 +17,146 @@
                         <img class="lang-button" name="ru" src="images/cropped-russia-flag-button-1.png" alt="RU" >
                         <img class="lang-button" name="en" src="images/icon-usa.png" alt="EN">
                     </div>
-                        <div class="nav-button">
-                            <div class="view-3d">
-                                <div class="button-3d" name="orderListPage">
-                                    <div class="pane front"><figure class="translate" name="home">Home<figure></div>
-                                    <div class="pane bottom"><figure class="translate" name="home">Home</figure></div>
-                                </div>
-                            </div> 
-                        </div>
-                        <div class="nav-button">
-                            <div class="view-3d">
-                                <div class="button-3d" name="settingsPage">
-                                    <div class="pane front"><figure class="translate" name="settings">Settings<figure></div>
-                                    <div class="pane bottom"><figure class="translate" name="settings">Settings</figure></div>
-                                </div>
+                    <div class="nav-button">
+                        <div class="view-3d">
+                            <div class="button-3d" name="orderListPage">
+                                <div class="pane front"><figure class="translate" name="home">Home<figure></div>
+                                <div class="pane bottom"><figure class="translate" name="home">Home</figure></div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="nav-button">
+                        <div class="view-3d">
+                            <div class="button-3d" name="settingsPage">
+                                <div class="pane front"><figure class="translate" name="settings">Settings<figure></div>
+                                <div class="pane bottom"><figure class="translate" name="settings">Settings</figure></div>
                             </div>
                         </div>
-                        <div class="nav-button">
-                            <div class="view-3d">
-                                <div class="button-3d" name="documentsPage">
-                                <div class="pane front"><figure class="translate" name="documents">Documents<figure></div>
-                                <div class="pane bottom"><figure  class="translate" name="documents">Documents</figure></div>
-                                </div>
+                    </div>
+                    <div class="nav-button">
+                        <div class="view-3d">
+                            <div class="button-3d" name="documentsPage">
+                            <div class="pane front"><figure class="translate" name="documents">Documents<figure></div>
+                            <div class="pane bottom"><figure  class="translate" name="documents">Documents</figure></div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </nav>
         </header>
-        <div id="ordersForm" style="position:absolute; display:block;">
-        </div>
+        <section id="orderFormPage">
+            <div class="container">
+                <div class="row">
+                    <div class="span12">
+                        <h2>Add / change order form</h2>
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <legend>To add or change Order, provide with the following information:</legend>
+                                <div class="control-group">
+                                        <div class="controls">
+                                            <input hidden id="idFormString" name="Order.id" type="hidden" value="0">
+                                        </div>
+                                    </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="Order_User">User:</label>
+                                    <div class="controls">
+                                        <select id="usersFormList" name="Order.user">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="Order_Phone">Phone:</label>
+                                    <div class="controls">
+                                        <input id="phoneFormString" name="Order.phone" type="text" value="">
+                                        <span class="help-block">You need to fill this out!</span>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="Order_Address">Address:</label>
+                                    <div class="controls">
+                                        <input id="addressFormString" name="Order.address" type="text" value="">
+                                        <span class="help-block">You need to fill this out!</span>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="Order_Status">Status:</label>
+                                    <div class="controls">
+                                        <select id="statusesFormList" name="Order.status">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="Order_Products">Products:</label>
+                                    <div class="controls">
+                                        <select multiple id="productsFormList" name="Order.products">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="Order_description">Additional information:</label>
+                                    <div class="controls">
+                                        <textarea class="input-block" id="descriptionText" name="Order.description" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="Order_withDelivery">With delivery:</label>
+                                    <div class="controls">
+                                        <input id="withDelivery" type="checkbox" value="delivery">
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <input type="button" id="submitFormButton" value="Save" class="btn btn-primary btn-small" />
+                                        <input type="button" id="cancelFormButton" value="Cancel" class="btn btn-default btn-small" />
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="settingsPage">
             <ul class="tabs">
-                    <li name='products' class="active translate">Products</li>
-                    <li name='categories' class="translate">Categories</li>
-                    <li name='users' class="translate">Users</li>
+                <li name='products' class="active translate">Products</li>
+                <li name='categories' class="translate">Categories</li>
+                <li name='users' class="translate">Users</li>
             </ul>
             <div class="tab-panel">
                     <div id='products' class="active">
-                        <table id="productsTable"></table>
+                        <table class="custom" id="productsTable"></table>
                     </div>
                     <div id='categories'>
-                        <table id="categoriesTable"></table>
+                        <table class="custom" id="categoriesTable"></table>
                     </div>
                     <div id='users'>
-                        <table id="usersTable"></table>
+                        <table class="custom" id="usersTable"></table>
                     </div>
             </div>
         </section>
         <section id="orderListPage">
-            <form> 
+            <form class="filter-form"> 
                     <div class="filter">
-                    <!-- <div class="buttons-panel">
-                        <button type="button" class="minWidth">Search</button>
-                        <button type="reset" class="minWidth">Reset</button>
-                        <button type="button" onclick="filter.toggleAdvansedPanel(this)">More Filters</button>
-                    </div> -->
                     <div class="quick-filter">
                         <table>
                             <tr>
                                 <td name="userid" class="property-name translate">User Id</td>
                                 <td class="property-value">
-                                    <select id="usersFilter">
+                                    <select class="custom" id="usersFilter">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td name="status" class="property-name translate">Status</td>
                                 <td class="property-value">
-                                    <select id="statusesFilter">
+                                    <select class="custom" id="statusesFilter">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td name="date" class="property-name translate">Date</td>
-                                <td class="property-value"><input type="date" name="ShippedDate" id="ShippedDate"></td>
+                                <td class="property-value"><input class="custom" type="date" name="ShippedDate" id="ShippedDate"></td>
                             </tr>
                         </table>
                     </div>
@@ -99,19 +165,19 @@
                             <tr>
                                 <td name="address" class="property-name translate">Address</td>
                                 <td class="property-value">
-                                    <input type="text" name="" id="">
+                                    <input class="custom" type="text" name="" id="">
                                 </td>
                            </tr>
                             <tr>
                                 <td name="product" class="property-name translate">Product</td>
                                 <td class="property-value">
-                                    <select id="productsFilter">
+                                    <select class="custom" id="productsFilter">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td name="orderdate" class="property-name translate">Order Date</td>
-                                <td class="property-value"><input type="date" name="OrderedDate" id="OrderedDate"></td>
+                                <td class="property-value"><input class="custom" type="date" name="OrderedDate" id="OrderedDate"></td>
                             </tr>
                         </table>
                     </div>
@@ -120,30 +186,30 @@
                                 <tr>
                                     <td name="phone" class="property-name translate">Phone</td>
                                     <td class="property-value">
-                                        <input type="tel" name="" id="">
+                                        <input class="custom" type="tel" name="" id="">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td name="category" class="property-name translate">Category</td>
                                     <td class="property-value">                                    
-                                        <select id="categoriesFilter">                                    
+                                        <select class="custom" id="categoriesFilter">                                    
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td name="requireddate" class="property-name translate">Required Date</td>
-                                    <td class="property-value"><input type="date" name="RequiredDate" id="RequiredDate"></td>
+                                    <td class="property-value"><input class="custom" type="date" name="RequiredDate" id="RequiredDate"></td>
                                 </tr>
                             </table>
                         </div>
                 </div>
                     <div class="buttons-panel">
-                        <button name="search" type="button" class="minWidth translate">Search</button>
-                        <button name="reset" type="reset" class="minWidth translate">Reset</button>
-                        <button name="filters" type="button" class="minWidth translate addvanced-filter-button">Filters ></button>
+                        <button name="search" type="button" class="custom minWidth translate">Search</button>
+                        <button name="reset" type="reset" class="custom minWidth translate">Reset</button>
+                        <button name="filters" type="button" class="custom minWidth translate addvanced-filter-button">Filters ></button>
                     </div>
             </form>
-            <table id="ordersTable">
+            <table class="custom" id="ordersTable">
             </table>
             </div>
         </section>
@@ -158,9 +224,7 @@
                                 <source src="" type="video/mp4">
                               Your browser does not support the video tag.
                             </video>
-                        <!-- <p name="videoblock" class="translate"> Video block </p>
-                        <img src="images/ard-licsoft.jpg" alt=""> -->
-                        </div>
+                         </div>
                         <h1 name='productName' class="translate"> Product name</h1>
                         <p name=''>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
                             Quia, similique! Quis maxime harum maiores, odit recusandae 

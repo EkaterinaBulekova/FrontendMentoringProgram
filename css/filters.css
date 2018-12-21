@@ -42,17 +42,18 @@
 	box-sizing: border-box;
 }
 
-.property-value input, .property-value select{
+.property-value input.custom, .property-value select.custom{
 	padding: 2px;
 	font-size: 14px;
 	margin: 2px;
 	width: 243px;
 }
 
-.property-value input{
-	height: 18px;
+.property-value input.custom{
+	height: 16px;
 }
 
-.property-value select{
+.property-value select.custom{
+	height: 22px;
 	width: 249px;
 }

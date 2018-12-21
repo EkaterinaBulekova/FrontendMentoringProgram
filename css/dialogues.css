@@ -48,6 +48,7 @@
     height: calc(100%-20px);
     background-color: white;
     text-align: center;
+    
 }
 
 .dialogue-img{
@@ -58,5 +59,6 @@
 
 .dialogue-buttons button{
     width: 60px;
-    margin: 5px auto;
+    margin: 0 5px 0 5px;
+    /* margin: 5px auto; */
 }

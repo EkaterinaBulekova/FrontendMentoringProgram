@@ -35,17 +35,132 @@ var siteManager = (function($,root){
                 })
             }
         }),
-    
+
         formPage : extention.inherit(page, new function FormPage(){
-            this.toggleFormPage = function(eventSource){
-                this.togglePage(eventSource);
-                this.init();
+            let controls = {
+                submit : function(){
+                    return $('#submitFormButton');
+                },
+                cancel : function(){
+                    return $('#cancelFormButton');
+                }
             }
-            this.init = function(){
-                order.load();
+
+            let actions = {
+                submit : function(){
+                    //validateFields()
+                    var newOrder = orderFields.get();
+                    return ajaxRequest.update(serverURL+'orders/'+newOrder.id, JSON.stringify(newOrder))
+                    .then(result=>{orderTable.load()})
+                    .then(result=>{page.togglePage('orderListPage')})
+                },
+                cancel : function(){
+                    page.togglePage('orderListPage');
+                }
             }
-        }), 
-    
+
+            let orderFields = {
+                get: function(){
+                    return {
+                        id : $('#idFormString').val(),
+                        userId : parseInt($('#usersFormList').val()),
+                        address : $('#addressFormString').val(),
+                        phone : $('#phoneFormString').val(),
+                        status : parseInt($('#statusesFormList').val()),
+                        withDelivery : $('#withDelivery').prop('checked')? $('#withDelivery').val() : '',
+                        description : $('#descriptionText').val()
+                    }
+                },
+                set: function(order){
+                    $('#idFormString').val((order)?order[0]['id']:'');
+                    $('#usersFormList').val((order)?order[0]['userId']:'');
+                    $('#addressFormString').val((order)?order[0]['address']:'');
+                    $('#phoneFormString').val((order)?order[0]['phone']:'');
+                    $('#statusesFormList').val((order)?order[0]['status']:'');
+                    $('#withDelivery').val((order)?[order[0]['withDelivery']]:'');
+                    $('#descriptionText').val((order)?order[0]['description']:'');
+                }
+            }
+
+            let productsList = {
+                get: function(){
+                     return $('#productsFormList').val();
+                },
+                set: function(order){
+                    $('#productsFormList').val((order)?getProducts(order):'');
+                }
+            }
+
+            function getProducts(order){
+                var products = [];
+                var lines = order['lines'];
+                lines.forEach(function(item) {
+                    products.push(item.productId); 
+                });
+                return products;
+            }
+
+            function setActions(){
+                var sub = controls.submit();
+                var canc = controls.cancel();
+                sub.on('click',function(){actions.submit()});
+                canc.on('click', function(){actions.cancel()});
+            }
+
+            let serverURL = 'http://localhost:3000/';
+
+            this.toggleFormPage = function(id){
+                this.togglePage('orderFormPage');
+                this.init(id);
+            }
+
+            this.init = function(id){
+                dialogue.create(loadDialogue);
+                dialogue.open();
+                return formListsInit()
+                .then(result => {
+                    if (id) {
+                        orderTable.loadById(id, 'lines')
+                        .then(result=>{
+                            orderFields.set(result);
+                            productsList.set(result[0]); 
+                        })
+                    }else{
+                        orderFields.set('');
+                        productsList.set(''); 
+                    }
+                    return $.when();
+                })
+                .then(result => {
+                    setActions();
+                    dialogue.close();
+                    return $.when();
+                })
+                .fail(function(){
+                    console.log('Error loading form page')
+                })
+            }
+
+            function loadList(id){
+                return ajaxRequest.get(serverURL+ id)
+                .then(result => {dataListObject.loadFormList(id, result)});
+            }
+
+            function validateFields(){
+
+            }
+
+            function formListsInit(){
+                return loadList('products')
+                .then(result=>{loadList('users')})
+                .then(result=>{loadList('statuses')})
+                .then(result => {
+                    return $.when();
+                })
+                .fail(error => {console.log(error)});
+            }
+        }),
+
         settingsPage : extention.inherit(page, new function Settings(){
 
             this.selectTab = function(eventSource){
@@ -71,8 +186,6 @@ var siteManager = (function($,root){
                 .then(result => {userTable.load()})
                 .then(result => {
                     settingsPage.isLoaded = true;
-                    // $('.tab-panel').toggle();
-                    // $('.tabs').toggle();
                     dialogue.close();
                     return $.when();
                 })
@@ -211,7 +324,8 @@ var siteManager = (function($,root){
             confirmation: {en: "Confirmation", ru: "Подтверждение"},
             load: {en: "Loading", ru: "Загрузка"},
             wouldYouLikeToGoTo: {en: "Would you like to go to ", ru: "Хотите перейти на "},
-            loading: {en: "Loading...", ru: "Идет загрузка..."}
+            loading: {en: "Loading...", ru: "Идет загрузка..."},
+            survey: {en: "Survey", ru: "Опрос"}
         }
 
         let currLang = "en";
@@ -230,7 +344,7 @@ var siteManager = (function($,root){
             }
             $(".translate").each(function() {
                 let name = $(this).attr("name");
-                name && $(this).text(dict[name][currLang]);
+                name && dict[name] && $(this).text(dict[name][currLang]);
             });
         }
 
@@ -255,7 +369,7 @@ var siteManager = (function($,root){
                 ? element.className
                 : element.className + " translate";
             element.setAttribute("name", name);
-            element.innerHTML = dictionary[name][currLang];
+            element.innerHTML = (dictionary[name])?dictionary[name][currLang]:name;
         }
     }
 
@@ -267,6 +381,7 @@ var siteManager = (function($,root){
     
         function isOffset(){
             var bodyBlock = document.body.getBoundingClientRect();
+            console.log($bigBlock.css);
             return bodyBlock.top < -200;
         };
     
@@ -276,7 +391,7 @@ var siteManager = (function($,root){
             video = document.getElementsByTagName('video')['currentVideo'];
             $activeBlock = null;
         };
-    
+
         this.start = function(videoLink){
             if (!$activeBlock){
                 $activeBlock = (isOffset()) ? $smallBlock : $bigBlock;
@@ -293,7 +408,7 @@ var siteManager = (function($,root){
                 video.pause();
             }
         }
-    
+
         this.swap = function(){
             if($activeBlock){
                 if(isOffset() && $activeBlock.id === $bigBlock.id){
@@ -302,7 +417,7 @@ var siteManager = (function($,root){
                     $smallBlock.addClass('show');
                     $activeBlock = $smallBlock;
                 }
-    
+
                 if(!isOffset() && $activeBlock.id === $smallBlock.id){
                     $smallBlock.removeClass('show');
                     $bigBlock.append(video);
@@ -313,7 +428,6 @@ var siteManager = (function($,root){
     
         }
     }
-    
 
     let filterBlock = new function FilterBlock(){
         let serverURL = 'http://localhost:3000/';
@@ -329,8 +443,6 @@ var siteManager = (function($,root){
                 $advFilterButton.click(function() {
                     filterBlock.toggleAdvansedPanel(this);
                 });
-                // $('.filter').toggle();
-                // $('.buttons-panel').toggle();
                 defer.resolve();
             }else{
                 defer.reject(new Error ("Element Filter doesn't exists!"));
@@ -367,6 +479,13 @@ var siteManager = (function($,root){
     }
 
     let dataListObject = new function DataListObj(){
+        this.loadFormList = function(id, data){
+            let dataList = document.getElementById(id+"FormList");
+            dataList.innerHTML = '';
+            data.map((value) => {
+                dataList.appendChild(getOption(value['id'] ,value['name']));
+            })
+        };
         this.load = function(id, data){
             let dataList = document.getElementById(id+"Filter");
             dataList.innerHTML = '';
@@ -393,17 +512,33 @@ var siteManager = (function($,root){
                 dataType: "json",
                 url: url
             })
-        };
-        // post: function(url, data){
+        }
 
-        // },
-        // update: function(url, data){
+        this.post = function(url, data){
+            return $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: data,
+                url: url
+            })
+        }
+        
+        this.update = function(url, data){
+            return $.ajax({
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: data,
+                url: url
+            })
+        }
 
-        // },
+        
         // delete: function(url, data){
 
         // }
-    // return Object.freeze({get})
+    
     }
 
     let urlBuilder = new function Builder(){ 
@@ -422,15 +557,11 @@ var siteManager = (function($,root){
 
     let commonDictionary = new function CommonDictionary(){
 
-        this.loadById = function(id){
-            let formId = this.name + 'Form';
-            let orderById = [{Name:"id", Value:id}];
+        this.loadById = function(id, included){
+            let orderById = [{Name:"id", Value:id}, {Name:'_embed', Value: included}];
             let url = 'http://localhost:3000/' + this.name;
-            return ajaxRequest.get(urlBuilder.getUrl(url, orderById))
-                .then(function(data, textStatus, jqXHR){
-                    return $.when(formBuilder.load(jqXHR, formId));
-                })
-                .fail(console.log("Can't load data from " + urlBuilder.getUrl(url, orderById)))
+            return ajaxRequest.get(urlBuilder.getUrl(url, orderById));
+            //.fail(console.log("Can't load data from " + urlBuilder.getUrl(url, orderById)))
         };
 
         this.load = function(){
@@ -439,19 +570,11 @@ var siteManager = (function($,root){
             let paginate = this.pagination;
             return ajaxRequest.get(urlBuilder.getUrl(url, paginate))
             .then(function(data, textStatus, jqXHR) {
-                return $.when(
-                    tableBuilder.clickFunc = function(id){orderTable.loadById(id)},
-                    tableBuilder.load(jqXHR, tableId));
-            })
-            .fail(console.log("Can't load data from " + urlBuilder.getUrl(url, paginate)));
+                tableBuilder.clickFunc = function(id){pages.formPage.toggleFormPage(id)}
+                return $.when(tableBuilder.load(jqXHR, tableId));
+            });
+            //.fail(console.log("Can't load data from " + urlBuilder.getUrl(url, paginate)));
         };
-    }
-
-    let formBuilder = new function FormBilder(){
-
-        this.load = function(response, id){
-            $("#"+id).text(response.responseJSON[0]["id"]);
-        }
     }
 
     let dialogueButtons = {
@@ -543,6 +666,7 @@ var siteManager = (function($,root){
                     class: value.name, 
                     html: translator.translateText(value.name)
                 });
+                btn.addClass('custom')
                 btn.on("click", function(){
                         dialogue.close();
                         if (value.type === 'active'){
@@ -605,6 +729,7 @@ var siteManager = (function($,root){
                     let linkParam = element.split('; ');
                     let name = linkParam[1].slice(5, linkParam[1].length-1);
                     translator.translateElement(button, name);
+                    $(button).addClass('custom')
                     button.onclick = function(){
                         $.when(ajaxRequest.get(linkParam[0].slice(1, linkParam[0].length-1)))
                         .done(function(data, textStatus, jqXHR){
@@ -633,7 +758,7 @@ var siteManager = (function($,root){
                 })
                 .then(function(){
                     $("#"+id +" tr").click(function(){
-                        if(id==="ordersTable") tableBuilder.clickFunc($(this).attr("id"));
+                        if(id==="ordersTable" && $(this).attr("id") ) tableBuilder.clickFunc($(this).attr("id"));
                     })
                 });
             }
