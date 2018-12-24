@@ -85,7 +85,6 @@ var siteManager = (function($,root){
                 }
             }
 
-
             function getDateString(date){
                    var day = date.getDate();
                    var month = date.getMonth() + 1;

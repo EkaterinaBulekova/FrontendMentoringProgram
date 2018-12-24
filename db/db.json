@@ -143,8 +143,8 @@
       "status": 3,
       "withDelivery": "",
       "description": "",
-      "orderDate": "2018-12-12T00:00:00.000Z",
-      "shippingDate": "2018-12-13T00:00:00.000Z"
+      "orderDate": "2018-12-17",
+      "shippingDate": " "
     },
     {
       "id": 4,
@@ -155,7 +155,7 @@
       "withDelivery": "delivery",
       "description": "",
       "orderDate": "2018-12-22",
-      "shippingDate": " "
+      "shippingDate": "2018-12-24"
     },
     {
       "id": 5,

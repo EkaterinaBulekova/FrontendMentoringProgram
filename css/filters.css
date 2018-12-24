@@ -46,11 +46,11 @@
 	padding: 2px;
 	font-size: 14px;
 	margin: 2px;
-	width: 243px;
+	width: 249px;
 }
 
 .property-value input.custom{
-	height: 16px;
+	height: 22px;
 }
 
 .property-value select.custom{

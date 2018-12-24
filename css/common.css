@@ -39,13 +39,13 @@ h1,h2,h3,h4,h5,h6 {
 	line-height: normal;
 }
 
-h1 {
+h1.custom {
 	font-size: 24px;
 	color: #a5adb8;
 	text-transform: capitalize;
 }
 
-h1::first-letter {
+h1.custom::first-letter {
 	color: #ae4b5d;
 }
 

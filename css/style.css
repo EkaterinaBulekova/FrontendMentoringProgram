@@ -259,9 +259,13 @@ section.active {
 		"foot foot"
 		"foot foot"
 	}
+	#orderListPage{
+		overflow-x: scroll;
+	}
 }
 
 @media screen and (max-width: 40em) {
+
 	.grid-container .shape.video{
 		height: 10em;
 		width: 15em;

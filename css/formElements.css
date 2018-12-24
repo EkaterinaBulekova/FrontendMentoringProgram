@@ -14,10 +14,12 @@ label.custom {
 
 input.custom, select.custom, textarea.custom {
 	/* display: inline-block;
-	width: auto;
-	height: 14px;
+	box-sizing: border-box;	width: auto;
+		height: 18px;	
 	padding: 3px 5px;
 	line-height: 14px; */
+
+
 	border: 1px solid white;
 	background-color: #e3e4e5;
 	border-radius: 3px; 
