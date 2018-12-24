@@ -68,7 +68,9 @@ var siteManager = (function($,root){
                         phone : $('#phoneFormString').val(),
                         status : parseInt($('#statusesFormList').val()),
                         withDelivery : $('#withDelivery').prop('checked')? $('#withDelivery').val() : '',
-                        description : $('#descriptionText').val()
+                        description : $('#descriptionText').val(),
+                        orderDate: getDateString( new Date($('#orderDate').val())),
+                        shippingDate: getDateString( new Date($('#shippingDate').val()))
                     }
                 },
                 set: function(order){
@@ -78,9 +80,24 @@ var siteManager = (function($,root){
                     $('#phoneFormString').val((order)?order[0]['phone']:'');
                     $('#statusesFormList').val((order)?order[0]['status']:'');
                     $('#withDelivery').val((order)?[order[0]['withDelivery']]:'');
-                    $('#descriptionText').val((order)?order[0]['description']:'');
+                    $('#orderDate').val((order)?order[0]['orderDate']:'');
+                    $('#shippingDate').val((order)?order[0]['shippingDate']:'');
                 }
             }
+
+
+            function getDateString(date){
+                   var day = date.getDate();
+                   var month = date.getMonth() + 1;
+                   var year = date.getFullYear();
+                   if(day && month && year){
+                        return [year,
+                        (month>9 ? '' : '0') + month,
+                        (day>9 ? '' : '0') + day
+                        ].join('-');
+                   }
+                return ' ';
+              }
 
             let productsList = {
                 get: function(){
@@ -272,8 +289,9 @@ var siteManager = (function($,root){
             userid: {en: "User Id", ru: "Пользователь"},
             status: {en: "Status", ru: "Статус"},
             date: {en: "Date", ru: "Дата"},
-            orderdate: {en: "Order date", ru: "Дата доставки"},
+            orderdate: {en: "Order date", ru: "Дата заказа"},
             requireddate: {en: "Required date", ru: "Дата ож-ния"},
+            shippingdate: {en: "Shipping date", ru: "Дата доставки"},
             address: {en: "Address", ru: "Адрес"},
             phone: {en: "Phone", ru: "Телефон"},
             product: {en: "Product", ru: "Продукт"},
@@ -285,6 +303,7 @@ var siteManager = (function($,root){
             products: {en: "Products", ru: "Продукты"},
             categories: {en: "Categories", ru: "Категории"},
             users: {en: "Users", ru: "Пользователи"},
+            user: {en: "User", ru: "Пользователь"},
             id: {en: "Id", ru: "Номер"},
             name: {en: "Name", ru: "Наименование"},
             description: {en: "Description", ru: "Описание"},
@@ -321,11 +340,17 @@ var siteManager = (function($,root){
             ok: {en: "Ok", ru: "Ок"},
             yes: {en: "Yes", ru: "Да"},
             no: {en: "No", ru: "Нет"},
+            save: {en: "Save", ru: "Сохранить"},
+            cancel: {en: "Cancel", ru: "Отменить"},
             confirmation: {en: "Confirmation", ru: "Подтверждение"},
             load: {en: "Loading", ru: "Загрузка"},
             wouldYouLikeToGoTo: {en: "Would you like to go to ", ru: "Хотите перейти на "},
             loading: {en: "Loading...", ru: "Идет загрузка..."},
-            survey: {en: "Survey", ru: "Опрос"}
+            additionalinfo: {en: "Additional information", ru: "Допонительная информация"},
+            youneedfill: {en: "You need to fill it out!", ru: "Это поле необходимо заполнить!"},
+            withdelivery: {en: "With delivery", ru: "С доставкой"},
+            addchangeorderform: {en: "Add / Change order form", ru: "Форма добавления / изменения заказа"},
+            orderlegend: {en: "To add or change Order, provide with the following information:", ru: "Для добавления или изменения заказа предоставьте следующую информацию:"}
         }
 
         let currLang = "en";

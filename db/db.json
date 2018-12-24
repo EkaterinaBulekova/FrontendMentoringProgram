@@ -120,7 +120,9 @@
       "phone": "242432342444",
       "status": 2,
       "withDelivery": "delivery",
-      "description": "some text"
+      "description": "some text",
+      "orderDate": "2018-12-12",
+      "shippingDate": ""
     },
     {
       "id": 2,
@@ -129,7 +131,9 @@
       "phone": "242432342444",
       "status": 2,
       "withDelivery": "",
-      "description": "another text"
+      "description": "",
+      "orderDate": "2018-12-12",
+      "shippingDate": ""
     },
     {
       "id": 3,
@@ -137,17 +141,21 @@
       "address": "Paris city",
       "phone": "55555555555",
       "status": 3,
-      "withDelivery": "delivery",
-      "description": "some text"
+      "withDelivery": "",
+      "description": "",
+      "orderDate": "2018-12-12T00:00:00.000Z",
+      "shippingDate": "2018-12-13T00:00:00.000Z"
     },
     {
       "id": 4,
       "userId": 1,
-      "address": "London",
+      "address": "London city",
       "phone": "242432342444",
       "status": 1,
       "withDelivery": "delivery",
-      "description": "another text"
+      "description": "",
+      "orderDate": "2018-12-22",
+      "shippingDate": " "
     },
     {
       "id": 5,
@@ -156,7 +164,9 @@
       "phone": "242432342444",
       "status": 1,
       "withDelivery": "delivery",
-      "description": "dfgdg"
+      "description": "",
+      "orderDate": "2018-12-21",
+      "shippingDate": ""
     },
     {
       "id": 6,
@@ -165,7 +175,9 @@
       "phone": "242432342444",
       "status": 1,
       "withDelivery": "delivery",
-      "description": "some text"
+      "description": "some text",
+      "orderDate": "2018-12-14",
+      "shippingDate": ""
     },
     {
       "id": 7,
@@ -174,7 +186,9 @@
       "phone": "242432342444",
       "status": 3,
       "withDelivery": "delivery",
-      "description": "another text"
+      "description": "another text",
+      "orderDate": "2018-12-10",
+      "shippingDate": "2018-12-22"
     },
     {
       "id": "110",
@@ -183,7 +197,9 @@
       "phone": "242432342444",
       "status": 1,
       "withDelivery": "delivery",
-      "description": "some text"
+      "description": "some text",
+      "orderDate": "2018-12-01",
+      "shippingDate": ""
     }
   ],
   "lines": [

@@ -46,74 +46,106 @@
         </header>
         <section id="orderFormPage">
             <div class="container">
-                <div class="row">
-                    <div class="span12">
-                        <h2>Add / change order form</h2>
-                        <form class="form-horizontal">
-                            <fieldset>
-                                <legend>To add or change Order, provide with the following information:</legend>
-                                <div class="control-group">
-                                        <div class="controls">
-                                            <input hidden id="idFormString" name="Order.id" type="hidden" value="0">
-                                        </div>
-                                    </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="Order_User">User:</label>
-                                    <div class="controls">
-                                        <select id="usersFormList" name="Order.user">
-                                        </select>
-                                    </div>
+                <h2 class="translate" name="addchangeorderform">Add / change order form</h2>
+                <form class="form-horizontal">
+                    <legend class="translate" name="orderlegend">To add or change Order, provide with the following information:</legend>
+                    <input hidden id="idFormString" name="Order.id" type="hidden" value="0">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 translate" for="Order_User" name="user">User:</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="usersFormList" name="Order.user"></select>
                                 </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="Order_Phone">Phone:</label>
-                                    <div class="controls">
-                                        <input id="phoneFormString" name="Order.phone" type="text" value="">
-                                        <span class="help-block">You need to fill this out!</span>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="Order_Address">Address:</label>
-                                    <div class="controls">
-                                        <input id="addressFormString" name="Order.address" type="text" value="">
-                                        <span class="help-block">You need to fill this out!</span>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="Order_Status">Status:</label>
-                                    <div class="controls">
-                                        <select id="statusesFormList" name="Order.status">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="Order_Products">Products:</label>
-                                    <div class="controls">
-                                        <select multiple id="productsFormList" name="Order.products">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="Order_description">Additional information:</label>
-                                    <div class="controls">
-                                        <textarea class="input-block" id="descriptionText" name="Order.description" rows="3"></textarea>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="Order_withDelivery">With delivery:</label>
-                                    <div class="controls">
-                                        <input id="withDelivery" type="checkbox" value="delivery">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <div class="controls">
-                                        <input type="button" id="submitFormButton" value="Save" class="btn btn-primary btn-small" />
-                                        <input type="button" id="cancelFormButton" value="Cancel" class="btn btn-default btn-small" />
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </form>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 translate" for="Order_Phone" name="phone">Phone:</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="phoneFormString" name="Order.phone" type="text" value="">
+                                <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-2 translate" for="Order_Address" name="address">Address:</label>
+                            <div class="col-md-10">
+                                <input  class="form-control" id="addressFormString" name="Order.address" type="text" value="">
+                                <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 translate" for="Order_orderDate" name="orderdate">Order date:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="date" name="orderdate" id="orderDate">
+                                    <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 translate" for="Order_shippingdate" name="shippingdate">Shipping date:</label>
+                                <div class="col-md-8">
+                                    <input class="form-control" type="date" name="shippingdate" id="shippingDate">
+                                    <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 translate" for="Order_description" name="additionalinfo">Additional information:</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control input-block" id="descriptionText" name="Order.description" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 translate" for="Order_Products" name="products">Products:</label>
+                                <div class="col-md-8">
+                                    <select multiple class="form-control" id="productsFormList" name="Order.products">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 translate" for="Order_Status" name="status">Status:</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="statusesFormList" name="Order.status">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 translate" for="Order_withDelivery" name="withdelivery">With delivery:</label>
+                                <div class="col-md-8">
+                                    <input class="form-check-input" id="withDelivery" type="checkbox" value="delivery">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button id="submitFormButton" value="Save" class="btn btn-primary btn-small translate" name="save">Save</button>
+                                <button id="cancelFormButton" value="Cancel" class="btn btn-default btn-small translate" name="cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </section>
 
