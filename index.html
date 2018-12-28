@@ -63,7 +63,8 @@
                             <div class="form-group">
                                 <label class="col-md-4 translate" for="Order_Phone" name="phone">Phone:</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="phoneFormString" name="Order.phone" type="text" value="">
+                                <input class="form-control" id="phoneFormString" name="Order.phone" type="text" value="" required>
+                                <span class="error" aria-live="polite"></span>
                                 <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
                             </div>
                         </div>
@@ -73,7 +74,8 @@
                         <div class="form-group">
                             <label class="col-md-2 translate" for="Order_Address" name="address">Address:</label>
                             <div class="col-md-10">
-                                <input  class="form-control" id="addressFormString" name="Order.address" type="text" value="">
+                                <input  class="form-control" id="addressFormString" name="Order.address" type="text" value="" >
+                                <span class="error" aria-live="polite"></span>
                                 <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
                             </div>
                         </div>
@@ -84,7 +86,8 @@
                             <div class="form-group">
                                 <label class="col-md-4 translate" for="Order_orderDate" name="orderdate">Order date:</label>
                                 <div class="col-md-8">
-                                    <input class="form-control" type="date" name="orderdate" id="orderDate">
+                                    <input class="form-control" type="date" name="orderdate" id="orderDate" required>
+                                    <span class="error" aria-live="polite"></span>
                                     <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
                                 </div>
                             </div>
@@ -94,7 +97,7 @@
                                 <label class="col-md-4 translate" for="Order_shippingdate" name="shippingdate">Shipping date:</label>
                                 <div class="col-md-8">
                                     <input class="form-control" type="date" name="shippingdate" id="shippingDate">
-                                    <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
+                                    <span class="error" aria-live="polite"></span>
                                 </div>
                             </div>
                         </div>
@@ -138,17 +141,16 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-12">
+                        <div class="col-md-10 col-xs-12">
                             <div class="form-group">
-                                <button id="submitFormButton" value="Save" class="btn btn-primary btn-small translate" name="save">Save</button>
-                                <button id="cancelFormButton" value="Cancel" class="btn btn-default btn-small translate" name="cancel">Cancel</button>
+                                <input id="submitFormButton" value="Save" class="col-md-3 col-xs-5 btn btn-primary btn-small translate" name="save">
+                                <input id="cancelFormButton" value="Cancel" class="col-md-3 col-xs-5 btn btn-default btn-small translate" name="cancel">
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </section>
-
         <section id="settingsPage">
             <ul class="tabs">
                 <li name='products' class="active translate">Products</li>
@@ -187,8 +189,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td name="date" class="property-name translate">Date</td>
-                                <td class="property-value"><input class="custom" type="date" name="ShippedDate" id="ShippedDate"></td>
+                                <td name="orderdate" class="property-name translate">Order Date</td>
+                                <td class="property-value"><input class="custom" type="date" name="OrderedDate" id="OrderedDate"></td>
                             </tr>
                         </table>
                     </div>
@@ -208,8 +210,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td name="orderdate" class="property-name translate">Order Date</td>
-                                <td class="property-value"><input class="custom" type="date" name="OrderedDate" id="OrderedDate"></td>
+                                <td name="shippingdate" class="property-name translate">Shipping Date</td>
+                                <td class="property-value"><input class="custom" type="date" name="ShippingDate" id="shippingDate"></td>
                             </tr>
                         </table>
                     </div>
@@ -223,8 +225,8 @@
                                 </tr>
                                 <tr>
                                     <td name="category" class="property-name translate">Category</td>
-                                    <td class="property-value">                                    
-                                        <select class="custom" id="categoriesFilter">                                    
+                                    <td class="property-value">
+                                        <select class="custom" id="categoriesFilter">
                                         </select>
                                     </td>
                                 </tr>

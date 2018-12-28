@@ -43,6 +43,7 @@
 }
 
 .property-value input.custom, .property-value select.custom{
+	color: black;
 	padding: 2px;
 	font-size: 14px;
 	margin: 2px;

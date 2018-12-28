@@ -48,11 +48,13 @@ var siteManager = (function($,root){
 
             let actions = {
                 submit : function(){
-                    //validateFields()
+                    var validationResult = validator.validate();
+                    if(validationResult){
                     var newOrder = orderFields.get();
                     return ajaxRequest.update(serverURL+'orders/'+newOrder.id, JSON.stringify(newOrder))
                     .then(result=>{orderTable.load()})
                     .then(result=>{page.togglePage('orderListPage')})
+                    }
                 },
                 cancel : function(){
                     page.togglePage('orderListPage');
@@ -79,7 +81,10 @@ var siteManager = (function($,root){
                     $('#addressFormString').val((order)?order[0]['address']:'');
                     $('#phoneFormString').val((order)?order[0]['phone']:'');
                     $('#statusesFormList').val((order)?order[0]['status']:'');
-                    $('#withDelivery').val((order)?[order[0]['withDelivery']]:'');
+                    if(order&&order[0]['withDelivery']==='delivery'){
+                        $('#withDelivery').prop('checked', true);
+                    }
+                    $('#descriptionText').val((order)?order[0]['description']:'')
                     $('#orderDate').val((order)?order[0]['orderDate']:'');
                     $('#shippingDate').val((order)?order[0]['shippingDate']:'');
                 }
@@ -135,20 +140,20 @@ var siteManager = (function($,root){
                 dialogue.open();
                 return formListsInit()
                 .then(result => {
-                    if (id) {
-                        orderTable.loadById(id, 'lines')
+                    orderFields.set('');
+                    productsList.set('');
+                    setActions();
+                     if (id) {
+                         return orderTable.loadById(id, 'lines')
                         .then(result=>{
                             orderFields.set(result);
                             productsList.set(result[0]); 
                         })
-                    }else{
-                        orderFields.set('');
-                        productsList.set(''); 
                     }
                     return $.when();
                 })
                 .then(result => {
-                    setActions();
+                    validator.init();
                     dialogue.close();
                     return $.when();
                 })
@@ -160,10 +165,6 @@ var siteManager = (function($,root){
             function loadList(id){
                 return ajaxRequest.get(serverURL+ id)
                 .then(result => {dataListObject.loadFormList(id, result)});
-            }
-
-            function validateFields(){
-
             }
 
             function formListsInit(){
@@ -280,6 +281,151 @@ var siteManager = (function($,root){
         }
     }
 
+    var validator = new function Validator(){
+        var fields = {
+            address : {input: '#addressFormString', error: '#addressFormString+.error', isValid: function(){return addressValidate();}},
+            phone : {input: '#phoneFormString', error: '#phoneFormString+.error', isValid: function(){return phoneValidate()}},
+            status : {input: '#statusesFormList', error: '#statusesFormList+.error'},
+            orderDate: {input: '#orderDate', error: '#orderDate+.error', isValid: function(){return orderDateValidate();}},
+            shippingDate: {input: '#shippingDate', error: '#shippingDate+.error', isValid: function(){return shippingDateValidate();}},
+            delivery:  {input: '#withDelivery', error: '#withDelivery+.error'}
+        };
+        this.init = function(){
+            for(property in fields){
+                var field =fields[property];
+                var input = $(field.input);
+                input.on("change paste keyup", function() {validator.validate()})
+            }
+        }
+    
+        this.validate = function(){
+            return fields.phone.isValid() & fields.address.isValid() & fields.orderDate.isValid() & fields.shippingDate.isValid();
+        }
+    
+        function shippingDateValidate(){
+            var delivered = 3;
+            var status = $(fields.status.input).val();
+            if (status == delivered){
+                return checkIsDate('shippingDate') && checkIsDateLessNow('shippingDate') && checkIsDateMoreDate('shippingDate', 'orderDate');
+            }else{
+                var field = getValidationPare('shippingDate');
+                if (!checkIsDate('shippingDate')) {
+                    setValid(field.input, field.error);
+                    return true;
+                }else{
+                    setInvalid(field.input, field.error, translator.translateText('OrderCantHaveShippingDateWhileNotDelivered'));
+                    return false;
+                }
+            }
+
+        }
+    
+        function orderDateValidate(){
+            return checkIsDate('orderDate') && checkIsDateLessNow('orderDate');
+        }
+    
+        function phoneValidate(){
+            var phonePattern = /^[+]?([1-9]\s|[1-9]|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/g;
+            return checkIfRequired('phone') && checkIfPattern('phone', phonePattern);
+        }
+    
+        function addressValidate(){
+            if ($(fields.delivery.input).prop('checked')){
+                return checkIfRequired('address');
+            }
+            var field = getValidationPare('address');
+            setValid(field.input, field.error);
+            return true;
+        }
+
+        function getValidationPare(name){
+            return {error : $(fields[name].error)[0],
+                    input : $(fields[name].input)}
+        }
+    
+        function checkIsDateLessNow(name){
+            var error = $(fields[name].error)[0];
+            var input = $(fields[name].input);
+            var date = new Date(input.val());
+            if(date <= new Date()){
+                setValid(input, error)
+                return true;
+            } else{
+                setInvalid(input, error, translator.translateText(name)+translator.translateText('ShouldBeEqualOrLessOfCurrentDate')+'!')
+                return false;
+            }
+        }
+    
+        function checkIsDateMoreDate(firstName,secondName){
+            var error = $(fields[firstName].error)[0];
+            var input = $(fields[firstName].input);
+            var firstDate = new Date(input.val());
+            var secondDate = new Date($(fields[secondName].input).val());
+            if(firstDate >= secondDate){
+                setValid(input, error)
+                return true;
+            } else{
+                setInvalid(input, error, translator.translateText(firstName)+translator.translateText('ShouldBeEqualOrMoreOf')+translator.translateText(secondName)+'!')
+                return false;
+            }
+        }
+    
+        function checkIsDate(name){
+            var error = $(fields[name].error)[0];
+            var input = $(fields[name].input);
+            var date = new Date(input.val());
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            if(day && month && year){
+                setValid(input,error);
+                return true;
+            }else{
+                setInvalid(input,error,translator.translateText('PleaseFillCorrectly')+translator.translateText(name)+'!');
+                return false;
+            }
+        }
+    
+        function checkIfPattern(name, pattern){
+            var error = $(fields[name].error)[0];
+            var input = $(fields[name].input);
+            var val = input.val();
+            if (val && pattern.test(val)){
+                setValid(input,error);
+                return true;
+            }else{
+                setInvalid(input,error, translator.translateText('PleaseFillCorrectly')+translator.translateText(name)+'!');
+                return false;
+            }
+        }
+    
+        function checkIfRequired(name){
+            var error = $(fields[name].error)[0];
+            var input = $(fields[name].input);
+            if (input.val()){
+                setValid(input, error)
+                return true;
+            }else{
+                setInvalid(input,error, translator.translateText('pleasefill')+translator.translateText(name)+'!')
+                return false;
+            }
+        }
+    
+        function setValid(input, error){
+            input.removeClass('invalid');
+            input.addClass('valid');
+            error.innerHTML = '';
+            error.className = 'error';
+        }
+    
+        function setInvalid(input, error, message){
+            input.removeClass('valid');
+            input.addClass('invalid');
+            error.innerHTML = message;
+            error.className = 'error active';
+        }
+    }
+
     let translator = new function Translator(){
         let dictionary = {
             home: {en: "Home", ru: "Главная"},
@@ -334,7 +480,7 @@ var siteManager = (function($,root){
             next: {en: "Next", ru: "След."},
             prev: {en: "Prev", ru: "Пред."},
             last: {en: "Last", ru: "Посл."},
-            productName: {en:"Product Name", ru: "Наименование товара"},
+            productname: {en:"Product Name", ru: "Наименование товара"},
             videoblock: {en:"Video block", ru: "Видео блок"},
             ok: {en: "Ok", ru: "Ок"},
             yes: {en: "Yes", ru: "Да"},
@@ -343,13 +489,18 @@ var siteManager = (function($,root){
             cancel: {en: "Cancel", ru: "Отменить"},
             confirmation: {en: "Confirmation", ru: "Подтверждение"},
             load: {en: "Loading", ru: "Загрузка"},
-            wouldYouLikeToGoTo: {en: "Would you like to go to ", ru: "Хотите перейти на "},
+            wouldyouliketogoto: {en: "Would you like to go to ", ru: "Хотите перейти на "},
             loading: {en: "Loading...", ru: "Идет загрузка..."},
             additionalinfo: {en: "Additional information", ru: "Допонительная информация"},
             youneedfill: {en: "You need to fill it out!", ru: "Это поле необходимо заполнить!"},
             withdelivery: {en: "With delivery", ru: "С доставкой"},
             addchangeorderform: {en: "Add / Change order form", ru: "Форма добавления / изменения заказа"},
-            orderlegend: {en: "To add or change Order, provide with the following information:", ru: "Для добавления или изменения заказа предоставьте следующую информацию:"}
+            orderlegend: {en: "To add or change Order, provide with the following information:", ru: "Для добавления или изменения заказа предоставьте следующую информацию:"},
+            pleasefill: {en: "Please fill ", ru: "Пожалуйста заполните "},
+            pleasefillcorrectly: {en: "Please fill correctly ", ru: "Пожалуйста правильно заполните "},
+            shouldbeequalorlessofcurrentdate: {en: ' should be equal or less of current date', ru: ' должна быть меньше или равна текущей дате'},
+            shouldbeequalormoreof: {en: ' should be equal or more of ', ru: ' должна быть больше или равна '},
+            ordercanthaveshippingdatewhilenotdelivered: {en: "Order can't have shipping date while not delivered!", ru: 'У заказа не может быть даты доставки пока он не доставлен!'},
         }
 
         let currLang = "en";
@@ -384,7 +535,8 @@ var siteManager = (function($,root){
         }
 
         this.translateText = function(name){
-            let result = (dictionary[name])?dictionary[name][currLang]:name;
+            let lowName = name.toLowerCase();
+            let result = (dictionary[lowName])?dictionary[lowName][currLang]:name;
             return result;
         }
 
@@ -392,8 +544,9 @@ var siteManager = (function($,root){
             element.className = (element.classList.contains("translate"))
                 ? element.className
                 : element.className + " translate";
-            element.setAttribute("name", name);
-            element.innerHTML = (dictionary[name])?dictionary[name][currLang]:name;
+            var lowName = name.toLowerCase();
+            element.setAttribute("name", lowName);
+            element.innerHTML = (dictionary[lowName])?dictionary[lowName][currLang]:name;
         }
     }
 
@@ -520,7 +673,7 @@ var siteManager = (function($,root){
         };
         function getOption(id, name){
             let newOption = document.createElement('option');
-            newOption.text = name;
+            newOption.text = translator.translateText(name);
             newOption.value = id;
             newOption.className = "translate";
             newOption.setAttribute("name", name.toLowerCase())
@@ -557,12 +710,6 @@ var siteManager = (function($,root){
                 url: url
             })
         }
-
-        
-        // delete: function(url, data){
-
-        // }
-    
     }
 
     let urlBuilder = new function Builder(){ 
@@ -584,8 +731,8 @@ var siteManager = (function($,root){
         this.loadById = function(id, included){
             let orderById = [{Name:"id", Value:id}, {Name:'_embed', Value: included}];
             let url = 'http://localhost:3000/' + this.name;
-            return ajaxRequest.get(urlBuilder.getUrl(url, orderById));
-            //.fail(console.log("Can't load data from " + urlBuilder.getUrl(url, orderById)))
+            return ajaxRequest.get(urlBuilder.getUrl(url, orderById))
+            .fail(console.log("Can't load data from " + urlBuilder.getUrl(url, orderById)))
         };
 
         this.load = function(){
@@ -596,8 +743,8 @@ var siteManager = (function($,root){
             .then(function(data, textStatus, jqXHR) {
                 tableBuilder.clickFunc = function(id){pages.formPage.toggleFormPage(id)}
                 return $.when(tableBuilder.load(jqXHR, tableId));
-            });
-            //.fail(console.log("Can't load data from " + urlBuilder.getUrl(url, paginate)));
+            })
+            .fail(console.log("Can't load data from " + urlBuilder.getUrl(url, paginate)));
         };
     }
 
@@ -746,6 +893,7 @@ var siteManager = (function($,root){
         function loadPageButtons(linkstr, table, id){
             if(table && linkstr){
                 let links = linkstr.split(', ')
+                table.deleteTFoot();
                 let newCell = table.createTFoot().insertRow(0).insertCell(0);
                 newCell.setAttribute("colspan", "10");
                 links.forEach(element => {
@@ -773,6 +921,7 @@ var siteManager = (function($,root){
             let links = response.getResponseHeader('link');
             let table = document.getElementById(id);
             if(table && data){
+                table.innerHTML = '';
                 $.when(loadTbody(data, table, id))
                 .then(loadThead(data, table))
                 .then(function(){
