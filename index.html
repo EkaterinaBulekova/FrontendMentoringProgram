@@ -47,25 +47,24 @@
         <section id="orderFormPage">
             <div class="container">
                 <h2 class="translate" name="addchangeorderform">Add / change order form</h2>
-                <form class="form-horizontal">
+                <form class="form-horizontal" novalidate>
                     <legend class="translate" name="orderlegend">To add or change Order, provide with the following information:</legend>
                     <input hidden id="idFormString" name="Order.id" type="hidden" value="0">
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-4 translate" for="Order_User" name="user">User:</label>
-                                <div class="col-md-8">
+                                <label class="col-xs-4 translate" for="Order_User" name="user">User:</label>
+                                <div class="col-xs-8">
                                     <select class="form-control" id="usersFormList" name="Order.user"></select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-4 translate" for="Order_Phone" name="phone">Phone:</label>
-                            <div class="col-md-8">
+                                <label class="col-xs-4 translate" for="Order_Phone" name="phone">Phone:</label>
+                            <div class="col-xs-8">
                                 <input class="form-control" id="phoneFormString" name="Order.phone" type="text" value="" required>
                                 <span class="error" aria-live="polite"></span>
-                                <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
                             </div>
                         </div>
                     </div>
@@ -76,7 +75,6 @@
                             <div class="col-md-10">
                                 <input  class="form-control" id="addressFormString" name="Order.address" type="text" value="" >
                                 <span class="error" aria-live="polite"></span>
-                                <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
                             </div>
                         </div>
                         </div>
@@ -84,18 +82,17 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-4 translate" for="Order_orderDate" name="orderdate">Order date:</label>
-                                <div class="col-md-8">
+                                <label class="col-xs-4 translate" for="Order_orderDate" name="orderdate">Order date:</label>
+                                <div class="col-xs-8">
                                     <input class="form-control" type="date" name="orderdate" id="orderDate" required>
                                     <span class="error" aria-live="polite"></span>
-                                    <span class="help-block translate" name="youneedfill">You need to fill this out!</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-4 translate" for="Order_shippingdate" name="shippingdate">Shipping date:</label>
-                                <div class="col-md-8">
+                                <label class="col-xs-4 translate" for="Order_shippingdate" name="shippingdate">Shipping date:</label>
+                                <div class="col-xs-8">
                                     <input class="form-control" type="date" name="shippingdate" id="shippingDate">
                                     <span class="error" aria-live="polite"></span>
                                 </div>
@@ -113,8 +110,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-4 translate" for="Order_Products" name="products">Products:</label>
-                                <div class="col-md-8">
+                                <label class="col-xs-4 translate" for="Order_Products" name="products">Products:</label>
+                                <div class="col-xs-8">
                                     <select multiple class="form-control" id="productsFormList" name="Order.products">
                                     </select>
                                 </div>
@@ -124,8 +121,8 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-4 translate" for="Order_Status" name="status">Status:</label>
-                                <div class="col-md-8">
+                                <label class="col-xs-4 translate" for="Order_Status" name="status">Status:</label>
+                                <div class="col-xs-8">
                                     <select class="form-control" id="statusesFormList" name="Order.status">
                                     </select>
                                 </div>
@@ -133,18 +130,21 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="col-md-4 translate" for="Order_withDelivery" name="withdelivery">With delivery:</label>
-                                <div class="col-md-8">
+                                <label class="col-xs-4 translate" for="Order_withDelivery" name="withdelivery">With delivery:</label>
+                                <div class="col-xs-8">
                                     <input class="form-check-input" id="withDelivery" type="checkbox" value="delivery">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-md-10 col-xs-12">
+                        <div class="col-xs-12">
                             <div class="form-group">
-                                <input id="submitFormButton" value="Save" class="col-md-3 col-xs-5 btn btn-primary btn-small translate" name="save">
-                                <input id="cancelFormButton" value="Cancel" class="col-md-3 col-xs-5 btn btn-default btn-small translate" name="cancel">
+                                <div class="col-lg-5 col-md-4 col-xs-3"></div>
+                                <div class="col-lg-7 col-md-8 col-xs-9 order-form-buttons">
+                                    <button id="submitFormButton" type="button" value="Save" class="btn btn-primary btn-small translate" name="save">
+                                    <button id="cancelFormButton" type="button" value="Cancel" class="btn btn-default btn-small translate" name="cancel">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -177,20 +177,20 @@
                             <tr>
                                 <td name="userid" class="property-name translate">User Id</td>
                                 <td class="property-value">
-                                    <select class="custom" id="usersFilter">
+                                    <select class="custom" id="usersFilter" name="userid">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td name="status" class="property-name translate">Status</td>
                                 <td class="property-value">
-                                    <select class="custom" id="statusesFilter">
+                                    <select class="custom" id="statusesFilter" name="status">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td name="orderdate" class="property-name translate">Order Date</td>
-                                <td class="property-value"><input class="custom" type="date" name="OrderedDate" id="OrderedDate"></td>
+                                <td class="property-value"><input class="custom" type="date" name="orderDate" id="OrderedDate"></td>
                             </tr>
                         </table>
                     </div>
@@ -199,19 +199,19 @@
                             <tr>
                                 <td name="address" class="property-name translate">Address</td>
                                 <td class="property-value">
-                                    <input class="custom" type="text" name="" id="">
+                                    <input class="custom" type="text" name="address">
                                 </td>
                            </tr>
                             <tr>
                                 <td name="product" class="property-name translate">Product</td>
                                 <td class="property-value">
-                                    <select class="custom" id="productsFilter">
+                                    <select class="custom" id="productsFilter" name="productId">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td name="shippingdate" class="property-name translate">Shipping Date</td>
-                                <td class="property-value"><input class="custom" type="date" name="ShippingDate" id="shippingDate"></td>
+                                <td class="property-value"><input class="custom" type="date" name="shippingDate" id="shippingDate"></td>
                             </tr>
                         </table>
                     </div>
@@ -232,7 +232,7 @@
                                 </tr>
                                 <tr>
                                     <td name="requireddate" class="property-name translate">Required Date</td>
-                                    <td class="property-value"><input class="custom" type="date" name="RequiredDate" id="RequiredDate"></td>
+                                    <td class="property-value"><input class="custom" type="date" name="requiredDate" id="requiredDate"></td>
                                 </tr>
                             </table>
                         </div>

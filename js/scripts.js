@@ -47,13 +47,15 @@ var siteManager = (function($,root){
             }
 
             let actions = {
-                submit : function(){
+                submit : function(event){
                     var validationResult = validator.validate();
                     if(validationResult){
                     var newOrder = orderFields.get();
                     return ajaxRequest.update(serverURL+'orders/'+newOrder.id, JSON.stringify(newOrder))
                     .then(result=>{orderTable.load()})
                     .then(result=>{page.togglePage('orderListPage')})
+                    }else{
+                        event.preventDefault()
                     }
                 },
                 cancel : function(){

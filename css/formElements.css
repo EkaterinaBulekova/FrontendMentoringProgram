@@ -64,6 +64,15 @@ button.minWidth {
 	outline: none;
   }
   
+  /* .order-form-buttons{
+	width: 300px;
+	height: 60px;
+	margin: 0 auto;
+  } */
+  .order-form-buttons button{
+	width: 90px;
+	margin: 5px;
+  }
 
   .error {
 	width  : 100%;

@@ -1,6 +1,7 @@
 table.custom {
-    /* text-overflow: ellipsis; */
-    /* overflow: hidden; */
+    text-overflow: ellipsis;
+    overflow: hidden;
+
     width: 100%;
     margin: 5px 0;
     padding: 0;
@@ -12,19 +13,26 @@ table.custom {
 	color: #b3b9c4;
 }
 
+
+table.custom thead td, table.custom td{
+    white-space:pre;
+}
+
 table thead td, table td{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    /* overflow: hidden;
+    text-overflow: ellipsis; 
+     white-space: nowrap;*/
+    /* white-space:pre; */
     padding: 5px 7px;
     line-height: 20px;
     text-align: left;
 }
 
+
 table thead tr{
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: nowrap; */
     color: white;
 	font-weight: bold;
     vertical-align: middle;
