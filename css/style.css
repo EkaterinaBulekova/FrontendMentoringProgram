@@ -243,6 +243,10 @@ section.active {
 }
 
 @media screen and (max-width: 60em) {
+	.dialogue {
+		width: 60%;
+		left: 20%;
+	}
 	.grid-container .shape.video{
 		height: 10em;
 		width: 16em;
@@ -265,13 +269,13 @@ section.active {
 		"foot foot"
 		"foot foot"
 	}
-	#orderListPage{
-		overflow-x: scroll;
-	}
 }
 
 @media screen and (max-width: 40em) {
-
+	.dialogue {
+		width: 90%;
+		left: 5%;
+	}
 	.grid-container .shape.video{
 		height: 10em;
 		width: 15em;
@@ -281,20 +285,21 @@ section.active {
 		height: 7em;
 		width: 7em;		
 	}
-	.tab-panel{
-		overflow-x: scroll;
-	}
+
 	.button-3d {
 		width: 5em;
 	}
+
 	.button-3d figure{
 		white-space: nowrap; 
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+
 	.flex-item.small, .flex-item.small.right{
 		flex: 0 1 100%;
 	}
+	
 	.grid-container{
 		margin-left: 1%;	
 		display: grid;

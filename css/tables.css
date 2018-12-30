@@ -1,4 +1,5 @@
 table.custom {
+    table-layout: fixed;
     width: 100%;
     margin: 5px 0;
     padding: 0;
@@ -24,7 +25,8 @@ table.custom {
 }
 
 table.custom thead td, table.custom td{
-    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
     white-space:pre;
     cursor: default;
 }
@@ -36,8 +38,6 @@ table thead td, table td{
 }
 
 table thead tr{
-    overflow: hidden;
-    text-overflow: ellipsis; 
     color: white;
 	font-weight: bold;
     vertical-align: middle;

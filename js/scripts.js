@@ -908,7 +908,7 @@ var siteManager = (function($,root){
     }
 
     let tableBuilder = new function TableBilder(){
-
+        var columnsCount = 0;
         this.clickFunc;
 
         function loadThead(data, table) {
@@ -922,6 +922,7 @@ var siteManager = (function($,root){
                     newCell.setAttribute("title", newCell.innerHTML);
                     j++;
                 }
+                columnsCount = j;
             }
         };
 
@@ -949,7 +950,7 @@ var siteManager = (function($,root){
                 let links = linkstr.split(', ')
                 table.deleteTFoot();
                 let newCell = table.createTFoot().insertRow(0).insertCell(0);
-                newCell.setAttribute("colspan", "11");
+                newCell.setAttribute("colspan", columnsCount);
                 links.forEach(element => {
                     let button = document.createElement('button');
                     let linkParam = element.split('; ');
