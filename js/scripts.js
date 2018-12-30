@@ -932,10 +932,11 @@ var siteManager = (function($,root){
                     let newRow = table.insertRow(i);
                     newRow.setAttribute("id",data[i]["id"]);
                     let j = 0;
-                    for(let propertyName in item) {
+                    for(let propertyName in item){
                         let newCell = newRow.insertCell(j);
                         let newText = document.createTextNode(item[propertyName]);
                         newCell.appendChild(newText);
+                        newCell.setAttribute("title", item[propertyName]);
                         j++;
                     }
                 }
@@ -985,7 +986,7 @@ var siteManager = (function($,root){
                     $("#"+id +" tr").click(function(){
                         if(id==="ordersTable" && $(this).attr("id") ) tableBuilder.clickFunc($(this).attr("id"));
                     })
-                });
+                })
             }
         };
     }

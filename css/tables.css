@@ -1,22 +1,27 @@
 table.custom {
-    text-overflow: ellipsis;
-    overflow: hidden;
-
     width: 100%;
     margin: 5px 0;
     padding: 0;
-    font-size: 14px;    
+    font-size: 14px;
     border-spacing: 0;
     border-collapse: separate;
     border-radius: 5px;
-	background-color: #383f47;
-	color: #b3b9c4;
+    background-color: #383f47;
+    color: #b3b9c4;
 }
 
-#orderListPage table.custom tbody td{
+#ordersTable{
+    table-layout: fixed;
+}
+
+#ordersTable td{
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#ordersTable tbody td{
     cursor: pointer;
 }
-
 
 table.custom thead td, table.custom td{
     word-break: break-all;
@@ -25,20 +30,14 @@ table.custom thead td, table.custom td{
 }
 
 table thead td, table td{
-    /* overflow: hidden;
-    text-overflow: ellipsis; 
-     white-space: nowrap;*/
-    /* white-space:pre; */
     padding: 5px 7px;
     line-height: 20px;
     text-align: left;
 }
 
-
 table thead tr{
-    /* overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; */
+    overflow: hidden;
+    text-overflow: ellipsis; 
     color: white;
 	font-weight: bold;
     vertical-align: middle;
@@ -90,7 +89,6 @@ table tfoot td{
     height: 16px;
     padding: 0;
     margin: 0;
-    /* background-color: rgb(32, 26, 26); */
     border: 1px solid #d8dbde;
     border-radius: 5px 5px 5px 5px;
 }
