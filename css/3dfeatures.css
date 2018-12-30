@@ -9,6 +9,7 @@
 }
 
 .button-3d {
+    cursor: pointer;
     height: 40px;	
     width: 140px;
 }

@@ -50,6 +50,7 @@
                 <form class="form-horizontal" novalidate>
                     <legend class="translate" name="orderlegend">To add or change Order, provide with the following information:</legend>
                     <input hidden id="idFormString" name="Order.id" type="hidden" value="0">
+                    <input hidden id="orderIdFormString" name="Order.id" type="hidden" value="0">
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -175,9 +176,15 @@
                     <div class="quick-filter">
                         <table>
                             <tr>
-                                <td name="userid" class="property-name translate">User Id</td>
+                                <td name="orderId" class="property-name translate">Order Id</td>
                                 <td class="property-value">
-                                    <select class="custom" id="usersFilter" name="userid">
+                                    <input class="custom" type="text" name="orderId_like">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td name="userId" class="property-name translate">User Id</td>
+                                <td class="property-value">
+                                    <select class="custom" id="usersFilter" name="userId">
                                     </select>
                                 </td>
                             </tr>
@@ -188,10 +195,6 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr>
-                                <td name="orderdate" class="property-name translate">Order Date</td>
-                                <td class="property-value"><input class="custom" type="date" name="orderDate" id="OrderedDate"></td>
-                            </tr>
                         </table>
                     </div>
                     <div class="advanced-filter" style="display: none">
@@ -199,19 +202,19 @@
                             <tr>
                                 <td name="address" class="property-name translate">Address</td>
                                 <td class="property-value">
-                                    <input class="custom" type="text" name="address">
+                                    <input class="custom" type="text" name="address_like">
                                 </td>
                            </tr>
                             <tr>
                                 <td name="product" class="property-name translate">Product</td>
                                 <td class="property-value">
-                                    <select class="custom" id="productsFilter" name="productId">
+                                    <select class="custom" id="productsFilter" name="productIds_like">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td name="shippingdate" class="property-name translate">Shipping Date</td>
-                                <td class="property-value"><input class="custom" type="date" name="shippingDate" id="shippingDate"></td>
+                                <td name="orderDate" class="property-name translate">Order Date</td>
+                                <td class="property-value"><input class="custom" type="date" name="orderDate" id="OrderedDate"></td>
                             </tr>
                         </table>
                     </div>
@@ -220,25 +223,32 @@
                                 <tr>
                                     <td name="phone" class="property-name translate">Phone</td>
                                     <td class="property-value">
-                                        <input class="custom" type="tel" name="" id="">
+                                        <input class="custom" type="tel" name="phone_like" id="">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td name="category" class="property-name translate">Category</td>
+                                    <td name="withdelivery" class="property-name translate">with delivery</td>
                                     <td class="property-value">
-                                        <select class="custom" id="categoriesFilter">
+                                        <select class="custom" id="" name="withDelivery">
+                                                <option name="all" class="translate" value="0">all</option>
+                                                <option name="withdelivery" class="translate" value="delivery">with delivery</option>
+                                                <option name="withoutdelivery" class="translate" value="">without delivery</option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td name="shippingdate" class="property-name translate">Shipping Date</td>
+                                    <td class="property-value"><input class="custom" type="date" name="shippingDate" id="shippingDate"></td>
+                                </tr>
+                                <!-- <tr>
                                     <td name="requireddate" class="property-name translate">Required Date</td>
                                     <td class="property-value"><input class="custom" type="date" name="requiredDate" id="requiredDate"></td>
-                                </tr>
+                                </tr> -->
                             </table>
                         </div>
                 </div>
                     <div class="buttons-panel">
-                        <button name="search" type="button" class="custom minWidth translate">Search</button>
+                        <button name="search" type="button" class="custom minWidth translate search-filter-button">Search</button>
                         <button name="reset" type="reset" class="custom minWidth translate">Reset</button>
                         <button name="filters" type="button" class="custom minWidth translate addvanced-filter-button">Filters ></button>
                     </div>
@@ -320,7 +330,6 @@
                         <figure class="flex-item small right video-source" data-video="media/ASUS VivoBook F510UA FHD 15.6 Laptop Overview.mp4">
                             <picture>
                                 <img src="images/laptop1.png">
-                                <!-- "images/soundbox.jpg"> -->
                             </picture>
                         </figure>
                     </div>

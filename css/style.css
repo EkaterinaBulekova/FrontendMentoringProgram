@@ -55,6 +55,10 @@ nav .lang-button {
 	float: right;
 }
 
+.lang-button{
+	cursor: pointer;
+}
+
 main {
 	width: 1200px;
 	overflow: hidden;
@@ -112,6 +116,7 @@ section.active {
 }
 
 .tabs {
+	cursor: pointer;
 	list-style: none;
 	margin: 0 0 0 20px;	
 }
@@ -166,6 +171,7 @@ section.active {
 }
 
 .flex-item.small {
+	cursor: pointer;
 	flex: 0 1 25%;
 }
 
@@ -313,7 +319,12 @@ section.active {
 	height: 100%;
 }
 
+.shape{
+	cursor: default;
+}
+
 .shape.laptops {
+	cursor: pointer;
 	background: url("../images/laptops.png");
 	background-size: cover;
 	float: left;
@@ -351,6 +362,7 @@ section.active {
 }
 
 .shape.laptops:hover {
+	cursor: pointer;
 	height: 17em;
 	width: 25em;
 	margin-top: 20em;

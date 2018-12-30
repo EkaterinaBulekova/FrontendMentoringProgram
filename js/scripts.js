@@ -67,6 +67,7 @@ var siteManager = (function($,root){
                 get: function(){
                     return {
                         id : $('#idFormString').val(),
+                        orderId : $('#orderIdFormString').val(),
                         userId : parseInt($('#usersFormList').val()),
                         address : $('#addressFormString').val(),
                         phone : $('#phoneFormString').val(),
@@ -74,11 +75,13 @@ var siteManager = (function($,root){
                         withDelivery : $('#withDelivery').prop('checked')? $('#withDelivery').val() : '',
                         description : $('#descriptionText').val(),
                         orderDate: getDateString( new Date($('#orderDate').val())),
-                        shippingDate: getDateString( new Date($('#shippingDate').val()))
+                        shippingDate: getDateString( new Date($('#shippingDate').val())),
+                        productIds: $('#productsFormList').val().toString()
                     }
                 },
                 set: function(order){
                     $('#idFormString').val((order)?order[0]['id']:'');
+                    $('#orderIdFormString').val((order)?order[0]['orderId']:'');
                     $('#usersFormList').val((order)?order[0]['userId']:'');
                     $('#addressFormString').val((order)?order[0]['address']:'');
                     $('#phoneFormString').val((order)?order[0]['phone']:'');
@@ -89,6 +92,7 @@ var siteManager = (function($,root){
                     $('#descriptionText').val((order)?order[0]['description']:'')
                     $('#orderDate').val((order)?order[0]['orderDate']:'');
                     $('#shippingDate').val((order)?order[0]['shippingDate']:'');
+                    $('#productsFormList').val((order)?order[0]['productIds'].split(','):'')
                 }
             }
 
@@ -112,15 +116,6 @@ var siteManager = (function($,root){
                 set: function(order){
                     $('#productsFormList').val((order)?getProducts(order):'');
                 }
-            }
-
-            function getProducts(order){
-                var products = [];
-                var lines = order['lines'];
-                lines.forEach(function(item) {
-                    products.push(item.productId); 
-                });
-                return products;
             }
 
             function setActions(){
@@ -149,8 +144,7 @@ var siteManager = (function($,root){
                          return orderTable.loadById(id, 'lines')
                         .then(result=>{
                             orderFields.set(result);
-                            productsList.set(result[0]); 
-                        })
+                       })
                     }
                     return $.when();
                 })
@@ -434,6 +428,7 @@ var siteManager = (function($,root){
             settings: {en: "Settings", ru: "Настройки"},
             documents: {en: "Documents", ru: "Документы"},
             userid: {en: "User Id", ru: "Пользователь"},
+            orderid: {en: "Order Id", ru: "Заказ"},
             status: {en: "Status", ru: "Статус"},
             date: {en: "Date", ru: "Дата"},
             orderdate: {en: "Order date", ru: "Дата заказа"},
@@ -448,6 +443,7 @@ var siteManager = (function($,root){
             filters: {en: "Filters >", ru: "Фильтры >"},
             filtersback: {en: "> Filters", ru: "> Фильтры"},
             products: {en: "Products", ru: "Продукты"},
+            productids: {en: "Product Ids", ru: "Продукты"},
             categories: {en: "Categories", ru: "Категории"},
             users: {en: "Users", ru: "Пользователи"},
             user: {en: "User", ru: "Пользователь"},
@@ -496,6 +492,7 @@ var siteManager = (function($,root){
             additionalinfo: {en: "Additional information", ru: "Допонительная информация"},
             youneedfill: {en: "You need to fill it out!", ru: "Это поле необходимо заполнить!"},
             withdelivery: {en: "With delivery", ru: "С доставкой"},
+            withoutdelivery: {en: "Without delivery", ru: "Без доставки"},
             addchangeorderform: {en: "Add / Change order form", ru: "Форма добавления / изменения заказа"},
             orderlegend: {en: "To add or change Order, provide with the following information:", ru: "Для добавления или изменения заказа предоставьте следующую информацию:"},
             pleasefill: {en: "Please fill ", ru: "Пожалуйста заполните "},
@@ -521,7 +518,7 @@ var siteManager = (function($,root){
             }
             $(".translate").each(function() {
                 let name = $(this).attr("name");
-                name && dict[name] && $(this).text(dict[name][currLang]);
+                name && dict[name.toLowerCase()] && $(this).text(dict[name.toLowerCase()][currLang]);
             });
         }
 
@@ -608,11 +605,57 @@ var siteManager = (function($,root){
         }
     }
 
+    let filter = new function Filter(){
+        var quickFilerClass = '.quick-filter ';
+        var advancedFilterClass = '.advanced-filter ';
+
+        function getByFilterClass(filterClass){
+            var input = 'input';
+            var select = 'select';
+            var filters = [];
+            var temp =$(filterClass+input);
+
+            $(filterClass+input).each(function(index,item){
+                if ($(item).attr('type')==='date'){
+                    var date = new Date($(item).val());
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+                    if (day && month && year){
+                        filters.push({Name: $(item).attr('name'), Value:year+'-'+month+'-'+day});
+                    }
+                }
+                else{
+                    var val = $(item).val();
+                    if(val){
+                        filters.push({Name: $(item).attr('name'), Value:val});
+                    }
+                }
+            });
+            temp = $(filterClass+select);
+            $(filterClass+select).each(function(index,item){
+                    var val = $(item).val();
+                    if(val != '0'){
+                        filters.push({Name: $(item).attr('name'), Value:val});
+                    }
+            });
+            return filters;
+
+        }
+
+        this.get = function(withAdvansed){
+            return withAdvansed 
+                ? getByFilterClass(quickFilerClass).concat(getByFilterClass(advancedFilterClass))
+                : getByFilterClass(quickFilerClass);
+        }
+    }
+
     let filterBlock = new function FilterBlock(){
         let serverURL = 'http://localhost:3000/';
         var isAdvancedShow = false;
         var $advFilterPanel;
         var $advFilterButton;
+        var $searchFilterButton;
 
         function initFilterStaticElement(){
             var defer = new $.Deferred();
@@ -620,7 +663,11 @@ var siteManager = (function($,root){
                 $advFilterPanel = $('.advanced-filter');
                 $advFilterButton = $('.addvanced-filter-button');
                 $advFilterButton.click(function() {
-                    filterBlock.toggleAdvansedPanel(this);
+                    toggleAdvansedPanel(this);
+                });
+                $searchFilterButton = $('.search-filter-button');
+                $searchFilterButton.click(function() {
+                    loadSearchResult();
                 });
                 defer.resolve();
             }else{
@@ -628,6 +675,12 @@ var siteManager = (function($,root){
             }
             return defer;
         }
+
+        function loadSearchResult(){
+            var filters = filter.get(isAdvancedShow);
+            orderTable.load(filters);
+        }
+        
         function loadList(id){
             return ajaxRequest.get(serverURL+ id)
             .then(result => {dataListObject.load(id, result)});
@@ -637,7 +690,6 @@ var siteManager = (function($,root){
             return loadList('products')
                 .then(result=>{loadList('users')})
                 .then(result=>{loadList('statuses')})
-                .then(result=>{loadList('categories')})
                 .then(result => {
                     initFilterStaticElement();
                     return $.when();
@@ -645,7 +697,7 @@ var siteManager = (function($,root){
                 .fail(error => {console.log(error)});
         }
 
-        this.toggleAdvansedPanel = function(button){
+        function toggleAdvansedPanel(button){
             $advFilterPanel.toggle();
             if (isAdvancedShow){
                 translator.translateElement(button, "filters");
@@ -730,23 +782,21 @@ var siteManager = (function($,root){
 
     let commonDictionary = new function CommonDictionary(){
 
-        this.loadById = function(id, included){
-            let orderById = [{Name:"id", Value:id}, {Name:'_embed', Value: included}];
+        this.loadById = function(id){
+            let option = [{Name:"id", Value:id}];
             let url = 'http://localhost:3000/' + this.name;
-            return ajaxRequest.get(urlBuilder.getUrl(url, orderById))
-            .fail(console.log("Can't load data from " + urlBuilder.getUrl(url, orderById)))
+            return ajaxRequest.get(urlBuilder.getUrl(url, option))
         };
 
-        this.load = function(){
+        this.load = function(filter){
             let tableId = this.name + 'Table';
             let url = 'http://localhost:3000/' + this.name;
-            let paginate = this.pagination;
+            let paginate = (filter)? filter.concat(this.pagination): this.pagination;
             return ajaxRequest.get(urlBuilder.getUrl(url, paginate))
             .then(function(data, textStatus, jqXHR) {
                 tableBuilder.clickFunc = function(id){pages.formPage.toggleFormPage(id)}
                 return $.when(tableBuilder.load(jqXHR, tableId));
             })
-            .fail(console.log("Can't load data from " + urlBuilder.getUrl(url, paginate)));
         };
     }
 
@@ -897,7 +947,7 @@ var siteManager = (function($,root){
                 let links = linkstr.split(', ')
                 table.deleteTFoot();
                 let newCell = table.createTFoot().insertRow(0).insertCell(0);
-                newCell.setAttribute("colspan", "10");
+                newCell.setAttribute("colspan", "11");
                 links.forEach(element => {
                     let button = document.createElement('button');
                     let linkParam = element.split('; ');

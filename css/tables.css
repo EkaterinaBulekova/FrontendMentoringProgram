@@ -13,9 +13,15 @@ table.custom {
 	color: #b3b9c4;
 }
 
+#orderListPage table.custom tbody td{
+    cursor: pointer;
+}
+
 
 table.custom thead td, table.custom td{
+    word-break: break-all;
     white-space:pre;
+    cursor: default;
 }
 
 table thead td, table td{
