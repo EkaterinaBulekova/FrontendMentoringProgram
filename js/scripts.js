@@ -919,6 +919,7 @@ var siteManager = (function($,root){
                 for(let propertyName in data[0]) {
                     let newCell = newRow.insertCell(j);
                     translator.translateElement(newCell, propertyName.toLowerCase());
+                    newCell.setAttribute("title", newCell.innerHTML);
                     j++;
                 }
             }
